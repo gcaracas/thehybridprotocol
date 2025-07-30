@@ -18,73 +18,123 @@ interface PodcastEpisode {
 }
 
 async function getEpisode(slug: string): Promise<PodcastEpisode | null> {
+  // Get API URL with fallback for SSR
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  
+  // Input validation
+  if (!slug || typeof slug !== 'string') {
+    console.error('Invalid slug provided to getEpisode:', slug);
+    return null;
+  }
+
   try {
+    console.log(`[SSR] Fetching episode with slug: ${slug} from ${apiUrl}`);
+    
     // First try with the provided slug
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/podcast-episodes/${slug}/`,
-      { cache: 'no-store' }
-    );
+    const directUrl = `${apiUrl}/api/podcast-episodes/${encodeURIComponent(slug)}/`;
+    console.log(`[SSR] Direct fetch attempt: ${directUrl}`);
+    
+    const response = await fetch(directUrl, { 
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     
     if (response.ok) {
-      return await response.json();
+      console.log(`[SSR] Direct fetch successful for slug: ${slug}`);
+      const episode = await response.json();
+      return episode;
     }
     
-    // If that fails, try to fetch all episodes and find by slug or title
-    const listResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/podcast-episodes/`,
-      { cache: 'no-store' }
-    );
+    console.log(`[SSR] Direct fetch failed (${response.status}), trying list approach`);
     
-         if (listResponse.ok) {
-       const data = await listResponse.json();
-       const episodes = data.results || data;
-       
-       // Try to find by exact slug match first
-       let episode = episodes.find((ep: PodcastEpisode) => ep.slug === slug);
-       
-       // If not found, try to find by title-based slug
-       if (!episode) {
-         const titleSlug = slug.replace('title-', '');
-         episode = episodes.find((ep: PodcastEpisode) => 
-           ep.slug === titleSlug || 
-           ep.slug === `podcast-${titleSlug}` ||
-           ep.title.toLowerCase().replace(/\s+/g, '-') === slug
-         );
-       }
+    // If that fails, try to fetch all episodes and find by slug or title
+    const listUrl = `${apiUrl}/api/podcast-episodes/`;
+    console.log(`[SSR] List fetch attempt: ${listUrl}`);
+    
+    const listResponse = await fetch(listUrl, { 
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (listResponse.ok) {
+      const data = await listResponse.json();
+      const episodes = data.results || data;
+      
+      console.log(`[SSR] Found ${episodes.length} episodes in list`);
+      
+      // Try to find by exact slug match first
+      let episode = episodes.find((ep: PodcastEpisode) => ep.slug === slug);
       
       if (episode) {
-        // Fetch the full episode details
-        const detailResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/podcast-episodes/${episode.slug}/`,
-          { cache: 'no-store' }
-        );
-        if (detailResponse.ok) {
-          return await detailResponse.json();
-        }
+        console.log(`[SSR] Found episode by exact slug match: ${episode.title}`);
+        return episode;
       }
+      
+      // If not found, try to find by title-based slug patterns
+      const titleSlug = slug.replace('title-', '');
+      episode = episodes.find((ep: PodcastEpisode) => 
+        ep.slug === titleSlug || 
+        ep.slug === `podcast-${titleSlug}` ||
+        ep.title.toLowerCase().replace(/\s+/g, '-') === slug ||
+        ep.title.toLowerCase().replace(/\s+/g, '-') === titleSlug
+      );
+      
+      if (episode) {
+        console.log(`[SSR] Found episode by pattern matching: ${episode.title}`);
+        return episode;
+      }
+      
+      console.log(`[SSR] No episode found matching slug: ${slug}`);
+      console.log(`[SSR] Available slugs:`, episodes.map((ep: PodcastEpisode) => ep.slug));
+    } else {
+      console.error(`[SSR] List fetch failed with status: ${listResponse.status}`);
     }
     
     return null;
   } catch (error) {
-    console.error('Error fetching episode:', error);
+    console.error('[SSR] Error in getEpisode:', error);
+    console.error('[SSR] Error details:', {
+      slug,
+      apiUrl,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+    
+    // Return null instead of throwing to prevent SSR crash
     return null;
   }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const episode = await getEpisode(slug);
-  
-  if (!episode) {
+  try {
+    const { slug } = await params;
+    console.log(`[SSR] generateMetadata called for slug: ${slug}`);
+    
+    const episode = await getEpisode(slug);
+    
+    if (!episode) {
+      console.log(`[SSR] generateMetadata: episode not found for slug: ${slug}`);
+      return {
+        title: 'Episode Not Found | The Hybrid Protocol',
+        description: 'The requested podcast episode could not be found.',
+      };
+    }
+
+    console.log(`[SSR] generateMetadata: found episode: ${episode.title}`);
     return {
-      title: 'Episode Not Found | The Hybrid Protocol',
+      title: `${episode.title} | The Hybrid Protocol`,
+      description: episode.description || 'A podcast episode from The Hybrid Protocol',
+    };
+  } catch (error) {
+    console.error('[SSR] Error in generateMetadata:', error);
+    return {
+      title: 'Episode | The Hybrid Protocol',
+      description: 'A podcast episode from The Hybrid Protocol',
     };
   }
-
-  return {
-    title: `${episode.title} | The Hybrid Protocol`,
-    description: episode.description,
-  };
 }
 
 const formatDate = (dateString: string) => {
@@ -99,9 +149,37 @@ const formatDate = (dateString: string) => {
 };
 
 export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
+  try {
+    const { slug } = await params;
+    console.log(`[SSR] EpisodePage rendering for slug: ${slug}`);
+    
+    // Validate slug parameter
+    if (!slug || typeof slug !== 'string') {
+      console.error(`[SSR] Invalid slug parameter:`, slug);
+      notFound();
+    }
+
+    const episode = await getEpisode(slug);
+
+    if (!episode) {
+      console.log(`[SSR] Episode not found for slug: ${slug}, calling notFound()`);
+      notFound();
+    }
+
+    console.log(`[SSR] Successfully loaded episode: ${episode.title}`);
+  } catch (error) {
+    console.error('[SSR] Critical error in EpisodePage:', error);
+    console.error('[SSR] Error stack:', error instanceof Error ? error.stack : 'No stack available');
+    
+    // Instead of throwing, call notFound to handle gracefully
+    notFound();
+  }
+
+  // Re-fetch episode for rendering (this ensures we have data)
   const { slug } = await params;
   const episode = await getEpisode(slug);
-
+  
+  // This should never happen due to checks above, but TypeScript safety
   if (!episode) {
     notFound();
   }

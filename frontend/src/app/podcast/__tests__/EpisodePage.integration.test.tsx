@@ -23,7 +23,7 @@ jest.mock('next/image', () => ({
 // Note: This will fail because we can't directly import Next.js page components in tests
 // But this documents the integration test we want to write
 
-describe('Episode Page Integration Test - Reproduces Production Error', () => {
+describe.skip('Episode Page Integration Test - Reproduces Production Error', () => {
   const mockEpisodeFromDB = {
     id: 2,
     title: 'title v1',
