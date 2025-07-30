@@ -3,6 +3,6 @@ builder = "NIXPACKS"
 watchPatterns = ["backend/**"]
 
 [deploy]
-startCommand = "python manage.py check --deploy && python manage.py backup_data --output-dir /tmp/backups && python manage.py migrate --noinput && python manage.py create_admin && python manage.py collectstatic --noinput && gunicorn thehybridprotocol.wsgi:application --bind 0.0.0.0:$PORT"
+startCommand = "python manage.py check --deploy && python manage.py pre_deploy_check --backup-required && python manage.py enhanced_backup --output-dir /app/backups --validate && python manage.py migrate --noinput && python manage.py create_admin && python manage.py collectstatic --noinput && gunicorn thehybridprotocol.wsgi:application --bind 0.0.0.0:$PORT"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
