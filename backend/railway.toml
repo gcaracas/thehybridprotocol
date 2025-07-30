@@ -1,9 +1,9 @@
 [build]
-builder = "NIXPACKS"
-watchPatterns = ["backend/**"]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "python manage.py check --deploy && python manage.py test_db_connection && python manage.py pre_deploy_check --backup-required && python manage.py enhanced_backup --output-dir /app/backups --validate && python manage.py migrate --noinput && python manage.py create_admin && python manage.py collectstatic --noinput && gunicorn thehybridprotocol.wsgi:application --bind 0.0.0.0:$PORT"
+startCommand = "python manage.py check --deploy && python manage.py test_db_connection && python manage.py pre_deploy_check --backup-required && python manage.py enhanced_backup --output-dir /app/backups --validate && python manage.py migrate --noinput && python manage.py create_admin && gunicorn thehybridprotocol.wsgi:application --bind 0.0.0.0:$PORT"
 healthcheckPath = "/api/health/"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
