@@ -5,11 +5,13 @@ import { useState } from 'react';
 interface NewsletterSignupProps {
   variant?: 'inline' | 'section';
   className?: string;
+  id?: string;
 }
 
 export default function NewsletterSignup({ 
   variant = 'inline', 
-  className = '' 
+  className = '',
+  id
 }: NewsletterSignupProps) {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -48,7 +50,7 @@ export default function NewsletterSignup({
         setMessage(errorData.email?.[0] || 'Something went wrong. Please try again.');
         setIsSuccess(false);
       }
-    } catch (error) {
+    } catch {
       setMessage('Network error. Please try again.');
       setIsSuccess(false);
     } finally {
@@ -58,7 +60,7 @@ export default function NewsletterSignup({
 
   if (variant === 'section') {
     return (
-      <section className={`py-16 bg-blue-50 ${className}`}>
+      <section id={id} className={`py-16 bg-blue-50 ${className}`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">

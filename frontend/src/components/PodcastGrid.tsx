@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -30,11 +30,7 @@ export default function PodcastGrid({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchEpisodes();
-  }, []);
-
-  const fetchEpisodes = async () => {
+  const fetchEpisodes = useCallback(async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/podcast-episodes/`);
       if (response.ok) {
@@ -44,12 +40,16 @@ export default function PodcastGrid({
       } else {
         setError('Failed to load podcast episodes');
       }
-    } catch (error) {
+    } catch {
       setError('Network error. Please try again later.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [limit]);
+
+  useEffect(() => {
+    fetchEpisodes();
+  }, [fetchEpisodes]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
