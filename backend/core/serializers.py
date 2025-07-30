@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.conf import settings
 from .models import Newsletter, PodcastEpisode, EmailSignup
 
 
@@ -45,10 +46,9 @@ class PodcastEpisodeSerializer(serializers.ModelSerializer):
         """Return full absolute URL for cover image"""
         if obj.cover_image and hasattr(obj.cover_image, 'url'):
             try:
-                request = self.context.get('request')
-                if request:
-                    return request.build_absolute_uri(obj.cover_image.url)
-                return obj.cover_image.url
+                # Use BASE_URL from settings for reliable absolute URLs
+                base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
+                return f"{base_url}{obj.cover_image.url}"
             except (ValueError, AttributeError):
                 return None
         return None
@@ -71,10 +71,9 @@ class PodcastEpisodeListSerializer(serializers.ModelSerializer):
         """Return full absolute URL for cover image"""
         if obj.cover_image and hasattr(obj.cover_image, 'url'):
             try:
-                request = self.context.get('request')
-                if request:
-                    return request.build_absolute_uri(obj.cover_image.url)
-                return obj.cover_image.url
+                # Use BASE_URL from settings for reliable absolute URLs
+                base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
+                return f"{base_url}{obj.cover_image.url}"
             except (ValueError, AttributeError):
                 return None
         return None
