@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import PodcastGrid from "@/components/PodcastGrid";
 import NewsletterSignup from "@/components/NewsletterSignup";
 
@@ -15,12 +16,12 @@ export default function Home() {
               Bridging the gap between science and practice in health, wellness, and human performance
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <Link
                 href="/podcast"
                 className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors"
               >
                 Listen to Podcast
-              </a>
+              </Link>
               <a
                 href="#newsletter"
                 className="border border-blue-600 text-blue-600 px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-50 transition-colors"
@@ -155,9 +156,9 @@ export default function Home() {
             <div>
               <h4 className="text-lg font-semibold mb-4">Content</h4>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="/podcast" className="hover:text-white transition-colors">Podcast</a></li>
-                <li><a href="/newsletter" className="hover:text-white transition-colors">Newsletter</a></li>
-                <li><a href="/about" className="hover:text-white transition-colors">About</a></li>
+                <li><Link href="/podcast" className="hover:text-white transition-colors">Podcast</Link></li>
+                <li><Link href="/newsletter" className="hover:text-white transition-colors">Newsletter</Link></li>
+                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
               </ul>
             </div>
             <div>

@@ -195,7 +195,7 @@ export default function PodcastGrid({
                        </Link>
                        {process.env.NODE_ENV === 'development' && (
                          <div className="text-xs text-gray-400 mt-1">
-                           Debug: slug = "{episode.slug}"
+                           Debug: slug = &quot;{episode.slug}&quot;
                          </div>
                        )}
                     </div>

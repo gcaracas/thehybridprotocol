@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface PodcastEpisode {
@@ -34,22 +35,22 @@ async function getEpisode(slug: string): Promise<PodcastEpisode | null> {
       { cache: 'no-store' }
     );
     
-    if (listResponse.ok) {
-      const data = await listResponse.json();
-      const episodes = data.results || data;
-      
-      // Try to find by exact slug match first
-      let episode = episodes.find((ep: any) => ep.slug === slug);
-      
-      // If not found, try to find by title-based slug
-      if (!episode) {
-        const titleSlug = slug.replace('title-', '');
-        episode = episodes.find((ep: any) => 
-          ep.slug === titleSlug || 
-          ep.slug === `podcast-${titleSlug}` ||
-          ep.title.toLowerCase().replace(/\s+/g, '-') === slug
-        );
-      }
+         if (listResponse.ok) {
+       const data = await listResponse.json();
+       const episodes = data.results || data;
+       
+       // Try to find by exact slug match first
+       let episode = episodes.find((ep: PodcastEpisode) => ep.slug === slug);
+       
+       // If not found, try to find by title-based slug
+       if (!episode) {
+         const titleSlug = slug.replace('title-', '');
+         episode = episodes.find((ep: PodcastEpisode) => 
+           ep.slug === titleSlug || 
+           ep.slug === `podcast-${titleSlug}` ||
+           ep.title.toLowerCase().replace(/\s+/g, '-') === slug
+         );
+       }
       
       if (episode) {
         // Fetch the full episode details
@@ -220,7 +221,7 @@ export default async function EpisodePage({ params }: { params: { slug: string }
 
           {/* Back to Podcast */}
           <div className="mt-8 text-center">
-            <a
+            <Link
               href="/podcast"
               className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
             >
@@ -228,7 +229,7 @@ export default async function EpisodePage({ params }: { params: { slug: string }
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back to All Episodes
-            </a>
+            </Link>
           </div>
         </div>
       </section>
