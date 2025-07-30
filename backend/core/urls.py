@@ -13,8 +13,12 @@ urlpatterns = [
     path('newsletters/<slug:slug>/', views.NewsletterDetailView.as_view(), name='newsletter_detail'),
     
     # Podcast endpoints
-    path('podcast-episodes/', views.PodcastEpisodeListView.as_view(), name='podcast_list'),
-    path('podcast-episodes/<slug:slug>/', views.PodcastEpisodeDetailView.as_view(), name='podcast_detail'),
+    path('podcast-episodes/', views.PodcastEpisodeListView.as_view(), name='podcast_episodes_list'),
+    path('podcast-episodes/<slug:slug>/', views.PodcastEpisodeDetailView.as_view(), name='podcast_episodes_detail'),
+    
+    # Simplified podcast endpoints (as requested)
+    path('podcast/', views.PodcastEpisodeListView.as_view(), name='podcast_list'),
+    path('podcast/<slug:slug>/', views.PodcastEpisodeDetailView.as_view(), name='podcast_detail'),
     
     # Email signup endpoint
     path('email-signup/', views.EmailSignupCreateView.as_view(), name='email_signup'),

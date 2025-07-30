@@ -27,27 +27,31 @@ class NewsletterListSerializer(serializers.ModelSerializer):
 
 
 class PodcastEpisodeSerializer(serializers.ModelSerializer):
-    """Serializer for PodcastEpisode model"""
+    """Serializer for PodcastEpisode model - includes script for detail view"""
+    cover_image_url = serializers.ReadOnlyField()
     
     class Meta:
         model = PodcastEpisode
         fields = [
-            'id', 'title', 'slug', 'description', 'episode_number',
-            'duration', 'audio_url', 'youtube_url', 'spotify_url',
-            'apple_url', 'thumbnail', 'published', 'created_at',
-            'updated_at', 'published_at'
+            'id', 'title', 'slug', 'description', 'script', 
+            'publish_date', 'episode_number', 'duration', 
+            'audio_url', 'youtube_url', 'spotify_url',
+            'cover_image', 'cover_image_url', 'published', 
+            'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'published_at']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'cover_image_url']
 
 
 class PodcastEpisodeListSerializer(serializers.ModelSerializer):
-    """Serializer for PodcastEpisode list view (minimal fields)"""
+    """Serializer for PodcastEpisode list view (minimal fields, no script)"""
+    cover_image_url = serializers.ReadOnlyField()
     
     class Meta:
         model = PodcastEpisode
         fields = [
-            'id', 'title', 'slug', 'episode_number', 'duration',
-            'youtube_url', 'thumbnail', 'published_at'
+            'id', 'title', 'slug', 'description', 'publish_date',
+            'episode_number', 'duration', 'audio_url', 'youtube_url', 
+            'spotify_url', 'cover_image_url'
         ]
 
 
