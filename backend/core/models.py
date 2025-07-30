@@ -2,6 +2,11 @@ from django.db import models
 from django.utils import timezone
 
 
+def get_current_date():
+    """Return current date for default values"""
+    return timezone.now().date()
+
+
 class Newsletter(models.Model):
     """Model for newsletter articles"""
     title = models.CharField(max_length=200)
@@ -34,7 +39,7 @@ class PodcastEpisode(models.Model):
     slug = models.SlugField(unique=True, max_length=200)
     description = models.TextField()
     script = models.TextField(blank=True, help_text="Full episode script or transcript")
-    publish_date = models.DateField(default=lambda: timezone.now().date())
+    publish_date = models.DateField(default=get_current_date)
     audio_url = models.URLField(help_text="URL to audio file")
     youtube_url = models.URLField(blank=True, null=True, help_text="YouTube video URL")
     spotify_url = models.URLField(blank=True, null=True, help_text="Spotify episode URL")
