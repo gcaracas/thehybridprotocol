@@ -129,7 +129,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Additional static files directories
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -172,3 +178,13 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Railway-specific settings
+if 'RAILWAY_ENVIRONMENT' in os.environ:
+    # Use Railway's provided DATABASE_URL if available
+    import dj_database_url
+    DATABASES['default'] = dj_database_url.config(
+        default=config('DATABASE_URL', default=''),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )

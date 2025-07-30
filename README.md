@@ -153,10 +153,27 @@ The Django backend provides the following REST API endpoints:
 This project is configured for Railway deployment with automatic environment detection:
 
 1. **Connect Repository** to Railway
-2. **Set Environment Variables** in Railway dashboard
-3. **Deploy** both services:
-   - Backend service: Django API
-   - Frontend service: Next.js app
+2. **Create Two Services:**
+   - **Backend Service**: Point to `/backend` directory
+   - **Frontend Service**: Point to `/frontend` directory
+
+3. **Set Environment Variables** for Backend Service:
+   ```env
+   SECRET_KEY=your-secret-key-here
+   DEBUG=False
+   ALLOWED_HOSTS=your-railway-domain.railway.app
+   DATABASE_URL=postgresql://... (provided by Railway PostgreSQL)
+   CORS_ALLOWED_ORIGINS=https://your-frontend-domain.railway.app
+   ```
+
+4. **Set Environment Variables** for Frontend Service:
+   ```env
+   NEXT_PUBLIC_API_URL=https://your-backend-domain.railway.app
+   ```
+
+5. **Add PostgreSQL Database** to your Railway project
+
+**Note**: The backend is configured to automatically handle static files and database migrations on deployment.
 
 ### Environment Variables
 
