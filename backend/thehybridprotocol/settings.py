@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-_0ua6o+01gz@3@$0jj-5r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,*.up.railway.app', cast=lambda v: [s.strip() for s in v.split(',')])
 
 
 # Application definition
@@ -158,7 +158,7 @@ REST_FRAMEWORK = {
 # CORS settings
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS', 
-    default='http://localhost:3000,http://127.0.0.1:3000',
+    default='http://localhost:3000,http://127.0.0.1:3000,https://impartial-delight-production.up.railway.app',
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
 
@@ -166,11 +166,17 @@ CORS_ALLOWED_ORIGINS = config(
 if not DEBUG:
     CSRF_TRUSTED_ORIGINS = config(
         'CSRF_TRUSTED_ORIGINS',
-        default='',
+        default='https://impartial-delight-production.up.railway.app',
         cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
     )
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Additional CORS settings for better compatibility
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only allow all origins in development
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.up\.railway\.app$",  # Allow all Railway subdomains
+] if not DEBUG else []
 
 # For development, allow all origins (remove in production)
 if DEBUG:
