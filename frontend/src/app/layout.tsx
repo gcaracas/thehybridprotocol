@@ -1,21 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
+import NavigationNew from "@/components/NavigationNew";
+import FooterNew from "@/components/FooterNew";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "The Hybrid Protocol - Health, Wellness & Performance",
-  description: "Discover the latest insights on health, wellness, and performance through our podcast and newsletter.",
+  title: "The Hybrid Protocol - Metabolic Awakening for Adults Over 40",
+  description: "Reverse aging, rebuild your body, and reclaim your life with science-backed fasting, nutrition, and metabolic training protocols.",
+  keywords: "metabolic health, fasting, weight loss, adults over 40, nutrition, wellness, transformation",
+  authors: [{ name: "Gerardo", url: "https://thehybridprotocol.com" }],
+  openGraph: {
+    title: "The Hybrid Protocol - Metabolic Awakening for Adults Over 40",
+    description: "Reverse aging, rebuild your body, and reclaim your life with science-backed protocols.",
+    url: "https://thehybridprotocol.com",
+    siteName: "The Hybrid Protocol",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Hybrid Protocol",
+    description: "Metabolic awakening for adults over 40",
+  },
 };
 
 export default function RootLayout({
@@ -24,14 +34,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navigation />
-        <main className="pt-16">
+    <html lang="en" className="scroll-smooth">
+      <body className={`${inter.variable} font-sans antialiased`}>
+        <NavigationNew />
+        <main>
           {children}
         </main>
+        <FooterNew />
       </body>
     </html>
   );

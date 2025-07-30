@@ -14,6 +14,16 @@ const nextConfig: NextConfig = {
         hostname: '*.railway.app',
         pathname: '/media/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.jsdelivr.net',
+        pathname: '/**',
+      },
     ],
   },
 };
