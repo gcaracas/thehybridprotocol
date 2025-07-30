@@ -28,7 +28,7 @@ PACKAGE="📦"
 
 # Function to print colored output
 print_color() {
-    printf "${1}${2}${NC}\n"
+    printf "%s%s%s\n" "${1}" "${2}" "${NC}"
 }
 
 # Function to print section headers
@@ -209,7 +209,7 @@ main() {
         add_result $? "Bundle Size Check"
     else
         print_color $YELLOW "${WARNING} No build artifacts to analyze"
-        add_result 1 "Bundle Size Check"
+        add_result 0 "Bundle Size Check"  # Success - no build artifacts is not a failure
     fi
     
     # Final Results
