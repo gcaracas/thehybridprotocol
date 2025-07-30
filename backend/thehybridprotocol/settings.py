@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -132,10 +133,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Additional static files directories
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# Additional static files directories (only if the directory exists)
+STATICFILES_DIRS = []
+static_dir = os.path.join(BASE_DIR, 'static')
+if os.path.exists(static_dir):
+    STATICFILES_DIRS.append(static_dir)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -180,7 +182,7 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Railway-specific settings
-if 'RAILWAY_ENVIRONMENT' in os.environ:
+if 'RAILWAY_ENVIRONMENT' in os.environ or 'DATABASE_URL' in os.environ:
     # Use Railway's provided DATABASE_URL if available
     import dj_database_url
     DATABASES['default'] = dj_database_url.config(
