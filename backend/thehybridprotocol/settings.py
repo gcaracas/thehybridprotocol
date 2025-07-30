@@ -155,6 +155,21 @@ WHITENOISE_AUTOREFRESH = DEBUG
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Debug media directory
+import os
+print(f"🔍 DEBUG: MEDIA_ROOT = {MEDIA_ROOT}")
+print(f"🔍 DEBUG: Media directory exists: {os.path.exists(MEDIA_ROOT)}")
+if os.path.exists(MEDIA_ROOT):
+    print(f"🔍 DEBUG: Media directory writable: {os.access(MEDIA_ROOT, os.W_OK)}")
+    print(f"🔍 DEBUG: Media directory contents: {os.listdir(MEDIA_ROOT)}")
+else:
+    print("🔍 DEBUG: Creating media directory...")
+    try:
+        os.makedirs(MEDIA_ROOT, exist_ok=True)
+        print(f"🔍 DEBUG: Media directory created successfully")
+    except Exception as e:
+        print(f"🔍 DEBUG: Failed to create media directory: {e}")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

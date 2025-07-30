@@ -2,6 +2,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
+from django.conf import settings
+import os
 from .models import Newsletter, PodcastEpisode, EmailSignup
 from .serializers import (
     NewsletterSerializer, NewsletterListSerializer,
@@ -81,5 +83,44 @@ def api_info(request):
             'podcast_detail': '/api/podcast-episodes/{slug}/',
             'email_signup': '/api/email-signup/',
             'health': '/api/health/',
+            'media_debug': '/api/media-debug/',
         }
     })
+
+
+@api_view(['GET'])
+def media_debug(request):
+    """Debug endpoint to check media directory status"""
+    
+    media_root = settings.MEDIA_ROOT
+    media_url = settings.MEDIA_URL
+    
+    debug_info = {
+        'media_root': media_root,
+        'media_url': media_url,
+        'media_exists': os.path.exists(media_root),
+        'media_writable': os.access(media_root, os.W_OK) if os.path.exists(media_root) else False,
+        'media_contents': [],
+        'permissions': None,
+        'error': None
+    }
+    
+    try:
+        if os.path.exists(media_root):
+            debug_info['media_contents'] = os.listdir(media_root)
+            stat_info = os.stat(media_root)
+            debug_info['permissions'] = oct(stat_info.st_mode)[-3:]
+            
+            # Check podcast_covers subdirectory
+            podcast_covers_dir = os.path.join(media_root, 'podcast_covers')
+            if os.path.exists(podcast_covers_dir):
+                debug_info['podcast_covers_contents'] = os.listdir(podcast_covers_dir)
+            else:
+                debug_info['podcast_covers_contents'] = 'Directory does not exist'
+        else:
+            debug_info['error'] = 'Media directory does not exist'
+            
+    except Exception as e:
+        debug_info['error'] = str(e)
+    
+    return JsonResponse(debug_info)

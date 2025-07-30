@@ -6,6 +6,7 @@ app_name = 'core'
 urlpatterns = [
     # Health check and API info
     path('health/', views.health_check, name='health_check'),
+    path('media-debug/', views.media_debug, name='media_debug'),
     path('', views.api_info, name='api_info'),
     
     # Newsletter endpoints
