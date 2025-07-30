@@ -17,16 +17,16 @@ class NewsletterSerializerTest(TestCase):
             slug="test-newsletter",
             content="This is test content",
             excerpt="Test excerpt",
-            featured_image="https://example.com/image.jpg",
             published=True
         )
+        # Note: featured_image not set since it's now an ImageField requiring file upload
     
     def test_newsletter_serializer_fields(self):
         """Test NewsletterSerializer includes all required fields"""
         serializer = NewsletterSerializer(self.newsletter)
         expected_fields = {
             'id', 'title', 'slug', 'content', 'excerpt', 
-            'featured_image', 'published', 'created_at', 
+            'featured_image', 'featured_image_url', 'published', 'created_at', 
             'updated_at', 'published_at'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
@@ -36,7 +36,7 @@ class NewsletterSerializerTest(TestCase):
         serializer = NewsletterListSerializer(self.newsletter)
         expected_fields = {
             'id', 'title', 'slug', 'excerpt', 
-            'featured_image', 'published_at'
+            'featured_image_url', 'published_at'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
     
