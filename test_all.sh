@@ -66,10 +66,11 @@ run_test() {
     fi
 }
 
-# Detect Python command
+# Detect Python command for backend
 detect_python() {
+    # When running from root directory, check for venv in backend
     if [[ -f "backend/venv/bin/python" ]]; then
-        echo "backend/venv/bin/python"
+        echo "venv/bin/python"  # Will be relative to backend directory
     elif command -v python3 &> /dev/null; then
         echo "python3"
     elif command -v python &> /dev/null; then
