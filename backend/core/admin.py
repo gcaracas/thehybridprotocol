@@ -5,22 +5,31 @@ from .models import Newsletter, PodcastEpisode, EmailSignup
 
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ['title', 'published', 'published_at', 'created_at']
+    list_display = ['title', 'slug', 'published', 'published_at', 'created_at']
     list_filter = ['published', 'created_at', 'published_at']
-    search_fields = ['title', 'content']
+    search_fields = ['title', 'content', 'slug']
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ['published']
     date_hierarchy = 'published_at'
+    actions = ['delete_selected']
+    list_per_page = 25
+    
+    def get_actions(self, request):
+        """Enable delete action for maximum control"""
+        actions = super().get_actions(request)
+        return actions
 
 
 @admin.register(PodcastEpisode)
 class PodcastEpisodeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'publish_date', 'slug', 'episode_number', 'published', 'cover_image_preview']
+    list_display = ['title', 'slug', 'publish_date', 'episode_number', 'published', 'cover_image_preview']
     list_filter = ['published', 'publish_date']
-    search_fields = ['title', 'description']
+    search_fields = ['title', 'description', 'slug', 'episode_number']
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ['published']
     date_hierarchy = 'publish_date'
+    actions = ['delete_selected']
+    list_per_page = 25
     
     fieldsets = (
         ('Basic Information', {
@@ -52,9 +61,23 @@ class PodcastEpisodeAdmin(admin.ModelAdmin):
 
 @admin.register(EmailSignup)
 class EmailSignupAdmin(admin.ModelAdmin):
-    list_display = ['email', 'full_name', 'source', 'is_active', 'created_at']
-    list_filter = ['is_active', 'source', 'created_at']
-    search_fields = ['email', 'first_name', 'last_name']
+    list_display = ['email', 'full_name', 'source', 'is_active', 'created_at', 'confirmed_at']
+    list_filter = ['is_active', 'source', 'created_at', 'confirmed_at']
+    search_fields = ['email', 'first_name', 'last_name', 'source']
     list_editable = ['is_active']
     readonly_fields = ['created_at', 'confirmed_at']
     date_hierarchy = 'created_at'
+    actions = ['delete_selected', 'mark_inactive', 'mark_active']
+    list_per_page = 50
+    
+    def mark_inactive(self, request, queryset):
+        """Bulk action to mark selected signups as inactive"""
+        updated = queryset.update(is_active=False)
+        self.message_user(request, f"Marked {updated} email signups as inactive.")
+    mark_inactive.short_description = "Mark selected signups as inactive"
+    
+    def mark_active(self, request, queryset):
+        """Bulk action to mark selected signups as active"""
+        updated = queryset.update(is_active=True)
+        self.message_user(request, f"Marked {updated} email signups as active.")
+    mark_active.short_description = "Mark selected signups as active"
