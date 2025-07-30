@@ -79,7 +79,7 @@ if [[ -f "backend/manage.py" ]]; then
         exit 1
     fi
     
-    if ! $PYTHON_CMD manage.py check --quiet; then
+    if ! $PYTHON_CMD manage.py check > /dev/null 2>&1; then
         echo "❌ Django system check failed. Please fix errors before committing."
         exit 1
     fi
@@ -89,7 +89,7 @@ fi
 
 # Check for merge conflict markers
 echo "🔍 Checking for merge conflict markers..."
-if grep -r "<<<<<<< HEAD\|=======" --include="*.py" --include="*.js" --include="*.tsx" --include="*.ts" . 2>/dev/null; then
+if grep -r "<<<<<<< HEAD\|^=======\$\|>>>>>>> " --include="*.py" --include="*.js" --include="*.tsx" --include="*.ts" --exclude-dir="node_modules" --exclude-dir="venv" --exclude-dir=".next" . 2>/dev/null; then
     echo "❌ Merge conflict markers found. Please resolve conflicts before committing."
     exit 1
 fi
