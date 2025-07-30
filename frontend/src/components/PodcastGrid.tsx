@@ -35,6 +35,8 @@ export default function PodcastGrid({
   const [error, setError] = useState('');
 
   const fetchEpisodes = useCallback(async () => {
+    setLoading(true);
+    setError('');
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/podcast-episodes/`);
       if (response.ok) {

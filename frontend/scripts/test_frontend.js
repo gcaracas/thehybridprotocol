@@ -139,11 +139,12 @@ async function runUnitTests() {
   
   try {
     await runCommand('npm', ['run', 'test:ci']);
+    log('✅ All unit tests passed', 'green');
     return true;
   } catch (error) {
-    log('❌ Unit tests failed', 'red');
-    log('⚠️  Continuing with other checks (frontend tests are work in progress)...', 'yellow');
-    return true; // Return true to not block other tests
+    log('❌ Unit tests failed - blocking deployment!', 'red');
+    log('📋 Please fix failing tests before pushing', 'yellow');
+    return false; // Block deployment on test failures
   }
 }
 

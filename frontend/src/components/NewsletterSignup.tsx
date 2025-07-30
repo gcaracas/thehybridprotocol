@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface NewsletterSignupProps {
   variant?: 'inline' | 'section';
@@ -19,6 +19,11 @@ export default function NewsletterSignup({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    emailInputRef.current?.focus();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,9 +37,9 @@ export default function NewsletterSignup({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email,
-          first_name: firstName,
-          last_name: lastName,
+          email: email.trim(),
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
           source: 'website'
         }),
       });
@@ -79,6 +84,7 @@ export default function NewsletterSignup({
                   placeholder="First Name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  disabled={isSubmitting}
                   className="px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
                 <input
@@ -86,14 +92,17 @@ export default function NewsletterSignup({
                   placeholder="Last Name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  disabled={isSubmitting}
                   className="px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
               <input
+                ref={emailInputRef}
                 type="email"
                 placeholder="Your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
@@ -133,6 +142,7 @@ export default function NewsletterSignup({
             placeholder="First Name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            disabled={isSubmitting}
             className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <input
@@ -140,14 +150,17 @@ export default function NewsletterSignup({
             placeholder="Last Name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            disabled={isSubmitting}
             className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         <input
+          ref={emailInputRef}
           type="email"
           placeholder="Your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={isSubmitting}
           required
           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />

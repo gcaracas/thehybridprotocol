@@ -199,7 +199,7 @@ describe('NewsletterSignup Component', () => {
       new Promise(resolve => 
         setTimeout(() => resolve({
           ok: true,
-          json: async () => ({ message: 'Success!' }),
+          json: async () => ({ message: 'Successfully subscribed to newsletter!' }),
         }), 100)
       )
     )
@@ -218,7 +218,7 @@ describe('NewsletterSignup Component', () => {
     
     // Wait for completion
     await waitFor(() => {
-      expect(screen.getByText('Success!')).toBeInTheDocument()
+      expect(screen.getByText('Successfully subscribed to newsletter!')).toBeInTheDocument()
     })
   })
 
@@ -263,7 +263,7 @@ describe('NewsletterSignup Component', () => {
     await user.click(submitButton)
     
     await waitFor(() => {
-      expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument()
+      expect(screen.getByText(/Network error/i)).toBeInTheDocument()
     })
   })
 
@@ -296,7 +296,7 @@ describe('NewsletterSignup Component', () => {
       })
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ message: 'Success on retry!' }),
+        json: async () => ({ message: 'Successfully subscribed to newsletter!' }),
       })
     
     render(<NewsletterSignup />)
@@ -309,14 +309,14 @@ describe('NewsletterSignup Component', () => {
     
     // Wait for error
     await waitFor(() => {
-      expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument()
+      expect(screen.getByText(/Network error/i)).toBeInTheDocument()
     })
     
     // Try again
     await user.click(submitButton)
     
     await waitFor(() => {
-      expect(screen.getByText('Success on retry!')).toBeInTheDocument()
+      expect(screen.getByText('Successfully subscribed to newsletter!')).toBeInTheDocument()
     })
   })
 
@@ -325,7 +325,7 @@ describe('NewsletterSignup Component', () => {
     
     global.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ message: 'Success!' }),
+      json: async () => ({ message: 'Successfully subscribed to newsletter!' }),
     })
     
     render(<NewsletterSignup />)
@@ -345,7 +345,7 @@ describe('NewsletterSignup Component', () => {
     
     global.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ message: 'Success!' }),
+      json: async () => ({ message: 'Successfully subscribed to newsletter!' }),
     })
     
     render(<NewsletterSignup />)
@@ -388,7 +388,7 @@ describe('NewsletterSignup Component', () => {
       new Promise(resolve => 
         setTimeout(() => resolve({
           ok: true,
-          json: async () => ({ message: 'Success!' }),
+          json: async () => ({ message: 'Successfully subscribed to newsletter!' }),
         }), 50)
       )
     )
@@ -412,7 +412,7 @@ describe('NewsletterSignup Component', () => {
     
     // Wait for completion
     await waitFor(() => {
-      expect(screen.getByText('Success!')).toBeInTheDocument()
+      expect(screen.getByText('Successfully subscribed to newsletter!')).toBeInTheDocument()
     })
   })
 }) 
