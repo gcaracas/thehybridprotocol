@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography, Card, CardBody } from "@material-tailwind/react";
+import { Card, CardBody, Typography } from "./ui/Typography";
 import { 
   FireIcon, 
   SparklesIcon,

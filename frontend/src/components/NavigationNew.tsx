@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { 
-  Navbar as MTNavbar,
-  Collapse,
-  IconButton,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
+import { Button, Typography, IconButton, Navbar, Collapse } from "./ui/Typography";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { SparklesIcon } from "@heroicons/react/24/solid";
 
@@ -71,7 +65,7 @@ export function NavigationNew() {
   };
 
   return (
-    <MTNavbar
+    <Navbar
       fullWidth
       shadow={isScrolling}
       blurred={isScrolling}
@@ -192,7 +186,7 @@ export function NavigationNew() {
           </div>
         </div>
       </Collapse>
-    </MTNavbar>
+    </Navbar>
   );
 }
 

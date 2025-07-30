@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Button, Typography } from "@material-tailwind/react";
+import { Button, Typography } from "./ui/Typography";
 import { PlayIcon } from "@heroicons/react/24/solid";
 
 export function HeroSection() {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Typography, Input, Button } from "@material-tailwind/react";
+import { Input, Button, Typography } from "./ui/Typography";
 import { 
   EnvelopeIcon, 
   CheckCircleIcon,

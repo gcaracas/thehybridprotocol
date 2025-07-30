@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Typography, Button } from "@material-tailwind/react";
+import { Button, Typography } from "./ui/Typography";
 import { 
   PlayIcon, 
   ChartBarIcon,

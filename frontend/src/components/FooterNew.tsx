@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Typography } from "@material-tailwind/react";
+import { Typography } from "./ui/Typography";
 import { SparklesIcon } from "@heroicons/react/24/solid";
 
 const LINKS = [
