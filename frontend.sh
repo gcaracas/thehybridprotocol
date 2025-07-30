@@ -1,0 +1,5 @@
+cd frontend
+export PATH="/opt/homebrew/bin:$PATH"
+npm run dev
+
+
