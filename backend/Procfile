@@ -1,2 +1,3 @@
-release: python manage.py migrate --noinput
+# Release phase removed - database operations moved to startCommand
+# This prevents database connection attempts before PostgreSQL service is ready
 web: gunicorn thehybridprotocol.wsgi:application --bind 0.0.0.0:$PORT 
