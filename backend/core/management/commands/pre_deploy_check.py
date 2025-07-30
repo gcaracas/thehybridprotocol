@@ -65,10 +65,19 @@ class Command(BaseCommand):
         # Check 4: Backup validation (if required)
         if options['backup_required']:
             if not self._validate_recent_backup():
-                self.stdout.write(
-                    self.style.ERROR('❌ No recent backup found!')
-                )
-                sys.exit(1)
+                # Allow deployment if no data exists (initial deployment)
+                if not data_exists:
+                    self.stdout.write(
+                        self.style.WARNING(
+                            '⚠️ No backup found, but no data exists either. '
+                            'Initial deployment allowed.'
+                        )
+                    )
+                else:
+                    self.stdout.write(
+                        self.style.ERROR('❌ No recent backup found!')
+                    )
+                    sys.exit(1)
         
         self.stdout.write(
             self.style.SUCCESS(
