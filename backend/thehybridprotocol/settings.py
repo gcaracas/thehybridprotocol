@@ -162,6 +162,14 @@ CORS_ALLOWED_ORIGINS = config(
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
 
+# Additional CORS settings for production
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = config(
+        'CSRF_TRUSTED_ORIGINS',
+        default='',
+        cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
+    )
+
 CORS_ALLOW_CREDENTIALS = True
 
 # For development, allow all origins (remove in production)
