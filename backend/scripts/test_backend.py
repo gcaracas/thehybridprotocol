@@ -87,11 +87,11 @@ def main():
     print("\n🧪 Running Unit Tests with Coverage")
     
     # Clear previous coverage data
-    subprocess.run(['coverage', 'erase'], cwd=backend_dir)
+    subprocess.run([sys.executable, '-m', 'coverage', 'erase'], cwd=backend_dir)
     
     # Run tests with coverage
     test_result = run_command(
-        ['coverage', 'run', '--source=.', 'manage.py', 'test', '--settings=test_settings', '--verbosity=2'],
+        [sys.executable, '-m', 'coverage', 'run', '--source=.', 'manage.py', 'test', '--settings=test_settings', '--verbosity=2'],
         "Unit Tests with Coverage"
     )
     results.append(test_result)
@@ -99,10 +99,10 @@ def main():
     if test_result:
         # Generate coverage report
         print("\n📊 Coverage Report")
-        subprocess.run(['coverage', 'report', '--show-missing'], cwd=backend_dir)
+        subprocess.run([sys.executable, '-m', 'coverage', 'report', '--show-missing'], cwd=backend_dir)
         
         # Generate HTML coverage report
-        subprocess.run(['coverage', 'html'], cwd=backend_dir)
+        subprocess.run([sys.executable, '-m', 'coverage', 'html'], cwd=backend_dir)
         print("📄 HTML coverage report generated in htmlcov/")
     
     # 6. Test management commands
