@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-07-30T06:44:02.288Z",
+  "timestamp": "2025-07-30T06:51:19.560Z",
   "testRun": "Frontend Quality Suite",
   "reports": {
-    "coverage": false,
+    "coverage": true,
     "build": true
   }
 }
