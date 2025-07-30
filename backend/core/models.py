@@ -13,7 +13,7 @@ class Newsletter(models.Model):
     slug = models.SlugField(unique=True, max_length=200)
     content = models.TextField()
     excerpt = models.TextField(max_length=500, help_text="Brief description for previews")
-    featured_image = models.URLField(blank=True, null=True, help_text="URL to featured image")
+    featured_image = models.ImageField(upload_to='newsletter_images/', blank=True, null=True, help_text="Featured image for newsletter")
     published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -31,6 +31,16 @@ class Newsletter(models.Model):
         elif not self.published:
             self.published_at = None
         super().save(*args, **kwargs)
+    
+    @property
+    def featured_image_url(self):
+        """Return the featured image URL if available"""
+        if self.featured_image and hasattr(self.featured_image, 'url'):
+            try:
+                return self.featured_image.url
+            except (ValueError, AttributeError):
+                return None
+        return None
 
 
 class PodcastEpisode(models.Model):

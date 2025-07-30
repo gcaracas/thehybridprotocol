@@ -5,7 +5,7 @@ from .models import Newsletter, PodcastEpisode, EmailSignup
 
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'published', 'published_at', 'created_at']
+    list_display = ['title', 'slug', 'published', 'published_at', 'featured_image_preview', 'created_at']
     list_filter = ['published', 'created_at', 'published_at']
     search_fields = ['title', 'content', 'slug']
     prepopulated_fields = {'slug': ('title',)}
@@ -13,6 +13,29 @@ class NewsletterAdmin(admin.ModelAdmin):
     date_hierarchy = 'published_at'
     actions = ['delete_selected']
     list_per_page = 25
+    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slug', 'excerpt', 'published')
+        }),
+        ('Content', {
+            'fields': ('content',),
+            'classes': ('wide',)
+        }),
+        ('Media', {
+            'fields': ('featured_image',)
+        }),
+    )
+    
+    def featured_image_preview(self, obj):
+        """Display a thumbnail preview of the featured image in the admin list view"""
+        if obj.featured_image:
+            return format_html(
+                '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">',
+                obj.featured_image.url
+            )
+        return "No image"
+    featured_image_preview.short_description = "Featured Image"
     
     def get_actions(self, request):
         """Enable delete action for maximum control"""

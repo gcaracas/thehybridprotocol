@@ -5,26 +5,50 @@ from .models import Newsletter, PodcastEpisode, EmailSignup
 
 class NewsletterSerializer(serializers.ModelSerializer):
     """Serializer for Newsletter model"""
+    featured_image_url = serializers.SerializerMethodField()
     
     class Meta:
         model = Newsletter
         fields = [
             'id', 'title', 'slug', 'content', 'excerpt', 
-            'featured_image', 'published', 'created_at', 
+            'featured_image', 'featured_image_url', 'published', 'created_at', 
             'updated_at', 'published_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'published_at']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'published_at', 'featured_image_url']
+    
+    def get_featured_image_url(self, obj):
+        """Return full absolute URL for featured image"""
+        if obj.featured_image and hasattr(obj.featured_image, 'url'):
+            try:
+                # Use BASE_URL from settings for reliable absolute URLs
+                base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
+                return f"{base_url}{obj.featured_image.url}"
+            except (ValueError, AttributeError):
+                return None
+        return None
 
 
 class NewsletterListSerializer(serializers.ModelSerializer):
     """Serializer for Newsletter list view (minimal fields)"""
+    featured_image_url = serializers.SerializerMethodField()
     
     class Meta:
         model = Newsletter
         fields = [
             'id', 'title', 'slug', 'excerpt', 
-            'featured_image', 'published_at'
+            'featured_image_url', 'published_at'
         ]
+    
+    def get_featured_image_url(self, obj):
+        """Return full absolute URL for featured image"""
+        if obj.featured_image and hasattr(obj.featured_image, 'url'):
+            try:
+                # Use BASE_URL from settings for reliable absolute URLs
+                base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
+                return f"{base_url}{obj.featured_image.url}"
+            except (ValueError, AttributeError):
+                return None
+        return None
 
 
 class PodcastEpisodeSerializer(serializers.ModelSerializer):

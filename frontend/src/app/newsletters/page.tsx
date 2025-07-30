@@ -9,7 +9,7 @@ interface Newsletter {
   title: string
   slug: string
   excerpt: string
-  featured_image?: string
+  featured_image_url?: string
   published_at: string
 }
 
@@ -132,10 +132,10 @@ export default function NewslettersPage() {
             {newsletters.map((newsletter) => (
               <article key={newsletter.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                 {/* Featured Image */}
-                {newsletter.featured_image && (
+                {newsletter.featured_image_url && (
                   <div className="relative h-48 w-full">
                     <Image
-                      src={newsletter.featured_image}
+                      src={newsletter.featured_image_url}
                       alt={newsletter.title}
                       fill
                       className="object-cover"

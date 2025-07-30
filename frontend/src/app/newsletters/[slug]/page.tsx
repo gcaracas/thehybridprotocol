@@ -9,7 +9,7 @@ interface Newsletter {
   slug: string
   content: string
   excerpt: string
-  featured_image?: string
+  featured_image_url?: string
   published_at: string
   created_at: string
   updated_at: string
@@ -64,15 +64,15 @@ export async function generateMetadata({ params }: NewsletterPageProps): Promise
       }
     }
     
-    return {
-      title: `${newsletter.title} - The Hybrid Protocol Newsletter`,
-      description: newsletter.excerpt,
-      openGraph: {
-        title: newsletter.title,
+          return {
+        title: `${newsletter.title} - The Hybrid Protocol Newsletter`,
         description: newsletter.excerpt,
-        images: newsletter.featured_image ? [newsletter.featured_image] : undefined,
-      },
-    }
+        openGraph: {
+          title: newsletter.title,
+          description: newsletter.excerpt,
+          images: newsletter.featured_image_url ? [newsletter.featured_image_url] : undefined,
+        },
+      }
   } catch (error) {
     console.error('Error generating metadata:', error)
     return {
@@ -147,10 +147,10 @@ export default async function NewsletterPage({ params }: NewsletterPageProps) {
           </header>
 
           {/* Featured Image */}
-          {newsletter.featured_image && (
+          {newsletter.featured_image_url && (
             <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
               <Image
-                src={newsletter.featured_image}
+                src={newsletter.featured_image_url}
                 alt={newsletter.title}
                 fill
                 className="object-cover"
