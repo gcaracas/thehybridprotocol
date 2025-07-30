@@ -153,7 +153,13 @@ WHITENOISE_AUTOREFRESH = DEBUG
 
 # Media files (uploads)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Use Railway volume in production, local directory in development
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    # Railway volume mount path
+    MEDIA_ROOT = '/app/media'
 
 # Debug media directory
 import os
