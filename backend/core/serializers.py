@@ -28,7 +28,7 @@ class NewsletterListSerializer(serializers.ModelSerializer):
 
 class PodcastEpisodeSerializer(serializers.ModelSerializer):
     """Serializer for PodcastEpisode model - includes script for detail view"""
-    cover_image_url = serializers.ReadOnlyField()
+    cover_image_url = serializers.SerializerMethodField()
     
     class Meta:
         model = PodcastEpisode
@@ -40,11 +40,23 @@ class PodcastEpisodeSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at', 'cover_image_url']
+    
+    def get_cover_image_url(self, obj):
+        """Return full absolute URL for cover image"""
+        if obj.cover_image and hasattr(obj.cover_image, 'url'):
+            try:
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(obj.cover_image.url)
+                return obj.cover_image.url
+            except (ValueError, AttributeError):
+                return None
+        return None
 
 
 class PodcastEpisodeListSerializer(serializers.ModelSerializer):
     """Serializer for PodcastEpisode list view (minimal fields, with script snippet)"""
-    cover_image_url = serializers.ReadOnlyField()
+    cover_image_url = serializers.SerializerMethodField()
     script_snippet = serializers.SerializerMethodField()
     
     class Meta:
@@ -54,6 +66,18 @@ class PodcastEpisodeListSerializer(serializers.ModelSerializer):
             'episode_number', 'duration', 'audio_url', 'youtube_url', 
             'spotify_url', 'cover_image_url', 'script_snippet'
         ]
+    
+    def get_cover_image_url(self, obj):
+        """Return full absolute URL for cover image"""
+        if obj.cover_image and hasattr(obj.cover_image, 'url'):
+            try:
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(obj.cover_image.url)
+                return obj.cover_image.url
+            except (ValueError, AttributeError):
+                return None
+        return None
     
     def get_script_snippet(self, obj):
         """Return first 200 characters of script"""
