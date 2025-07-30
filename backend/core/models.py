@@ -56,8 +56,11 @@ class PodcastEpisode(models.Model):
     @property
     def cover_image_url(self):
         """Return the cover image URL if available"""
-        if self.cover_image:
-            return self.cover_image.url
+        if self.cover_image and hasattr(self.cover_image, 'url'):
+            try:
+                return self.cover_image.url
+            except (ValueError, AttributeError):
+                return None
         return None
 
 

@@ -139,23 +139,29 @@ export default function PodcastGrid({
             <div className="flex flex-col lg:flex-row">
               {/* Episode Image */}
               <div className="lg:w-80 lg:flex-shrink-0">
-                <div className="relative h-64 lg:h-full bg-gray-200">
-                  {episode.cover_image_url ? (
-                    <Image
-                      src={episode.cover_image_url}
-                      alt={episode.title}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-500 to-purple-600">
-                      <div className="text-white text-center">
-                        <div className="text-3xl font-bold">EP {episode.episode_number}</div>
-                        <div className="text-lg opacity-90">The Hybrid Protocol</div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                                 <div className="relative h-64 lg:h-full bg-gray-200">
+                   {episode.cover_image_url && episode.cover_image_url !== 'null' ? (
+                     <Image
+                       src={episode.cover_image_url}
+                       alt={episode.title}
+                       fill
+                       className="object-cover"
+                       onError={(e) => {
+                         (e.target as HTMLImageElement).style.display = 'none';
+                       }}
+                     />
+                   ) : null}
+                   
+                   {/* Fallback always shown if no image */}
+                   {(!episode.cover_image_url || episode.cover_image_url === 'null') && (
+                     <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-500 to-purple-600">
+                       <div className="text-white text-center">
+                         <div className="text-3xl font-bold">EP {episode.episode_number}</div>
+                         <div className="text-lg opacity-90">The Hybrid Protocol</div>
+                       </div>
+                     </div>
+                   )}
+                 </div>
               </div>
 
               {/* Episode Content */}
@@ -181,12 +187,17 @@ export default function PodcastGrid({
                       <p className="text-gray-700 italic text-sm leading-relaxed">
                         {episode.script_snippet}
                       </p>
-                      <Link
-                        href={`/podcast/${episode.slug}`}
-                        className="text-blue-600 hover:text-blue-700 text-sm font-medium mt-2 inline-block"
-                      >
-                        Read Full Script →
-                      </Link>
+                                                                    <Link
+                         href={`/podcast/${episode.slug}`}
+                         className="text-blue-600 hover:text-blue-700 text-sm font-medium mt-2 inline-block"
+                       >
+                         Read Full Script →
+                       </Link>
+                       {process.env.NODE_ENV === 'development' && (
+                         <div className="text-xs text-gray-400 mt-1">
+                           Debug: slug = "{episode.slug}"
+                         </div>
+                       )}
                     </div>
                   </div>
                 )}
