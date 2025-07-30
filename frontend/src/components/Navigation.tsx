@@ -36,7 +36,7 @@ export default function Navigation() {
               Podcast
             </Link>
             <Link
-              href="/newsletter"
+              href="/newsletters"
               className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Newsletter
@@ -101,7 +101,7 @@ export default function Navigation() {
                 Podcast
               </Link>
               <Link
-                href="/newsletter"
+                href="/newsletters"
                 className="text-gray-900 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium transition-colors"
                 onClick={toggleMenu}
               >
