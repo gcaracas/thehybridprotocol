@@ -32,6 +32,8 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.up.railway
 # Base URL for absolute URLs (used in API responses)
 BASE_URL = config('BASE_URL', default='http://localhost:8000' if DEBUG else 'https://impartial-delight-production.up.railway.app')
 
+# PostgreSQL database now configured - data will persist!
+
 
 # Application definition
 
