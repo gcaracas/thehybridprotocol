@@ -43,16 +43,23 @@ class PodcastEpisodeSerializer(serializers.ModelSerializer):
 
 
 class PodcastEpisodeListSerializer(serializers.ModelSerializer):
-    """Serializer for PodcastEpisode list view (minimal fields, no script)"""
+    """Serializer for PodcastEpisode list view (minimal fields, with script snippet)"""
     cover_image_url = serializers.ReadOnlyField()
+    script_snippet = serializers.SerializerMethodField()
     
     class Meta:
         model = PodcastEpisode
         fields = [
             'id', 'title', 'slug', 'description', 'publish_date',
             'episode_number', 'duration', 'audio_url', 'youtube_url', 
-            'spotify_url', 'cover_image_url'
+            'spotify_url', 'cover_image_url', 'script_snippet'
         ]
+    
+    def get_script_snippet(self, obj):
+        """Return first 200 characters of script"""
+        if obj.script:
+            return obj.script[:200] + "..." if len(obj.script) > 200 else obj.script
+        return ""
 
 
 class EmailSignupSerializer(serializers.ModelSerializer):
