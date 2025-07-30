@@ -216,10 +216,6 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
                    alt={episode.title}
                    fill
                    className="object-cover"
-                   onError={(e) => {
-                     // Hide the image on error and show fallback
-                     (e.target as HTMLImageElement).style.display = 'none';
-                   }}
                  />
                ) : null}
                
