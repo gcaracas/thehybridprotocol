@@ -66,6 +66,22 @@ run_test() {
     fi
 }
 
+# Detect Python command
+detect_python() {
+    if [[ -f "backend/venv/bin/python" ]]; then
+        echo "backend/venv/bin/python"
+    elif command -v python3 &> /dev/null; then
+        echo "python3"
+    elif command -v python &> /dev/null; then
+        echo "python"
+    else
+        print_color $RED "❌ Python not found. Please ensure Python is installed."
+        exit 1
+    fi
+}
+
+PYTHON_CMD=$(detect_python)
+
 # Initialize results tracking
 declare -a results
 declare -a test_names
@@ -106,21 +122,21 @@ main() {
     fi
     
     # Backend Django checks
-    run_test "Django System Check" "python manage.py check" "backend"
+    run_test "Django System Check" "$PYTHON_CMD manage.py check" "backend"
     add_result $? "Django System Check"
     
-    run_test "Django Security Check" "python manage.py check --deploy" "backend"
+    run_test "Django Security Check" "$PYTHON_CMD manage.py check --deploy" "backend"
     add_result $? "Django Security Check"
     
-    run_test "Migration Check" "python manage.py makemigrations --check --dry-run" "backend"
+    run_test "Migration Check" "$PYTHON_CMD manage.py makemigrations --check --dry-run" "backend"
     add_result $? "Migration Check"
     
     # Backend unit tests
     if [[ -f "backend/scripts/test_backend.py" ]]; then
-        run_test "Backend Unit Tests" "python scripts/test_backend.py" "backend"
+        run_test "Backend Unit Tests" "$PYTHON_CMD scripts/test_backend.py" "backend"
         add_result $? "Backend Unit Tests"
     else
-        run_test "Backend Unit Tests (Basic)" "python manage.py test --verbosity=2" "backend"
+        run_test "Backend Unit Tests (Basic)" "$PYTHON_CMD manage.py test --verbosity=2" "backend"
         add_result $? "Backend Unit Tests"
     fi
     
@@ -242,7 +258,7 @@ main() {
         echo ""
         print_color $YELLOW "Troubleshooting tips:"
         print_color $WHITE "  1. Check individual test output above"
-        print_color $WHITE "  2. Run tests individually to debug: npm test (frontend) or python manage.py test (backend)"
+        print_color $WHITE "  2. Run tests individually to debug: npm test (frontend) or python/python3 manage.py test (backend)"
         print_color $WHITE "  3. Ensure all dependencies are installed"
         print_color $WHITE "  4. Check for linting errors: npm run lint"
         echo ""
