@@ -44,10 +44,7 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-// Custom matchers
-expect.extend({
-  toBeInTheDocument: expect.toBeInTheDocument,
-})
+// jest-dom matchers are automatically available via the import at the top
 
 // Suppress console errors during tests (optional)
 const originalError = console.error

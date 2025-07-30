@@ -17,10 +17,10 @@ describe('NewsletterSignup Component', () => {
   test('renders newsletter signup form', () => {
     render(<NewsletterSignup />)
     
-    expect(screen.getByText('Subscribe to Our Newsletter')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Enter your email')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('First name')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Last name')).toBeInTheDocument()
+    expect(screen.getByText('Subscribe to Newsletter')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Your email address')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('First Name')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Last Name')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /subscribe/i })).toBeInTheDocument()
   })
 
@@ -28,7 +28,7 @@ describe('NewsletterSignup Component', () => {
     const user = userEvent.setup()
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     await user.type(emailInput, 'test@example.com')
     
     expect(emailInput).toHaveValue('test@example.com')
@@ -38,8 +38,8 @@ describe('NewsletterSignup Component', () => {
     const user = userEvent.setup()
     render(<NewsletterSignup />)
     
-    const firstNameInput = screen.getByPlaceholderText('First name')
-    const lastNameInput = screen.getByPlaceholderText('Last name')
+    const firstNameInput = screen.getByPlaceholderText('First Name')
+    const lastNameInput = screen.getByPlaceholderText('Last Name')
     
     await user.type(firstNameInput, 'John')
     await user.type(lastNameInput, 'Doe')
@@ -64,7 +64,7 @@ describe('NewsletterSignup Component', () => {
     const user = userEvent.setup()
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'invalid-email')
@@ -85,7 +85,7 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'test@example.com')
@@ -120,9 +120,9 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
-    const firstNameInput = screen.getByPlaceholderText('First name')
-    const lastNameInput = screen.getByPlaceholderText('Last name')
+    const emailInput = screen.getByPlaceholderText('Your email address')
+    const firstNameInput = screen.getByPlaceholderText('First Name')
+    const lastNameInput = screen.getByPlaceholderText('Last Name')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'john.doe@example.com')
@@ -156,7 +156,7 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'test@example.com')
@@ -177,8 +177,8 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
-    const firstNameInput = screen.getByPlaceholderText('First name')
+    const emailInput = screen.getByPlaceholderText('Your email address')
+    const firstNameInput = screen.getByPlaceholderText('First Name')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'test@example.com')
@@ -206,7 +206,7 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'test@example.com')
@@ -235,7 +235,7 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'existing@example.com')
@@ -256,7 +256,7 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'test@example.com')
@@ -274,7 +274,7 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'test@example.com')
@@ -301,7 +301,7 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'test@example.com')
@@ -330,7 +330,7 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     
     await user.type(emailInput, 'test@example.com')
     await user.keyboard('{Enter}')
@@ -350,8 +350,8 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
-    const firstNameInput = screen.getByPlaceholderText('First name')
+    const emailInput = screen.getByPlaceholderText('Your email address')
+    const firstNameInput = screen.getByPlaceholderText('First Name')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, '  test@example.com  ')
@@ -376,7 +376,7 @@ describe('NewsletterSignup Component', () => {
   test('focuses email input on load', () => {
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
+    const emailInput = screen.getByPlaceholderText('Your email address')
     expect(emailInput).toHaveFocus()
   })
 
@@ -395,8 +395,8 @@ describe('NewsletterSignup Component', () => {
     
     render(<NewsletterSignup />)
     
-    const emailInput = screen.getByPlaceholderText('Enter your email')
-    const firstNameInput = screen.getByPlaceholderText('First name')
+    const emailInput = screen.getByPlaceholderText('Your email address')
+    const firstNameInput = screen.getByPlaceholderText('First Name')
     const submitButton = screen.getByRole('button', { name: /subscribe/i })
     
     await user.type(emailInput, 'test@example.com')
