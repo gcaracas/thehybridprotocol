@@ -24,8 +24,9 @@ urlpatterns = [
     path('api/', include('core.urls')),
 ]
 
-# Serve media and static files during development only
-# In production, WhiteNoise middleware handles static files
+# Serve static files during development only (WhiteNoise handles production)
+# Media files need to be served in both development AND production
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
