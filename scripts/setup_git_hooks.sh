@@ -53,15 +53,33 @@ if [[ -f "frontend/package.json" ]]; then
         echo "❌ Frontend linting failed. Please fix linting errors before committing."
         exit 1
     fi
+    echo "  Frontend TypeScript check..."
+    if ! npx tsc --noEmit; then
+        echo "❌ TypeScript compilation failed. Please fix type errors before committing."
+        exit 1
+    fi
     cd ..
-    echo "✅ Frontend linting passed"
+    echo "✅ Frontend checks passed"
 fi
 
 # Backend basic checks
 if [[ -f "backend/manage.py" ]]; then
     echo "  Backend checks..."
     cd backend
-    if ! python manage.py check --quiet; then
+    
+    # Try to find Python - check for virtual environment first, then system python
+    if [[ -f "venv/bin/python" ]]; then
+        PYTHON_CMD="venv/bin/python"
+    elif command -v python3 &> /dev/null; then
+        PYTHON_CMD="python3"
+    elif command -v python &> /dev/null; then
+        PYTHON_CMD="python"
+    else
+        echo "❌ Python not found. Please ensure Python is installed."
+        exit 1
+    fi
+    
+    if ! $PYTHON_CMD manage.py check --quiet; then
         echo "❌ Django system check failed. Please fix errors before committing."
         exit 1
     fi

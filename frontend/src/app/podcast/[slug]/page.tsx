@@ -71,8 +71,9 @@ async function getEpisode(slug: string): Promise<PodcastEpisode | null> {
   }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const episode = await getEpisode(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const episode = await getEpisode(slug);
   
   if (!episode) {
     return {
@@ -97,8 +98,9 @@ const formatDate = (dateString: string) => {
   });
 };
 
-export default async function EpisodePage({ params }: { params: { slug: string } }) {
-  const episode = await getEpisode(params.slug);
+export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const episode = await getEpisode(slug);
 
   if (!episode) {
     notFound();

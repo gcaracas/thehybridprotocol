@@ -106,21 +106,21 @@ main() {
     fi
     
     # Backend Django checks
-    run_test "Django System Check" "cd backend && python manage.py check" ""
+    run_test "Django System Check" "python manage.py check" "backend"
     add_result $? "Django System Check"
     
-    run_test "Django Security Check" "cd backend && python manage.py check --deploy" ""
+    run_test "Django Security Check" "python manage.py check --deploy" "backend"
     add_result $? "Django Security Check"
     
-    run_test "Migration Check" "cd backend && python manage.py makemigrations --check --dry-run" ""
+    run_test "Migration Check" "python manage.py makemigrations --check --dry-run" "backend"
     add_result $? "Migration Check"
     
     # Backend unit tests
     if [[ -f "backend/scripts/test_backend.py" ]]; then
-        run_test "Backend Unit Tests" "cd backend && python scripts/test_backend.py" ""
+        run_test "Backend Unit Tests" "python scripts/test_backend.py" "backend"
         add_result $? "Backend Unit Tests"
     else
-        run_test "Backend Unit Tests (Basic)" "cd backend && python manage.py test --verbosity=2" ""
+        run_test "Backend Unit Tests (Basic)" "python manage.py test --verbosity=2" "backend"
         add_result $? "Backend Unit Tests"
     fi
     
@@ -136,32 +136,34 @@ main() {
     fi
     
     # Frontend dependency check
-    run_test "Frontend Dependencies" "cd frontend && npm list --depth=0" ""
+    run_test "Frontend Dependencies" "npm list --depth=0" "frontend"
     add_result $? "Frontend Dependencies"
     
     # Frontend linting
-    run_test "Frontend Linting" "cd frontend && npm run lint" ""
+    run_test "Frontend Linting" "npm run lint" "frontend"
     add_result $? "Frontend Linting"
     
     # Frontend TypeScript check
-    run_test "TypeScript Check" "cd frontend && npx tsc --noEmit" ""
+    run_test "TypeScript Check" "npx tsc --noEmit" "frontend"
     add_result $? "TypeScript Check"
+    
+    # Frontend build compilation check (catches Next.js specific issues)
+    run_test "Next.js Compilation Check" "npm run build" "frontend"
+    add_result $? "Next.js Compilation Check"
     
     # Frontend tests
     if [[ -f "frontend/scripts/test_frontend.js" ]]; then
-        run_test "Frontend Tests" "cd frontend && node scripts/test_frontend.js" ""
+        run_test "Frontend Tests" "node scripts/test_frontend.js" "frontend"
         add_result $? "Frontend Tests"
     elif [[ -f "frontend/package.json" ]] && grep -q '"test"' frontend/package.json; then
-        run_test "Frontend Unit Tests" "cd frontend && npm test -- --watchAll=false --coverage" ""
+        run_test "Frontend Unit Tests" "npm test -- --watchAll=false --coverage" "frontend"
         add_result $? "Frontend Unit Tests"
     else
         print_color $YELLOW "${WARNING} No frontend tests configured"
         add_result 1 "Frontend Tests"
     fi
     
-    # Frontend build test
-    run_test "Frontend Build Test" "cd frontend && npm run build" ""
-    add_result $? "Frontend Build Test"
+    # Frontend build test (already done in compilation check above)
     
     # Integration Tests
     print_header "${SHIELD} INTEGRATION TESTS"
@@ -186,7 +188,7 @@ main() {
     
     # Check frontend bundle size (if build exists)
     if [[ -d "frontend/.next" ]]; then
-        run_test "Bundle Size Check" "cd frontend && du -sh .next/static 2>/dev/null || echo 'Build artifacts found'" ""
+        run_test "Bundle Size Check" "du -sh .next/static 2>/dev/null || echo 'Build artifacts found'" "frontend"
         add_result $? "Bundle Size Check"
     else
         print_color $YELLOW "${WARNING} No build artifacts to analyze"

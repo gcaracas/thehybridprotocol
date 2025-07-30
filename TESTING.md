@@ -219,14 +219,31 @@ cd backend && pip install -r requirements.txt
 cd frontend && npm install
 ```
 
-**2. Database errors in tests**
+**2. Next.js 15 TypeScript errors (async params)**
+```bash
+# Error: Type '{ slug: string; }' is missing properties from 'Promise<any>'
+# Fix: Update dynamic route pages to use Promise<{ param: type }>
+
+# Before (Next.js 14)
+export default async function Page({ params }: { params: { slug: string } }) {
+  const episode = await getEpisode(params.slug);
+}
+
+# After (Next.js 15)
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const episode = await getEpisode(slug);
+}
+```
+
+**3. Database errors in tests**
 ```bash
 cd backend
 python manage.py migrate
 python manage.py test --settings=test_settings
 ```
 
-**3. Frontend build fails**
+**4. Frontend build fails**
 ```bash
 cd frontend
 rm -rf .next node_modules
@@ -234,7 +251,7 @@ npm install
 npm run build
 ```
 
-**4. Git hooks not working**
+**5. Git hooks not working**
 ```bash
 # Reinstall hooks
 ./scripts/setup_git_hooks.sh

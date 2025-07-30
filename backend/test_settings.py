@@ -2,7 +2,7 @@
 Test-specific settings for faster test execution
 """
 
-from .thehybridprotocol.settings import *
+from thehybridprotocol.settings import *
 
 # Use in-memory SQLite for faster tests
 DATABASES = {

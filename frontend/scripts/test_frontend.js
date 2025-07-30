@@ -111,10 +111,25 @@ async function runTypeChecking() {
   log('\n🔧 Running TypeScript Check', 'cyan');
   
   try {
+    // Test files are excluded in tsconfig.json since Jest handles their types
     await runCommand('npx', ['tsc', '--noEmit']);
     return true;
   } catch (error) {
     log('❌ TypeScript check failed', 'red');
+    return false;
+  }
+}
+
+async function runCompilationCheck() {
+  log('\n🏗️ Running Next.js Compilation Check', 'cyan');
+  
+  try {
+    await runCommand('npm', ['run', 'build']);
+    log('✅ Next.js compilation successful', 'green');
+    return true;
+  } catch (error) {
+    log('❌ Next.js compilation failed', 'red');
+    log('💡 This catches Next.js-specific TypeScript issues that tsc might miss', 'yellow');
     return false;
   }
 }
@@ -131,26 +146,7 @@ async function runUnitTests() {
   }
 }
 
-async function runBuildTest() {
-  log('\n🏗️ Testing Production Build', 'cyan');
-  
-  try {
-    await runCommand('npm', ['run', 'build']);
-    log('✅ Build completed successfully', 'green');
-    
-    // Check if build artifacts exist
-    if (fs.existsSync('.next')) {
-      log('✅ Build artifacts created', 'green');
-      return true;
-    } else {
-      log('❌ Build artifacts not found', 'red');
-      return false;
-    }
-  } catch (error) {
-    log('❌ Build failed', 'red');
-    return false;
-  }
-}
+
 
 async function checkBundleSize() {
   log('\n📊 Analyzing Bundle Size', 'cyan');
@@ -254,11 +250,11 @@ async function main() {
     // 3. Linting
     results.push(await runLinting());
     
-    // 4. Unit tests
-    results.push(await runUnitTests());
+    // 4. Next.js compilation check (catches Next.js-specific issues)
+    results.push(await runCompilationCheck());
     
-    // 5. Build test
-    results.push(await runBuildTest());
+    // 5. Unit tests
+    results.push(await runUnitTests());
     
     // 6. Bundle analysis
     results.push(await checkBundleSize());

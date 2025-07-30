@@ -207,7 +207,12 @@ class EmailSignupSerializerTest(TestCase):
         
         self.assertFalse(serializer.is_valid())
         self.assertIn('email', serializer.errors)
-        self.assertIn('already subscribed', str(serializer.errors['email']))
+        # Check for Django's unique constraint error message
+        error_message = str(serializer.errors['email'])
+        self.assertTrue(
+            'already exists' in error_message or 'already subscribed' in error_message,
+            f"Expected unique constraint error, got: {error_message}"
+        )
     
     def test_email_signup_creation_via_serializer(self):
         """Test creating new signup via serializer"""

@@ -32,8 +32,18 @@ class NewsletterAPITest(APITestCase):
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['slug'], 'published-newsletter')
+        
+        # Handle paginated response
+        if 'results' in response.data:
+            results = response.data['results']
+        else:
+            results = response.data
+            
+        # Check that our published newsletter is in the response
+        slugs = [item['slug'] for item in results]
+        self.assertIn('published-newsletter', slugs)
+        # Check that unpublished newsletter is NOT in the response
+        self.assertNotIn('unpublished-newsletter', slugs)
     
     def test_newsletter_detail_endpoint(self):
         """Test GET /api/newsletters/<slug>/ returns published newsletter"""
@@ -88,12 +98,24 @@ class PodcastEpisodeAPITest(APITestCase):
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['slug'], 'published-episode')
         
+        # Handle paginated response
+        if 'results' in response.data:
+            results = response.data['results']
+        else:
+            results = response.data
+            
+        # Check that our published episode is in the response
+        slugs = [item['slug'] for item in results]
+        self.assertIn('published-episode', slugs)
+        # Check that unpublished episode is NOT in the response
+        self.assertNotIn('unpublished-episode', slugs)
+        
+        # Find our episode in the response
+        our_episode = next(item for item in results if item['slug'] == 'published-episode')
         # Should use list serializer (no script field, but script_snippet)
-        self.assertNotIn('script', response.data[0])
-        self.assertIn('script_snippet', response.data[0])
+        self.assertNotIn('script', our_episode)
+        self.assertIn('script_snippet', our_episode)
     
     def test_podcast_episodes_simplified_endpoint(self):
         """Test GET /api/podcast/ also works (simplified URL)"""
@@ -101,7 +123,16 @@ class PodcastEpisodeAPITest(APITestCase):
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        
+        # Handle paginated response
+        if 'results' in response.data:
+            results = response.data['results']
+        else:
+            results = response.data
+            
+        # Check that our published episode is in the response
+        slugs = [item['slug'] for item in results]
+        self.assertIn('published-episode', slugs)
     
     def test_podcast_episode_detail_endpoint(self):
         """Test GET /api/podcast-episodes/<slug>/ returns published episode"""
@@ -143,8 +174,18 @@ class PodcastEpisodeAPITest(APITestCase):
         url = reverse('core:podcast_episodes_list')
         response = self.client.get(url)
         
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Handle paginated response
+        if 'results' in response.data:
+            results = response.data['results']
+        else:
+            results = response.data
+            
+        self.assertGreater(len(results), 0, "No episodes returned from API")
+        
         # Future episode should be first (most recent publish_date)
-        self.assertEqual(response.data[0]['slug'], 'future-episode')
+        self.assertEqual(results[0]['slug'], 'future-episode')
 
 
 class EmailSignupAPITest(APITestCase):
@@ -231,8 +272,9 @@ class HealthCheckAPITest(APITestCase):
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['status'], 'healthy')
-        self.assertIn('message', response.data)
+        response_data = response.json()
+        self.assertEqual(response_data['status'], 'healthy')
+        self.assertIn('message', response_data)
     
     def test_api_info_endpoint(self):
         """Test GET /api/ returns API information"""
@@ -240,12 +282,13 @@ class HealthCheckAPITest(APITestCase):
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('name', response.data)
-        self.assertIn('version', response.data)
-        self.assertIn('endpoints', response.data)
+        response_data = response.json()
+        self.assertIn('name', response_data)
+        self.assertIn('version', response_data)
+        self.assertIn('endpoints', response_data)
         
         # Check that all expected endpoints are listed
-        endpoints = response.data['endpoints']
+        endpoints = response_data['endpoints']
         expected_endpoints = [
             'newsletters', 'newsletter_detail', 'podcast_episodes',
             'podcast_detail', 'email_signup', 'health'

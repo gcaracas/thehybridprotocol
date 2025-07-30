@@ -123,9 +123,9 @@ def main():
     # 7. API endpoint validation
     print("\n🌐 API Endpoint Validation")
     
-    # Start test server and validate endpoints
+    # Check models (validate was removed in newer Django)
     results.append(run_command(
-        [sys.executable, 'manage.py', 'validate'],
+        [sys.executable, 'manage.py', 'check', '--tag', 'models'],
         "Model Validation"
     ))
     
