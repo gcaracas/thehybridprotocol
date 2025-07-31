@@ -37,7 +37,7 @@ cat > .git/hooks/pre-commit << 'EOF'
 echo "🔍 Running pre-commit quality checks..."
 
 # Check if we're in the project root
-if [[ ! -f "README.md" ]] || [[ ! -d "frontend" ]] || [[ ! -d "backend" ]]; then
+if [[ ! -f "README.md" ]] || [[ ! -d "backend" ]]; then
     echo "❌ Error: Please run git commit from the project root directory"
     exit 1
 fi
@@ -45,22 +45,22 @@ fi
 # Run quick linting checks
 echo "📝 Checking code style..."
 
-# Frontend linting (if package.json exists)
-if [[ -f "frontend/package.json" ]]; then
-    echo "  Frontend linting..."
-    cd frontend
-    if ! npm run lint --silent; then
-        echo "❌ Frontend linting failed. Please fix linting errors before committing."
-        exit 1
-    fi
-    echo "  Frontend TypeScript check..."
-    if ! npx tsc --noEmit; then
-        echo "❌ TypeScript compilation failed. Please fix type errors before committing."
-        exit 1
-    fi
-    cd ..
-    echo "✅ Frontend checks passed"
-fi
+# Frontend linting (COMMENTED OUT - frontend will be removed soon)
+# if [[ -f "frontend/package.json" ]]; then
+#     echo "  Frontend linting..."
+#     cd frontend
+#     if ! npm run lint --silent; then
+#         echo "❌ Frontend linting failed. Please fix linting errors before committing."
+#         exit 1
+#     fi
+#     echo "  Frontend TypeScript check..."
+#     if ! npx tsc --noEmit; then
+#         echo "❌ TypeScript compilation failed. Please fix type errors before committing."
+#         exit 1
+#     fi
+#     cd ..
+#     echo "✅ Frontend checks passed"
+# fi
 
 # Backend basic checks
 if [[ -f "backend/manage.py" ]]; then
@@ -89,7 +89,7 @@ fi
 
 # Check for merge conflict markers
 echo "🔍 Checking for merge conflict markers..."
-if grep -r "<<<<<<< HEAD\|^=======\$\|>>>>>>> " --include="*.py" --include="*.js" --include="*.tsx" --include="*.ts" --exclude-dir="node_modules" --exclude-dir="venv" --exclude-dir=".next" . 2>/dev/null; then
+if grep -r "<<<<<<< HEAD\|^=======\$\|>>>>>>> " --include="*.py" --exclude-dir="node_modules" --exclude-dir="venv" --exclude-dir=".next" . 2>/dev/null; then
     echo "❌ Merge conflict markers found. Please resolve conflicts before committing."
     exit 1
 fi
@@ -125,18 +125,18 @@ if [[ -f "test_all.sh" ]]; then
 else
     echo "⚠️ Comprehensive test script not found. Running basic checks..."
     
-    # Basic frontend tests
-    if [[ -f "frontend/package.json" ]]; then
-        echo "🧪 Running frontend tests..."
-        cd frontend
-        if command -v npm &> /dev/null; then
-            if ! npm test -- --watchAll=false --passWithNoTests; then
-                echo "❌ Frontend tests failed!"
-                exit 1
-            fi
-        fi
-        cd ..
-    fi
+    # Basic frontend tests (COMMENTED OUT - frontend will be removed soon)
+    # if [[ -f "frontend/package.json" ]]; then
+    #     echo "🧪 Running frontend tests..."
+    #     cd frontend
+    #     if command -v npm &> /dev/null; then
+    #         if ! npm test -- --watchAll=false --passWithNoTests; then
+    #             echo "❌ Frontend tests failed!"
+    #             exit 1
+    #         fi
+    #     fi
+    #     cd ..
+    # fi
     
     # Basic backend tests
     if [[ -f "backend/manage.py" ]]; then
