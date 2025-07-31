@@ -18,7 +18,7 @@ export default function Hero3() {
                 className="section-caption mb-30 mb-xs-10 wow fadeInUp"
                 data-wow-duration="1.2s"
               >
-                Resonance Creative Studio
+                The Hybrid Protocol
               </h2>
               <h1 className="hs-title-1 mb-30">
                 <span className="wow charsAnimIn" data-splitting="chars">

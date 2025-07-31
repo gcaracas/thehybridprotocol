@@ -6,19 +6,19 @@ import { Swiper, SwiperSlide } from "swiper/react";
 const sections = [
   {
     bgImage: "/assets/images/full-width-images/section-bg-5.jpg",
-    title: "Resonance Creative Studio",
+    title: "The Hybrid Protocol",
     subtitle: "Maximize your online impact with our solutions.",
     status: "Based in London, United Kingdom",
   },
   {
     bgImage: "/assets/images/full-width-images/section-bg-3.jpg",
-    title: "Resonance Creative Studio",
+    title: "The Hybrid Protocol",
     subtitle: "Grow your business with new online experience.",
     status: "Based in London, United Kingdom",
   },
   {
     bgImage: "/assets/images/full-width-images/section-bg-6.jpg",
-    title: "Resonance Creative Studio",
+    title: "The Hybrid Protocol",
     subtitle: "Redefine your strategy for long-term success.",
     status: "Based in London, United Kingdom",
   },

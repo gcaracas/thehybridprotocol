@@ -72,7 +72,7 @@ export default function Hero2() {
           data-wow-delay="0.2s"
         >
           <span className="text-rotate">
-            Resonance Creative Studio, Talented Creative Team, Minimalism Lovers
+            The Hybrid Protocol, Talented Creative Team, Minimalism Lovers
           </span>
         </h1>
         <div className="local-scroll wow fadeInUpShort" data-wow-delay="0.4s">

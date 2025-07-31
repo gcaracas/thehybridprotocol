@@ -52,7 +52,7 @@ export default function MainAboutPage2() {
                             className="wow charsAnimIn"
                             data-splitting="chars"
                           >
-                            <AnimatedText text="Hey! It's Resonance Creative Studio Here." />
+                            <AnimatedText text="Hey! It's The Hybrid Protocol Here." />
                           </span>
                         </h1>
                         <div className="row">

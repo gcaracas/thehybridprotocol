@@ -24,7 +24,7 @@ export default function Home5({ onePage = false, dark = false }) {
               <div>
                 <div className="wow linesAnimIn" data-splitting="lines">
                   <h2 className="section-title mb-30 mb-sm-20">
-                    <span className="text-gray">About</span> Studio
+                    <span className="text-gray">About</span> Me
                     <span className="text-gray">.</span>
                   </h2>
                   <div className="text-gray mb-30 mb-sm-20">

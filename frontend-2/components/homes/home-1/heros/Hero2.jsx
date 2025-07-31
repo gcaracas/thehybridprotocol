@@ -16,7 +16,7 @@ export default function Hero2() {
             <div className="col-md-10 offset-md-1 col-lg-6 offset-lg-0 d-flex align-items-center mb-md-60 mb-sm-30">
               <div className="w-100 text-center text-lg-start">
                 <h2 className="section-caption mb-30 mb-xs-10 wow fadeInUp">
-                  Resonance Creative Studio
+                  The Hybrid Protocol
                 </h2>
                 <h1 className="hs-title-8 mb-40 mb-sm-20 wow fadeInUp">
                   Create your beautiful web presence

@@ -31,7 +31,7 @@ export default function ElegantAboutPage() {
               className="page-section bg-dark-alpha-50 light-content"
               style={{
                 backgroundImage:
-                  "url(/assets/images/demo-elegant/section-bg-1.jpg)",
+                  "url(/assets/images/site/background.png)",
               }}
               id="home"
             >

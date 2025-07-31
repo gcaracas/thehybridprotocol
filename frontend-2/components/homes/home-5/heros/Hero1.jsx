@@ -11,7 +11,7 @@ export default function Hero1() {
         </h2>
         <h1 className="hs-title-3 mb-80 mb-sm-50 mb-xs-30">
           <span className="wow charsAnimInLong" data-splitting="chars">
-            <AnimatedText text="Resonance Creative Studio" />
+            <AnimatedText text="Fasing, nutrition & longevity" />
           </span>
         </h1>
         <div className="local-scroll wow fadeInUpShort" data-wow-delay="0.57s">

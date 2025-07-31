@@ -65,7 +65,7 @@ export default function Hero5({ dark }) {
                   className="hs-title-11 mb-30 mb-xs-10 wow fadeInUp"
                   data-wow-duration="1.2s"
                 >
-                  Resonance Creative Studio
+                  The Hybrid Protocol
                 </h2>
                 <h1 className="hs-title-12 mb-50 mb-sm-30">
                   <span className="wow charsAnimIn" data-splitting="chars">

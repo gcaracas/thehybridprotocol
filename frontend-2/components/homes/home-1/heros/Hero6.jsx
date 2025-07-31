@@ -72,7 +72,7 @@ export default function Hero6() {
             {/* Home Section Text */}
             <div className="col-md-10 offset-md-1 mb-20 mb-sm-0">
               <h2 className="hs-title-11 mb-30 mb-xs-10 wow fadeInUp">
-                Resonance Creative Studio
+                The Hybrid Protocol
               </h2>
               <h1 className="hs-title-12 mb-50 mb-sm-30">
                 <span className="wow charsAnimIn" data-splitting="chars">
