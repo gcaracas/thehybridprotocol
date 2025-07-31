@@ -1,26 +1,26 @@
 import HeroSection from "@/components/HeroSection";
-import AboutSection from "@/components/AboutSection";
-import PillarCards from "@/components/PillarCards";
-import PodcastSection from "@/components/PodcastSection";
-import NewsletterSignupNew from "@/components/NewsletterSignupNew";
+import PersonalIntroSection from "@/components/PersonalIntroSection";
+import PodcastSectionNew from "@/components/PodcastSectionNew";
+import HealingPlateSection from "@/components/HealingPlateSection";
+import NewsletterFooter from "@/components/NewsletterFooter";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pt-20">
       {/* Hero Section */}
       <HeroSection />
       
-      {/* About Section */}
-      <AboutSection />
+      {/* Personal Introduction Section */}
+      <PersonalIntroSection />
       
-      {/* Pillar Cards Section */}
-      <PillarCards />
+      {/* Podcast and Recipes Section */}
+      <PodcastSectionNew />
       
-      {/* Podcast Section */}
-      <PodcastSection />
+      {/* The Healing Plate Section */}
+      <HealingPlateSection />
       
       {/* Newsletter Signup Section */}
-      <NewsletterSignupNew />
+      <NewsletterFooter />
     </div>
   );
 }

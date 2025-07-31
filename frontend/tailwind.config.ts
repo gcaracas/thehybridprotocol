@@ -10,30 +10,37 @@ const config: Config = withMT({
   theme: {
     extend: {
       colors: {
-        // The Hybrid Protocol Brand Colors
+        // Warm Earth Tone Color Palette
+        'warm': {
+          'cream': '#f9f7f3',
+          'beige': '#f1ede6',
+          'tan': '#e8ddc7',
+        },
+        'earth': {
+          'brown': '#8b4513',
+          'dark': '#5d2f0a',
+          'green': '#7a8471',
+          'sage': '#9ca986',
+        },
+        'accent': {
+          'gold': '#d4af37',
+        },
+        // Legacy support
         'protocol': {
-          'dark-green': '#1c2a1d',
-          'olive': '#6c7b42', 
-          'sage': '#f2f0eb',
-          'golden': '#e6b800',
-          'off-white': '#fbfaf5',
-        },
-        // Gradients and variations
-        'green': {
-          900: '#1c2a1d',
-          700: '#6c7b42',
-          100: '#f2f0eb',
-        },
-        'yellow': {
-          500: '#e6b800',
+          'dark-green': '#5d2f0a',
+          'olive': '#7a8471', 
+          'sage': '#f1ede6',
+          'golden': '#d4af37',
+          'off-white': '#f9f7f3',
         },
       },
       fontFamily: {
         'sans': ['Inter', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
-        'hero-gradient': 'linear-gradient(135deg, #1c2a1d 0%, #2a3e2b 50%, #6c7b42 100%)',
-        'sage-gradient': 'linear-gradient(to bottom, #fbfaf5 0%, #f2f0eb 100%)',
+        'hero-gradient': 'linear-gradient(135deg, #f9f7f3 0%, #f1ede6 50%, #e8ddc7 100%)',
+        'warm-gradient': 'linear-gradient(to bottom, #f9f7f3 0%, #f1ede6 100%)',
+        'earth-gradient': 'linear-gradient(135deg, #8b4513 0%, #7a8471 100%)',
       },
       boxShadow: {
         'wellness': '0 10px 40px rgba(28, 42, 29, 0.1)',

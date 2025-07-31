@@ -1,16 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  /* The Hybrid Protocol Brand Colors */
-  --protocol-dark-green: #1c2a1d;
-  --protocol-olive: #6c7b42;
-  --protocol-sage: #f2f0eb;
-  --protocol-golden: #e6b800;
-  --protocol-off-white: #fbfaf5;
+  /* Warm Earth Tone Color Palette */
+  --warm-cream: #f9f7f3;
+  --warm-beige: #f1ede6;
+  --warm-tan: #e8ddc7;
+  --rich-brown: #8b4513;
+  --dark-brown: #5d2f0a;
+  --warm-green: #7a8471;
+  --sage-green: #9ca986;
+  --accent-gold: #d4af37;
   
   /* Base colors */
-  --background: #fbfaf5;
-  --foreground: #1c2a1d;
+  --background: #f9f7f3;
+  --foreground: #5d2f0a;
 }
 
 @theme inline {
