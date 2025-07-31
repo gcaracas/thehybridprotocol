@@ -105,7 +105,7 @@ main() {
     print_header "${PACKAGE} Pre-flight Checks"
     
     # Check if we're in the right directory
-    if [[ ! -f "README.md" ]] || [[ ! -d "frontend" ]] || [[ ! -d "backend" ]]; then
+    if [[ ! -f "README.md" ]] || [[ ! -d "backend" ]]; then
         print_color $RED "${CROSS} Error: Please run this script from the project root directory"
         exit 1
     fi
@@ -141,44 +141,44 @@ main() {
         add_result $? "Backend Unit Tests"
     fi
     
-    # Frontend Tests
-    print_header "${MICROSCOPE} FRONTEND QUALITY TESTS"
+    # Frontend Tests (COMMENTED OUT - frontend will be removed soon)
+    # print_header "${MICROSCOPE} FRONTEND QUALITY TESTS"
     
     # Check if frontend dependencies are available
-    if [[ -f "frontend/package.json" ]]; then
-        print_color $BLUE "${PACKAGE} Frontend package.json found"
-    else
-        print_color $RED "${CROSS} Frontend package.json not found"
-        add_result 1 "Frontend Dependencies"
-    fi
+    # if [[ -f "frontend/package.json" ]]; then
+    #     print_color $BLUE "${PACKAGE} Frontend package.json found"
+    # else
+    #     print_color $RED "${CROSS} Frontend package.json not found"
+    #     add_result 1 "Frontend Dependencies"
+    # fi
     
     # Frontend dependency check
-    run_test "Frontend Dependencies" "npm list --depth=0" "frontend"
-    add_result $? "Frontend Dependencies"
+    # run_test "Frontend Dependencies" "npm list --depth=0" "frontend"
+    # add_result $? "Frontend Dependencies"
     
     # Frontend linting
-    run_test "Frontend Linting" "npm run lint" "frontend"
-    add_result $? "Frontend Linting"
+    # run_test "Frontend Linting" "npm run lint" "frontend"
+    # add_result $? "Frontend Linting"
     
     # Frontend TypeScript check
-    run_test "TypeScript Check" "npx tsc --noEmit" "frontend"
-    add_result $? "TypeScript Check"
+    # run_test "TypeScript Check" "npx tsc --noEmit" "frontend"
+    # add_result $? "TypeScript Check"
     
     # Frontend build compilation check (catches Next.js specific issues)
-    run_test "Next.js Compilation Check" "npm run build" "frontend"
-    add_result $? "Next.js Compilation Check"
+    # run_test "Next.js Compilation Check" "npm run build" "frontend"
+    # add_result $? "Next.js Compilation Check"
     
     # Frontend tests
-    if [[ -f "frontend/scripts/test_frontend.js" ]]; then
-        run_test "Frontend Tests" "node scripts/test_frontend.js" "frontend"
-        add_result $? "Frontend Tests"
-    elif [[ -f "frontend/package.json" ]] && grep -q '"test"' frontend/package.json; then
-        run_test "Frontend Unit Tests" "npm test -- --watchAll=false --coverage" "frontend"
-        add_result $? "Frontend Unit Tests"
-    else
-        print_color $YELLOW "${WARNING} No frontend tests configured"
-        add_result 1 "Frontend Tests"
-    fi
+    # if [[ -f "frontend/scripts/test_frontend.js" ]]; then
+    #     run_test "Frontend Tests" "node scripts/test_frontend.js" "frontend"
+    #     add_result $? "Frontend Tests"
+    # elif [[ -f "frontend/package.json" ]] && grep -q '"test"' frontend/package.json; then
+    #     run_test "Frontend Unit Tests" "npm test -- --watchAll=false --coverage" "frontend"
+    #     add_result $? "Frontend Unit Tests"
+    # else
+    #     print_color $YELLOW "${WARNING} No frontend tests configured"
+    #     add_result 1 "Frontend Tests"
+    # fi
     
     # Frontend build test (already done in compilation check above)
     
@@ -197,20 +197,20 @@ main() {
     add_result $? "Sensitive Files Check"
     
     # Check for TODO/FIXME comments in critical files
-    run_test "Code Quality Check" "! grep -r 'TODO\\|FIXME\\|XXX' backend/core/ frontend/src/ || true" ""
+    run_test "Code Quality Check" "! grep -r 'TODO\\|FIXME\\|XXX' backend/core/ || true" ""
     add_result $? "Code Quality Check"
     
     # Performance Tests
     print_header "${CHART} PERFORMANCE CHECKS"
     
-    # Check frontend bundle size (if build exists)
-    if [[ -d "frontend/.next" ]]; then
-        run_test "Bundle Size Check" "du -sh .next/static 2>/dev/null || echo 'Build artifacts found'" "frontend"
-        add_result $? "Bundle Size Check"
-    else
-        print_color $YELLOW "${WARNING} No build artifacts to analyze"
-        add_result 0 "Bundle Size Check"  # Success - no build artifacts is not a failure
-    fi
+    # Check frontend bundle size (COMMENTED OUT - frontend will be removed soon)
+    # if [[ -d "frontend/.next" ]]; then
+    #     run_test "Bundle Size Check" "du -sh .next/static 2>/dev/null || echo 'Build artifacts found'" "frontend"
+    #     add_result $? "Bundle Size Check"
+    # else
+    #     print_color $YELLOW "${WARNING} No build artifacts to analyze"
+    #     add_result 0 "Bundle Size Check"  # Success - no build artifacts is not a failure
+    # fi
     
     # Final Results
     print_header "${CHART} TEST RESULTS SUMMARY"
@@ -251,7 +251,7 @@ main() {
         echo ""
         print_color $CYAN "Coverage reports:"
         [[ -d "backend/htmlcov" ]] && print_color $WHITE "  Backend: backend/htmlcov/index.html"
-        [[ -d "frontend/coverage" ]] && print_color $WHITE "  Frontend: frontend/coverage/lcov-report/index.html"
+        # [[ -d "frontend/coverage" ]] && print_color $WHITE "  Frontend: frontend/coverage/lcov-report/index.html"
         echo ""
         exit 0
     else
@@ -259,7 +259,7 @@ main() {
         echo ""
         print_color $YELLOW "Troubleshooting tips:"
         print_color $WHITE "  1. Check individual test output above"
-        print_color $WHITE "  2. Run tests individually to debug: npm test (frontend) or python/python3 manage.py test (backend)"
+        print_color $WHITE "  2. Run tests individually to debug: python/python3 manage.py test (backend)"
         print_color $WHITE "  3. Ensure all dependencies are installed"
         print_color $WHITE "  4. Check for linting errors: npm run lint"
         echo ""
