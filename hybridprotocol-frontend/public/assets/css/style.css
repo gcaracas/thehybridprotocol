@@ -1208,10 +1208,16 @@ hr.thick {
 .hs-title-3 {
   margin-top: 0;
   font-size: 38px !important;
-  font-weight: 400 !important;
-  line-height: 5.3 !important;
-  letter-spacing: 0.3em !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
+}
+
+.hs-title-3:hover,
+.hs-title-3:hover span {
+  letter-spacing: 0.12em !important;
+  transition: all 0.3s ease;
 }
 .hs-title-3a {
   margin-top: 0 !important;
@@ -1219,6 +1225,14 @@ hr.thick {
   font-weight: 400 !important;
   line-height: 1.3 !important;
   letter-spacing: -0.012em !important;
+}
+
+.hs-welcome {
+  font-size: calc(1.1rem + 0.6vw) !important;
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  color: #ffffff !important;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1) !important;
 }
 .hs-title-4 {
   margin-top: 0 !important;

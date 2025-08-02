@@ -17,16 +17,14 @@ export function HeroSection() {
                 variant="h1" 
                 className="text-4xl md:text-5xl lg:text-6xl font-bold text-earth-dark leading-tight"
               >
-                Rebuild your metabolism.{" "}
-                <br />
-                Feel younger.
+                Welcome to Your Second Chapter.
               </Typography>
               
               <Typography 
                 variant="lead" 
-                className="text-lg md:text-xl text-earth-brown leading-relaxed max-w-xl"
+                className="text-base md:text-lg text-earth-brown leading-relaxed max-w-xl italic"
               >
-                Reverse aging after 50.
+                A New Way to Heal, Burn Fat, and Reverse Aging.
               </Typography>
             </div>
 

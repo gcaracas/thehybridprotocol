@@ -47,7 +47,7 @@ export default function PodcastsPage() {
               className="page-section bg-dark-alpha-50 light-content"
               style={{
                 backgroundImage:
-                  "url(/assets/images/site/background.png)",
+                  "url(/assets/images/site/main-background.png)",
               }}
               id="home"
             >
