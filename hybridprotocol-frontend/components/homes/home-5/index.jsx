@@ -27,17 +27,21 @@ export default function Home5({ onePage = false, dark = false }) {
                     <span className="text-gray">About</span> Me
                     <span className="text-gray">.</span>
                   </h2>
-                  <div className="text-gray mb-30 mb-sm-20">
+                  <div className="text-gray mb-30 mb-sm-20" style={{textAlign: 'justify'}}>
+                    <p className="mb-20">
+                      Hi, I'm Gerardo. I'm not a doctor or a guru, just a curious guy who's spent over 30 years learning how the human body really works. I've read the research, studied the scientists, experimented with fasting, nutrition, and mindset… and made a ton of mistakes along the way.
+                    </p>
+                    <p className="mb-20">
+                      But each stumble taught me something.
+                    </p>
+                    <p className="mb-20">
+                      Today, I'm in the best health of my life, not because of hacks, but because I finally started listening to my body and aligning with biology, not fighting it.
+                    </p>
+                    <p className="mb-20">
+                      This site, The Hybrid Protocol, is my way of giving back. If you're over 40 and tired of the confusion around aging, metabolism, or why nothing seems to work anymore, I've been there. And I'm here to share everything I've learned.
+                    </p>
                     <p className="mb-0">
-                      Design elements are the basic units of any design which
-                      form its structure and convey visual messages. Color is
-                      the result of light reflecting back from an object to our
-                      eyes. Curvilinear shapes are composed of curved lines and
-                      smooth edges. Lines can be vertical, horizontal, diagonal,
-                      or curved. They can be any width or texture, and can be
-                      continuous, implied, or broken. On top of that, there are
-                      different types of lines aside from the ones previously
-                      mentioned.
+                      No hype. Just real science, personal experience, and a deep belief that the body remembers how to heal, if we give it the chance.
                     </p>
                   </div>
                 </div>

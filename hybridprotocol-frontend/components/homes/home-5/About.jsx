@@ -14,10 +14,10 @@ export default function About() {
             <div className="spot-box-icon float-end ms-3" />
             <div className="spot-box-text text-end">
               <span className="text-gray">
-                We've helped more <br />
-                than
+                I've tested this on my <br />
+                own
               </span>
-              90 brands.
+              <span style={{fontWeight: 'bold', color: '#333333'}}>body.</span>
             </div>
           </div>
           <Image
@@ -45,13 +45,16 @@ export default function About() {
             <div className="spot-box-icon float-start me-3" />
             <div className="spot-box-text">
               <span className="text-gray">
-                We design interfaces <br />
-                for over
+                Backed by science, <br />
+                built with
               </span>
-              10 years.
+              <span style={{fontWeight: 'bold', color: '#333333'}}>heart.</span>
             </div>
           </div>
         </div>
+      </div>
+      <div className="text-center mt-40" style={{fontStyle: 'italic', fontSize: '0.9rem', color: '#666666', lineHeight: '1.4'}}>
+        Inspired by 30+ years of reading, experimenting, and learning from leading scientists.
       </div>
     </div>
   );
