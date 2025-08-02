@@ -1,15 +1,15 @@
 [phases.setup]
-nixPkgs = ["python313", "postgresql"]
+nixPkgs = ["python312", "postgresql"]
 
 [phases.install]
 cmds = [
-    "python3 -m pip install -r requirements.txt"
+    "pip install -r requirements.txt"
 ]
 
 [phases.build]
 cmds = [
-    "python3 manage.py migrate --noinput",
-    "python3 manage.py collectstatic --noinput --clear"
+    "python manage.py migrate --noinput",
+    "python manage.py collectstatic --noinput --clear"
 ]
 
 [start]
