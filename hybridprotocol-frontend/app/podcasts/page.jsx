@@ -1,22 +1,38 @@
-import Footer5 from "@/components/footers/Footer5";
+'use client';
 
+import Footer5 from "@/components/footers/Footer5";
 import Header5 from "@/components/headers/Header5";
 import Image from "next/image";
 import Link from "next/link";
-const onePage = false;
-const dark = false;
+import { useState, useEffect } from 'react';
+import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import { categories } from "@/data/categories";
 import { tags } from "@/data/tags";
 import { archiveLinks } from "@/data/archeve";
 import Pagination from "@/components/common/Pagination";
-import { blogs15 } from "@/data/blogs";
 
-export const metadata = {
-  title: "Podcasts - The Hybrid Protocol",
-  description: "Insights and inspiration at your fingertips.",
-};
 export default function PodcastsPage() {
+  const [podcasts, setPodcasts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchPodcasts();
+  }, []);
+
+  const fetchPodcasts = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.getPodcastEpisodes();
+      setPodcasts(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="theme-elegant">
@@ -57,47 +73,76 @@ export default function PodcastsPage() {
                     className="row mt-n50 mb-50 wow fadeInUp"
                     data-wow-offset={0}
                   >
-                    {/* Post Item */}
-                    {blogs15.map((elm, i) => (
-                      <div
-                        key={i}
-                        className="post-prev col-md-6 col-lg-4 mt-50"
-                      >
-                        <div className="post-prev-container">
-                          <div className="post-prev-img">
-                            <Link href={`/podcasts-single/${elm.id}`}>
-                              <Image
-                                src={elm.imgSrc}
-                                width={607}
-                                height={358}
-                                alt="Add Image Description"
-                              />
-                            </Link>
-                          </div>
-                          <h3 className="post-prev-title">
-                            <Link href={`/podcasts-single/${elm.id}`}>
-                              {elm.title}
-                            </Link>
-                          </h3>
-                          <div className="post-prev-text">{elm.text}</div>
-                          <div className="post-prev-info clearfix">
-                            <div className="float-start">
-                              <a href="#" className="icon-author">
-                                <i className="mi-user size-14 align-middle" />
-                              </a>
-                              <a href="#">{elm.author}</a>
-                            </div>
-                            <div className="float-end">
-                              <i className="mi-calendar size-14 align-middle" />
-                              <a href="#">{elm.date}</a>
-                            </div>
-                          </div>
+                    {loading && (
+                      <div className="col-12 text-center">
+                        <p>Loading podcasts...</p>
+                      </div>
+                    )}
+
+                    {error && (
+                      <div className="col-12">
+                        <div className="alert alert-warning text-center">
+                          <strong>Note:</strong> No podcasts available yet. 
+                          <br />
+                          <small>This is expected for a new installation.</small>
                         </div>
                       </div>
-                    ))}
-                    {/* End Post Item */}
+                    )}
 
-                    {/* End Post Item */}
+                    {!loading && !error && podcasts.length === 0 && (
+                      <div className="col-12 text-center">
+                        <p>No podcast episodes published yet.</p>
+                        <p className="text-muted">
+                          <small>Check back soon for fasting, nutrition, and longevity insights!</small>
+                        </p>
+                      </div>
+                    )}
+
+                    {!loading && !error && podcasts.length > 0 && (
+                      <>
+                        {/* Post Item */}
+                        {podcasts.map((podcast, i) => (
+                          <div
+                            key={i}
+                            className="post-prev col-md-6 col-lg-4 mt-50"
+                          >
+                            <div className="post-prev-container">
+                              {podcast.cover_image_url && (
+                                <div className="post-prev-img">
+                                  <Link href={`/podcasts-single/${podcast.slug}`}>
+                                    <Image
+                                      src={podcast.cover_image_url}
+                                      width={607}
+                                      height={358}
+                                      alt={podcast.title}
+                                    />
+                                  </Link>
+                                </div>
+                              )}
+                              <h3 className="post-prev-title">
+                                <Link href={`/podcasts-single/${podcast.slug}`}>
+                                  {podcast.title}
+                                </Link>
+                              </h3>
+                              <div className="post-prev-text">{podcast.description}</div>
+                              <div className="post-prev-info clearfix">
+                                <div className="float-start">
+                                  <a href="#" className="icon-author">
+                                    <i className="mi-user size-14 align-middle" />
+                                  </a>
+                                  <a href="#">The Hybrid Protocol</a>
+                                </div>
+                                <div className="float-end">
+                                  <i className="mi-calendar size-14 align-middle" />
+                                  <a href="#">{new Date(podcast.publish_date).toLocaleDateString()}</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        {/* End Post Item */}
+                      </>
+                    )}
                   </div>
                   {/* End Blog Posts Grid */}
                   {/* Pagination */}
