@@ -208,7 +208,7 @@ REST_FRAMEWORK = {
 # CORS settings
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS', 
-    default='http://localhost:3000,http://127.0.0.1:3000,https://impartial-delight-production.up.railway.app',
+    default='http://localhost:3000,http://127.0.0.1:3000,https://thehybridprotocol-production.up.railway.app',
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
 
@@ -216,7 +216,7 @@ CORS_ALLOWED_ORIGINS = config(
 if not DEBUG:
     CSRF_TRUSTED_ORIGINS = config(
         'CSRF_TRUSTED_ORIGINS',
-        default='https://impartial-delight-production.up.railway.app',
+        default='https://thehybridprotocol-production.up.railway.app',
         cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
     )
 
