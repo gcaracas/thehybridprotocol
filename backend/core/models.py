@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 
 def get_current_date():
@@ -37,6 +38,9 @@ class Newsletter(models.Model):
         """Return the featured image URL if available"""
         if self.featured_image and hasattr(self.featured_image, 'url'):
             try:
+                # Use BASE_URL if available, otherwise use relative URL
+                if hasattr(settings, 'BASE_URL') and settings.BASE_URL:
+                    return f"{settings.BASE_URL}{self.featured_image.url}"
                 return self.featured_image.url
             except (ValueError, AttributeError):
                 return None
@@ -73,6 +77,9 @@ class PodcastEpisode(models.Model):
         """Return the cover image URL if available"""
         if self.cover_image and hasattr(self.cover_image, 'url'):
             try:
+                # Use BASE_URL if available, otherwise use relative URL
+                if hasattr(settings, 'BASE_URL') and settings.BASE_URL:
+                    return f"{settings.BASE_URL}{self.cover_image.url}"
                 return self.cover_image.url
             except (ValueError, AttributeError):
                 return None
