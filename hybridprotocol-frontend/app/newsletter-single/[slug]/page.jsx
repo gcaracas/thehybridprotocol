@@ -4,6 +4,7 @@ import Footer5 from "@/components/footers/Footer5";
 import Image from "next/image";
 import Header5 from "@/components/headers/Header5";
 import { useState, useEffect } from 'react';
+import { use } from 'react';
 import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import Comments from "@/components/blog/Comments";
@@ -11,18 +12,19 @@ import Form4 from "@/components/blog/commentForm/Form4";
 import Widget1 from "@/components/blog/widgets/Widget1";
 
 export default function NewsletterSinglePage({ params }) {
+  const resolvedParams = use(params);
   const [newsletter, setNewsletter] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchNewsletter();
-  }, [params.slug]);
+  }, [resolvedParams.slug]);
 
   const fetchNewsletter = async () => {
     try {
       setLoading(true);
-      const data = await apiService.getNewsletterBySlug(params.slug);
+      const data = await apiService.getNewsletterBySlug(resolvedParams.slug);
       setNewsletter(data);
     } catch (err) {
       setError(err.message);

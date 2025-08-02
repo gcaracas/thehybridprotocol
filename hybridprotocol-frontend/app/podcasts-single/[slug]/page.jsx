@@ -4,6 +4,7 @@ import Footer5 from "@/components/footers/Footer5";
 import Image from "next/image";
 import Header5 from "@/components/headers/Header5";
 import { useState, useEffect } from 'react';
+import { use } from 'react';
 import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import Comments from "@/components/blog/Comments";
@@ -11,18 +12,19 @@ import Form4 from "@/components/blog/commentForm/Form4";
 import Widget1 from "@/components/blog/widgets/Widget1";
 
 export default function PodcastSinglePage({ params }) {
+  const resolvedParams = use(params);
   const [podcast, setPodcast] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchPodcast();
-  }, [params.slug]);
+  }, [resolvedParams.slug]);
 
   const fetchPodcast = async () => {
     try {
       setLoading(true);
-      const data = await apiService.getPodcastEpisodeBySlug(params.slug);
+      const data = await apiService.getPodcastEpisodeBySlug(resolvedParams.slug);
       setPodcast(data);
     } catch (err) {
       setError(err.message);
