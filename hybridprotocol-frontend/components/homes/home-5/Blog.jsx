@@ -18,7 +18,9 @@ export default function Blog() {
   const fetchNewsletters = async () => {
     try {
       setLoading(true);
-      const data = await apiService.getNewsletters();
+      const response = await apiService.getNewsletters();
+      // Handle paginated response
+      const data = response.results || response;
       setNewsletters(data);
     } catch (err) {
       setError(err.message);

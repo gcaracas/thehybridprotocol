@@ -24,7 +24,9 @@ export default function PodcastsPage() {
   const fetchPodcasts = async () => {
     try {
       setLoading(true);
-      const data = await apiService.getPodcastEpisodes();
+      const response = await apiService.getPodcastEpisodes();
+      // Handle paginated response
+      const data = response.results || response;
       setPodcasts(data);
     } catch (err) {
       setError(err.message);
