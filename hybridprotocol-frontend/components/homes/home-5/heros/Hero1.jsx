@@ -4,16 +4,17 @@ import React from "react";
 export default function Hero1() {
   return (
     <div style={{position: 'relative'}}>
-      {/* Dark Overlay */}
+      {/* Dark Overlay - positioned to cover only the hero content, not the header */}
       <div 
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
+          top: '0',
+          left: '0',
           width: '100%',
           height: '100%',
-          background: 'rgba(0, 0, 0, 0.35)',
-          zIndex: 1
+          background: 'rgba(0, 0, 0, 0.20)',
+          zIndex: 1,
+          pointerEvents: 'none' // This ensures the overlay doesn't interfere with header elements
         }}
       ></div>
       
