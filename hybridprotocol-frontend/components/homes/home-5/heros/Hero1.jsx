@@ -7,11 +7,14 @@ export default function Hero1() {
       {/* Home Section Content */}
       <div className="home-content text-center">
         <h2 className="section-title-tiny mb-50 mb-sm-30 wow fadeInDownShort">
-          Hello &amp; Welcome
+          Welcome to Your Second Chapter.
         </h2>
+        <p className="text-italic text-sm mb-30 wow fadeInDownShort" style={{fontStyle: 'italic', fontSize: '0.9em'}}>
+          A New Way to Heal, Burn Fat, and Reverse Aging.
+        </p>
         <h1 className="hs-title-3 mb-80 mb-sm-50 mb-xs-30">
-          <span className="wow charsAnimInLong" data-splitting="chars">
-            <AnimatedText text="Fasting, nutrition & longevity" />
+          <span className="wow charsAnimInLong" data-splitting="chars" style={{lineHeight: '1.5', display: 'block'}}>
+            <AnimatedText text="Reverse Aging Through Fasting, Nutrition, and Strength." />
           </span>
         </h1>
         <div className="local-scroll wow fadeInUpShort" data-wow-delay="0.57s">

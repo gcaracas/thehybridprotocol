@@ -36,6 +36,13 @@ export default function Footer5() {
         ))}
       </div>
       {/* End Social Links */}
+      {/* Brand Identity */}
+      <div className="footer-brand-identity mb-30">
+        <p className="text-center" style={{fontStyle: 'italic', fontSize: '1.1em', color: '#ffffff'}}>
+          "Where Ancient Wisdom Meets Metabolic Science."
+        </p>
+      </div>
+      {/* End Brand Identity */}
       {/* Footer Text */}
       <div className="footer-text">
         {/* Copyright */}
