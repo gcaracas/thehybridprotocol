@@ -23,4 +23,9 @@ urlpatterns = [
     
     # Email signup endpoint
     path('email-signup/', views.EmailSignupCreateView.as_view(), name='email_signup'),
+    
+    # Category, Tag, and Archive endpoints
+    path('categories/', views.CategoryListView.as_view(), name='category_list'),
+    path('tags/', views.TagListView.as_view(), name='tag_list'),
+    path('archives/', views.ArchiveListView.as_view(), name='archive_list'),
 ]

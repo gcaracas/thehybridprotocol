@@ -1,13 +1,17 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Newsletter, PodcastEpisode, EmailSignup
+from .models import (
+    Newsletter, PodcastEpisode, EmailSignup,
+    LocalizedElement, Category, Tag, Archive, TextWidget
+)
+import re
 
 
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'published', 'published_at', 'featured_image_preview', 'created_at']
-    list_filter = ['published', 'created_at', 'published_at']
-    search_fields = ['title', 'content', 'slug']
+    list_display = ['title', 'slug', 'category', 'published', 'published_at', 'featured_image_preview', 'created_at']
+    list_filter = ['published', 'category', 'tags', 'created_at', 'published_at']
+    search_fields = ['title', 'content', 'slug', 'category__name__english', 'tags__name__english']
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ['published']
     date_hierarchy = 'published_at'
@@ -21,6 +25,10 @@ class NewsletterAdmin(admin.ModelAdmin):
         ('Content', {
             'fields': ('content',),
             'classes': ('wide',)
+        }),
+        ('Categorization', {
+            'fields': ('category', 'tags'),
+            'classes': ('collapse',)
         }),
         ('Media', {
             'fields': ('featured_image',)
@@ -45,9 +53,9 @@ class NewsletterAdmin(admin.ModelAdmin):
 
 @admin.register(PodcastEpisode)
 class PodcastEpisodeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'publish_date', 'episode_number', 'published', 'cover_image_preview']
-    list_filter = ['published', 'publish_date']
-    search_fields = ['title', 'description', 'slug', 'episode_number']
+    list_display = ['title', 'slug', 'category', 'publish_date', 'episode_number', 'published', 'cover_image_preview']
+    list_filter = ['published', 'category', 'tags', 'publish_date']
+    search_fields = ['title', 'description', 'slug', 'episode_number', 'category__name__english', 'tags__name__english']
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ['published']
     date_hierarchy = 'publish_date'
@@ -61,6 +69,10 @@ class PodcastEpisodeAdmin(admin.ModelAdmin):
         ('Content', {
             'fields': ('script',),
             'classes': ('wide',)
+        }),
+        ('Categorization', {
+            'fields': ('category', 'tags'),
+            'classes': ('collapse',)
         }),
         ('Media', {
             'fields': ('audio_url', 'youtube_url', 'spotify_url', 'cover_image')
@@ -104,3 +116,131 @@ class EmailSignupAdmin(admin.ModelAdmin):
         updated = queryset.update(is_active=True)
         self.message_user(request, f"Marked {updated} email signups as active.")
     mark_active.short_description = "Mark selected signups as active"
+
+
+@admin.register(LocalizedElement)
+class LocalizedElementAdmin(admin.ModelAdmin):
+    list_display = ['id', 'english_preview', 'spanish_preview', 'created_at']
+    search_fields = ['english', 'spanish']
+    list_per_page = 50
+    
+    def english_preview(self, obj):
+        return obj.english[:50] + "..." if len(obj.english) > 50 else obj.english
+    english_preview.short_description = "English"
+    
+    def spanish_preview(self, obj):
+        return obj.spanish[:50] + "..." if len(obj.spanish) > 50 else obj.spanish
+    spanish_preview.short_description = "Spanish"
+
+
+def generate_slug(text):
+    """Generate a URL-safe slug from text"""
+    # Convert to lowercase
+    slug = text.lower()
+    # Replace spaces and special characters with hyphens
+    slug = re.sub(r'[^a-z0-9]+', '-', slug)
+    # Remove leading/trailing hyphens
+    slug = slug.strip('-')
+    # Replace multiple hyphens with single hyphen
+    slug = re.sub(r'-+', '-', slug)
+    return slug
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'name_id', 'slug', 'count', 'is_active', 'created_at']
+    list_filter = ['is_active', 'created_at']
+    search_fields = ['name__english', 'name__spanish', 'slug']
+    list_editable = ['count', 'is_active']
+    list_per_page = 25
+    
+    def name_id(self, obj):
+        """Show the LocalizedElement ID"""
+        return obj.name.id if obj.name else None
+    name_id.short_description = "LocalizedElement ID"
+    
+    def save_model(self, request, obj, form, change):
+        """Auto-generate slug from English name if not provided"""
+        if not obj.slug and obj.name:
+            obj.slug = generate_slug(obj.name.english)
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['name', 'name_id', 'slug', 'is_active', 'created_at']
+    list_filter = ['is_active', 'created_at']
+    search_fields = ['name__english', 'name__spanish', 'slug']
+    list_editable = ['is_active']
+    list_per_page = 25
+    
+    def name_id(self, obj):
+        """Show the LocalizedElement ID"""
+        return obj.name.id if obj.name else None
+    name_id.short_description = "LocalizedElement ID"
+    
+    def save_model(self, request, obj, form, change):
+        """Auto-generate slug from English name if not provided"""
+        if not obj.slug and obj.name:
+            obj.slug = generate_slug(obj.name.english)
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(Archive)
+class ArchiveAdmin(admin.ModelAdmin):
+    list_display = ['month', 'year', 'count', 'is_active', 'created_at']
+    list_filter = ['is_active', 'year', 'month', 'created_at']
+    search_fields = ['year', 'month']
+    list_editable = ['count', 'is_active']
+    list_per_page = 25
+    
+    def get_month_display(self, obj):
+        month_names = {
+            1: "January", 2: "February", 3: "March", 4: "April",
+            5: "May", 6: "June", 7: "July", 8: "August",
+            9: "September", 10: "October", 11: "November", 12: "December"
+        }
+        return month_names.get(obj.month, str(obj.month))
+    get_month_display.short_description = "Month"
+
+
+@admin.register(TextWidget)
+class TextWidgetAdmin(admin.ModelAdmin):
+    list_display = ['title_preview', 'content_preview', 'image_preview', 'order', 'is_active', 'created_at']
+    list_filter = ['is_active', 'created_at']
+    search_fields = ['title__english', 'title__spanish', 'content__english', 'content__spanish']
+    list_editable = ['order', 'is_active']
+    list_per_page = 25
+    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'content', 'order', 'is_active')
+        }),
+        ('Media', {
+            'fields': ('image',)
+        }),
+    )
+    
+    def title_preview(self, obj):
+        if obj.title:
+            title = obj.title.english
+            return title[:50] + "..." if len(title) > 50 else title
+        return "No title"
+    title_preview.short_description = "Title"
+    
+    def content_preview(self, obj):
+        if obj.content:
+            content = obj.content.english
+            return content[:50] + "..." if len(content) > 50 else content
+        return "No content"
+    content_preview.short_description = "Content Preview"
+    
+    def image_preview(self, obj):
+        """Display a thumbnail preview of the image in the admin list view"""
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">',
+                obj.image.url
+            )
+        return "No image"
+    image_preview.short_description = "Image"

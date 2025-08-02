@@ -7,19 +7,62 @@ import Link from "next/link";
 import { useState, useEffect } from 'react';
 import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
-import { categories } from "@/data/categories";
-import { tags } from "@/data/tags";
-import { archiveLinks } from "@/data/archeve";
 import Pagination from "@/components/common/Pagination";
+import SidebarWidgets from "@/components/common/SidebarWidgets";
 
 export default function PodcastsPage() {
   const [podcasts, setPodcasts] = useState([]);
+  const [filteredPodcasts, setFilteredPodcasts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeFilters, setActiveFilters] = useState({
+    category: null,
+    tags: [],
+    archive: null
+  });
 
   useEffect(() => {
     fetchPodcasts();
   }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [podcasts, activeFilters]);
+
+  const applyFilters = () => {
+    let filtered = [...podcasts];
+
+    // Filter by category
+    if (activeFilters.category) {
+      filtered = filtered.filter(podcast => 
+        podcast.category && podcast.category.id === activeFilters.category.id
+      );
+    }
+
+    // Filter by tags
+    if (activeFilters.tags.length > 0) {
+      const tagIds = activeFilters.tags.map(tag => tag.id);
+      filtered = filtered.filter(podcast => 
+        podcast.tags && podcast.tags.some(tag => tagIds.includes(tag.id))
+      );
+    }
+
+    // Filter by archive (month/year)
+    if (activeFilters.archive) {
+      const archiveDate = new Date(activeFilters.archive.year, activeFilters.archive.month - 1);
+      filtered = filtered.filter(podcast => {
+        const podcastDate = new Date(podcast.publish_date);
+        return podcastDate.getFullYear() === archiveDate.getFullYear() && 
+               podcastDate.getMonth() === archiveDate.getMonth();
+      });
+    }
+
+    setFilteredPodcasts(filtered);
+  };
+
+  const handleFilterChange = (filters) => {
+    setActiveFilters(filters);
+  };
 
   const fetchPodcasts = async () => {
     try {
@@ -100,10 +143,10 @@ export default function PodcastsPage() {
                       </div>
                     )}
 
-                    {!loading && !error && podcasts.length > 0 && (
+                    {!loading && !error && filteredPodcasts.length > 0 && (
                       <>
                         {/* Post Item */}
-                        {podcasts.map((podcast, i) => (
+                        {filteredPodcasts.map((podcast, i) => (
                           <div
                             key={i}
                             className="post-prev col-md-6 col-lg-4 mt-50"
@@ -156,89 +199,11 @@ export default function PodcastsPage() {
               {/* Divider */}
               <hr className="mt-0 mb-0" />
               {/* End Divider */}
-              {/* Section */}
-              <section className="page-section">
-                <div className="container relative">
-                  <div className="row mt-n60">
-                    <div className="col-sm-6 col-lg-3 mt-60">
-                      {/* Widget */}
-                      <div className="widget mb-0">
-                        <h3 className="widget-title">Categories</h3>
-                        <div className="widget-body">
-                          <ul className="clearlist widget-menu">
-                            {categories.map((category) => (
-                              <li key={category.id}>
-                                <a href="#" title="">
-                                  {category.name}
-                                </a>
-                                <small> - {category.count} </small>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      {/* End Widget */}
-                    </div>
-                    <div className="col-sm-6 col-lg-3 mt-60">
-                      {/* Widget */}
-                      <div className="widget mb-0">
-                        <h3 className="widget-title">Tags</h3>
-                        <div className="widget-body">
-                          <div className="tags">
-                            {tags.map((tag) => (
-                              <a href="#" key={tag.id}>
-                                {tag.name}
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      {/* End Widget */}
-                    </div>
-                    <div className="col-sm-6 col-lg-3 mt-60">
-                      {/* Widget */}
-                      <div className="widget mb-0">
-                        <h3 className="widget-title">Archive</h3>
-                        <div className="widget-body">
-                          <ul className="clearlist widget-menu">
-                            {archiveLinks.map((link) => (
-                              <li key={link.id}>
-                                <a href="#" title="">
-                                  {link.date}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      {/* End Widget */}
-                    </div>
-                    <div className="col-sm-6 col-lg-3 mt-60">
-                      {/* Widget */}
-                      <div className="widget mb-0">
-                        <h3 className="widget-title">Text widget</h3>
-                        <div className="widget-body">
-                          <div className="widget-text clearfix">
-                            <Image
-                              src="/assets/images/blog/previews/post-prev-6.jpg"
-                              alt="Image Description"
-                              height={140}
-                              style={{ height: "fit-content" }}
-                              width={100}
-                              className="left img-left"
-                            />
-                            Consectetur adipiscing elit. Quisque magna ante
-                            eleifend eleifend. Purus ut dignissim consectetur,
-                            nulla erat ultrices purus, ut consequat sem elit non
-                            sem. Quisque magna ante eleifend eleifend.
-                          </div>
-                        </div>
-                      </div>
-                      {/* End Widget */}
-                    </div>
-                  </div>
-                </div>
-              </section>
+              {/* Sidebar Widgets */}
+              <SidebarWidgets 
+                contentType="podcast" 
+                onFilterChange={handleFilterChange}
+              />
             </>
           </main>
           <footer className="bg-dark-1 light-content footer z-index-1 position-relative">

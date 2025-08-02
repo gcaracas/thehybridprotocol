@@ -4,11 +4,12 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from django.conf import settings
 import os
-from .models import Newsletter, PodcastEpisode, EmailSignup
+from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive
 from .serializers import (
     NewsletterSerializer, NewsletterListSerializer,
     PodcastEpisodeSerializer, PodcastEpisodeListSerializer,
-    EmailSignupSerializer, EmailSignupCreateSerializer
+    EmailSignupSerializer, EmailSignupCreateSerializer,
+    CategorySerializer, TagSerializer, ArchiveSerializer
 )
 
 
@@ -59,6 +60,30 @@ class EmailSignupCreateView(generics.CreateAPIView):
                 status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CategoryListView(generics.ListAPIView):
+    """List all active categories"""
+    serializer_class = CategorySerializer
+    
+    def get_queryset(self):
+        return Category.objects.filter(is_active=True)
+
+
+class TagListView(generics.ListAPIView):
+    """List all active tags"""
+    serializer_class = TagSerializer
+    
+    def get_queryset(self):
+        return Tag.objects.filter(is_active=True)
+
+
+class ArchiveListView(generics.ListAPIView):
+    """List all active archives"""
+    serializer_class = ArchiveSerializer
+    
+    def get_queryset(self):
+        return Archive.objects.filter(is_active=True)
 
 
 @api_view(['GET'])

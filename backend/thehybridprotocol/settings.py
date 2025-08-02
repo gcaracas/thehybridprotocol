@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-_0ua6o+01gz@3@$0jj-5r(w0-$#+am7k@b9atkt=@kjkn=6j&7')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.up.railway.app,thehybridprotocol-production.up.railway.app', cast=lambda v: [s.strip() for s in v.split(',')])
 
@@ -161,20 +161,32 @@ else:
     # Railway volume mount path
     MEDIA_ROOT = '/app/media'
 
+# Ensure media directory exists and is writable
+if not os.path.exists(MEDIA_ROOT):
+    try:
+        os.makedirs(MEDIA_ROOT, exist_ok=True)
+        print(f"🔍 DEBUG: Created media directory: {MEDIA_ROOT}")
+    except Exception as e:
+        print(f"🔍 DEBUG: Failed to create media directory: {e}")
+        # Fallback for development
+        if DEBUG:
+            fallback_media = os.path.join(BASE_DIR, 'media_fallback')
+            try:
+                os.makedirs(fallback_media, exist_ok=True)
+                MEDIA_ROOT = fallback_media
+                print(f"🔍 DEBUG: Using fallback media directory: {MEDIA_ROOT}")
+            except Exception as fallback_e:
+                print(f"🔍 DEBUG: Failed to create fallback media directory: {fallback_e}")
+
 # Debug media directory
-import os
 print(f"🔍 DEBUG: MEDIA_ROOT = {MEDIA_ROOT}")
 print(f"🔍 DEBUG: Media directory exists: {os.path.exists(MEDIA_ROOT)}")
 if os.path.exists(MEDIA_ROOT):
     print(f"🔍 DEBUG: Media directory writable: {os.access(MEDIA_ROOT, os.W_OK)}")
-    print(f"🔍 DEBUG: Media directory contents: {os.listdir(MEDIA_ROOT)}")
-else:
-    print("🔍 DEBUG: Creating media directory...")
     try:
-        os.makedirs(MEDIA_ROOT, exist_ok=True)
-        print(f"🔍 DEBUG: Media directory created successfully")
-    except Exception as e:
-        print(f"🔍 DEBUG: Failed to create media directory: {e}")
+        print(f"🔍 DEBUG: Media directory contents: {os.listdir(MEDIA_ROOT)}")
+    except PermissionError:
+        print("🔍 DEBUG: Cannot list media directory contents (permission denied)")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

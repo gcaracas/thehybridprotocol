@@ -17,6 +17,11 @@ export const API_ENDPOINTS = {
   
   // Email signup
   emailSignup: `${API_BASE_URL}/email-signup/`,
+  
+  // Categories, Tags, and Archives
+  categories: `${API_BASE_URL}/categories/`,
+  tags: `${API_BASE_URL}/tags/`,
+  archives: `${API_BASE_URL}/archives/`,
 };
 
 // Generic API request function
@@ -86,6 +91,19 @@ export const apiService = {
       method: 'POST',
       body: JSON.stringify(data),
     });
+  },
+
+  // Category, Tag, and Archive functions
+  async getCategories() {
+    return apiRequest(API_ENDPOINTS.categories);
+  },
+
+  async getTags() {
+    return apiRequest(API_ENDPOINTS.tags);
+  },
+
+  async getArchives() {
+    return apiRequest(API_ENDPOINTS.archives);
   },
 };
 

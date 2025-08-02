@@ -8,6 +8,142 @@ def get_current_date():
     return timezone.now().date()
 
 
+class LocalizedElement(models.Model):
+    """Model for storing localized strings (English and Spanish)"""
+    id = models.AutoField(primary_key=True)
+    english = models.CharField(max_length=500, help_text="English text")
+    spanish = models.CharField(max_length=500, help_text="Spanish text")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = "Localized Element"
+        verbose_name_plural = "Localized Elements"
+    
+    def __str__(self):
+        return f"{self.english[:50]}... / {self.spanish[:50]}..."
+
+
+class Category(models.Model):
+    """Model for content categories"""
+    name = models.ForeignKey(
+        LocalizedElement, 
+        on_delete=models.CASCADE,
+        related_name='category_names',
+        help_text="Localized category name"
+    )
+    slug = models.SlugField(unique=True, max_length=100)
+    count = models.PositiveIntegerField(default=0, help_text="Number of items in this category")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['name__english']
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+    
+    def __str__(self):
+        return self.name.english
+
+
+class Tag(models.Model):
+    """Model for content tags"""
+    name = models.ForeignKey(
+        LocalizedElement, 
+        on_delete=models.CASCADE,
+        related_name='tag_names',
+        help_text="Localized tag name"
+    )
+    slug = models.SlugField(unique=True, max_length=100)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['name__english']
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+    
+    def __str__(self):
+        return self.name.english
+
+
+class Archive(models.Model):
+    """Model for archive entries"""
+    month = models.PositiveIntegerField(help_text="Month (1-12)")
+    year = models.PositiveIntegerField(help_text="Year")
+    count = models.PositiveIntegerField(default=0, help_text="Number of items in this archive")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-year', '-month']
+        unique_together = ['month', 'year']
+        verbose_name = "Archive"
+        verbose_name_plural = "Archives"
+    
+    def __str__(self):
+        return f"{self.get_month_display()} {self.year}"
+    
+    def get_month_display(self):
+        """Return localized month name"""
+        month_names = {
+            1: "January", 2: "February", 3: "March", 4: "April",
+            5: "May", 6: "June", 7: "July", 8: "August",
+            9: "September", 10: "October", 11: "November", 12: "December"
+        }
+        return month_names.get(self.month, str(self.month))
+
+
+class TextWidget(models.Model):
+    """Model for text widgets"""
+    title = models.ForeignKey(
+        LocalizedElement, 
+        on_delete=models.CASCADE,
+        related_name='widget_titles',
+        help_text="Localized widget title"
+    )
+    content = models.ForeignKey(
+        LocalizedElement, 
+        on_delete=models.CASCADE,
+        related_name='widget_contents',
+        help_text="Localized widget content"
+    )
+    image = models.ImageField(
+        upload_to='widget_images/', 
+        blank=True, 
+        null=True, 
+        help_text="Widget image"
+    )
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0, help_text="Display order")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order', 'title__english']
+        verbose_name = "Text Widget"
+        verbose_name_plural = "Text Widgets"
+    
+    def __str__(self):
+        return self.title.english
+    
+    @property
+    def image_url(self):
+        """Return the image URL if available"""
+        if self.image and hasattr(self.image, 'url'):
+            try:
+                if hasattr(settings, 'BASE_URL') and settings.BASE_URL:
+                    return f"{settings.BASE_URL}{self.image.url}"
+                return self.image.url
+            except (ValueError, AttributeError):
+                return None
+        return None
+
+
 class Newsletter(models.Model):
     """Model for newsletter articles"""
     title = models.CharField(max_length=200)
@@ -15,6 +151,20 @@ class Newsletter(models.Model):
     content = models.TextField()
     excerpt = models.TextField(max_length=500, help_text="Brief description for previews")
     featured_image = models.ImageField(upload_to='newsletter_images/', blank=True, null=True, help_text="Featured image for newsletter")
+    category = models.ForeignKey(
+        Category, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='newsletters',
+        help_text="Primary category for this newsletter"
+    )
+    tags = models.ManyToManyField(
+        Tag, 
+        blank=True,
+        related_name='newsletters',
+        help_text="Tags for this newsletter"
+    )
     published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -60,6 +210,20 @@ class PodcastEpisode(models.Model):
     cover_image = models.ImageField(upload_to='podcast_covers/', blank=True, null=True, help_text="Episode cover image")
     episode_number = models.PositiveIntegerField(unique=True, blank=True, null=True, help_text="Episode number (optional)")
     duration = models.CharField(max_length=20, blank=True, help_text="Duration in format: HH:MM:SS")
+    category = models.ForeignKey(
+        Category, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='podcast_episodes',
+        help_text="Primary category for this episode"
+    )
+    tags = models.ManyToManyField(
+        Tag, 
+        blank=True,
+        related_name='podcast_episodes',
+        help_text="Tags for this episode"
+    )
     published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
