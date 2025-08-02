@@ -21,8 +21,10 @@ class NewsletterSerializer(serializers.ModelSerializer):
         if obj.featured_image and hasattr(obj.featured_image, 'url'):
             try:
                 # Use BASE_URL from settings for reliable absolute URLs
-                base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
-                return f"{base_url}{obj.featured_image.url}"
+                base_url = getattr(settings, 'BASE_URL', None)
+                if base_url:
+                    return f"{base_url}{obj.featured_image.url}"
+                return obj.featured_image.url
             except (ValueError, AttributeError):
                 return None
         return None
@@ -44,8 +46,10 @@ class NewsletterListSerializer(serializers.ModelSerializer):
         if obj.featured_image and hasattr(obj.featured_image, 'url'):
             try:
                 # Use BASE_URL from settings for reliable absolute URLs
-                base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
-                return f"{base_url}{obj.featured_image.url}"
+                base_url = getattr(settings, 'BASE_URL', None)
+                if base_url:
+                    return f"{base_url}{obj.featured_image.url}"
+                return obj.featured_image.url
             except (ValueError, AttributeError):
                 return None
         return None
@@ -71,8 +75,10 @@ class PodcastEpisodeSerializer(serializers.ModelSerializer):
         if obj.cover_image and hasattr(obj.cover_image, 'url'):
             try:
                 # Use BASE_URL from settings for reliable absolute URLs
-                base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
-                return f"{base_url}{obj.cover_image.url}"
+                base_url = getattr(settings, 'BASE_URL', None)
+                if base_url:
+                    return f"{base_url}{obj.cover_image.url}"
+                return obj.cover_image.url
             except (ValueError, AttributeError):
                 return None
         return None
@@ -96,8 +102,10 @@ class PodcastEpisodeListSerializer(serializers.ModelSerializer):
         if obj.cover_image and hasattr(obj.cover_image, 'url'):
             try:
                 # Use BASE_URL from settings for reliable absolute URLs
-                base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
-                return f"{base_url}{obj.cover_image.url}"
+                base_url = getattr(settings, 'BASE_URL', None)
+                if base_url:
+                    return f"{base_url}{obj.cover_image.url}"
+                return obj.cover_image.url
             except (ValueError, AttributeError):
                 return None
         return None
