@@ -27,7 +27,7 @@ export default function Home5({ onePage = false, dark = false }) {
                     <span className="text-gray">About</span> Me
                     <span className="text-gray">.</span>
                   </h2>
-                  <div className="text-gray mb-30 mb-sm-20" style={{textAlign: 'justify'}}>
+                  <div className="text-gray mb-30 mb-sm-20 about-me-text" style={{textAlign: 'justify'}}>
                     <p className="mb-20">
                       Hi, I'm Gerardo. I'm not a doctor or a guru, just a curious guy who's spent over 30 years learning how the human body really works. I've read the research, studied the scientists, experimented with fasting, nutrition, and mindset… and made a ton of mistakes along the way.
                     </p>
@@ -35,10 +35,10 @@ export default function Home5({ onePage = false, dark = false }) {
                       But each stumble taught me something.
                     </p>
                     <p className="mb-20">
-                      Today, I'm in the best health of my life, not because of hacks, but because I finally started listening to my body and aligning with biology, not fighting it.
+                      Today, I'm in the best health of my life, not because of hacks, but because I finally started listening to my body and <span style={{fontWeight: 'bold', color: '#333333'}}>aligning with biology, not fighting it.</span>
                     </p>
                     <p className="mb-20">
-                      This site, The Hybrid Protocol, is my way of giving back. If you're over 40 and tired of the confusion around aging, metabolism, or why nothing seems to work anymore, I've been there. And I'm here to share everything I've learned.
+                      This site, The Hybrid Protocol, is my way of giving back. If you're over 40 and tired of the <span style={{fontWeight: 'bold', color: '#333333'}}>confusion around aging, metabolism,</span> or why nothing seems to work anymore, I've been there. And I'm here to share everything I've learned.
                     </p>
                     <p className="mb-0">
                       No hype. Just real science, personal experience, and a deep belief that the body remembers how to heal, if we give it the chance.
@@ -80,7 +80,7 @@ export default function Home5({ onePage = false, dark = false }) {
                       {" "}
                       <Link
                         href={`/elegant-about${dark ? "-dark" : ""}`}
-                        className="link-hover-anim link-circle-1 align-middle"
+                        className="link-hover-anim link-circle-1 align-middle learn-more-button"
                         data-link-animate="y"
                       >
                         <span className="link-strong link-strong-unhovered">

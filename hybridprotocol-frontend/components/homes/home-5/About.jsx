@@ -17,7 +17,7 @@ export default function About() {
                 I've tested this on my <br />
                 own
               </span>
-              <span style={{fontWeight: 'bold', color: '#333333'}}>body.</span>
+              <span style={{fontWeight: 'bold', color: '#333333'}}> body.</span>
             </div>
           </div>
           <Image
@@ -48,12 +48,12 @@ export default function About() {
                 Backed by science, <br />
                 built with
               </span>
-              <span style={{fontWeight: 'bold', color: '#333333'}}>heart.</span>
+              <span style={{fontWeight: 'bold', color: '#333333'}}> heart.</span>
             </div>
           </div>
         </div>
       </div>
-      <div className="text-center mt-40" style={{fontStyle: 'italic', fontSize: '0.9rem', color: '#666666', lineHeight: '1.4'}}>
+      <div className="text-center mt-40 about-quote">
         Inspired by 30+ years of reading, experimenting, and learning from leading scientists.
       </div>
     </div>

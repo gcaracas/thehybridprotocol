@@ -1320,6 +1320,30 @@ hr.thick {
     font-size: 1.9rem !important;
   }
 }
+
+/* About Me Section Improvements */
+.about-me-text {
+  line-height: 1.75 !important;
+  color: #222 !important;
+}
+
+.learn-more-button:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.3s ease !important;
+}
+
+.about-quote {
+  font-style: italic !important;
+  font-size: 0.9rem !important;
+  color: #777 !important;
+  margin-top: 1rem !important;
+}
+
+/* Remove border from Discover Now button */
+.hs-discover-btn.link-circle-1:before {
+  border: none !important;
+}
 .hs-title-4 {
   margin-top: 0 !important;
   font-size: 100px !important;
