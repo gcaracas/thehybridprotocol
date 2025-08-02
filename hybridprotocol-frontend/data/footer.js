@@ -32,20 +32,23 @@ export const socialLinks = [
 
 export const socialMediaLinks = [
   {
-    href: "#",
+    href: "https://www.facebook.com/thehybridprotocol",
     title: "Facebook",
     iconClass: "fa-facebook-f",
     name: "Facebook",
   },
-  { href: "#", title: "Skype", iconClass: "fa-skype", name: "Skype" },
   {
-    href: "#",
-    title: "Pinterest",
-    iconClass: "fa-pinterest",
-    name: "Pinterest",
+    href: "https://www.youtube.com/@TheHybridProtocol",
+    title: "YouTube",
+    iconClass: "fa-youtube",
+    name: "YouTube",
   },
-  { href: "#", title: "Behance", iconClass: "fa-behance", name: "Behance" },
-  { href: "#", title: "Dribbble", iconClass: "fa-dribbble", name: "Dribbble" },
+  {
+    href: "https://open.spotify.com/show/78VAnyCnO4hhNLEFycpogW",
+    title: "Spotify",
+    iconClass: "fa-spotify",
+    name: "Spotify",
+  },
 ];
 
 export const navigationLinks = [

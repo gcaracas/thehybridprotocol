@@ -48,12 +48,12 @@ export default function Footer5() {
         {/* Copyright */}
         <div>
           <a href="https://themeforest.net/user/ib-themes/portfolio">
-            © IB-Themes {new Date().getFullYear()}
+            © The Hybrid Protocol {new Date().getFullYear()}
           </a>
           .
         </div>
         {/* End Copyright */}
-        <div className="footer-made">Made with love for great people.</div>
+        <div className="footer-made">Crafted with heart and science</div>
       </div>
       {/* End Footer Text */}
     </div>

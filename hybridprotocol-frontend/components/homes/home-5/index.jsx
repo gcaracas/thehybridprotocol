@@ -112,78 +112,9 @@ export default function Home5({ onePage = false, dark = false }) {
           </div>
         </div>
       </section>
-      <div className="page-section overflow-hidden">
+      {/* <div className="page-section overflow-hidden">
         {dark ? <MarqueeDark /> : <Marquee />}
-      </div>
-      <section
-        className={`page-section pb-0  scrollSpysection  ${
-          dark ? "bg-dark-1 light-content" : ""
-        } `}
-        id="team"
-      >
-        <Team />
-      </section>
-      <div className="page-section overflow-hidden">
-        {dark ? <MarqueeDark /> : <Marquee />}
-      </div>
-      <section
-        className={`small-section ${
-          dark ? "bg-dark-2 light-content" : "bg-dark-1 light-content"
-        } `}
-      >
-        <div className="container">
-          <div className="row mb-n10">
-            <div className="col-md-6 offset-md-1 col-lg-5 offset-lg-2 mb-sm-30 text-center text-md-start">
-              <h2 className="section-title-small mb-0">
-                Like our creative works?
-              </h2>
-            </div>
-            <div className="col-md-4 col-lg-3 text-center text-md-end">
-              <div className="mt-n20">
-                {onePage ? (
-                  <>
-                    {" "}
-                    <a
-                      href="#contact"
-                      className="link-hover-anim link-circle-1 align-middle"
-                      data-link-animate="y"
-                    >
-                      <span className="link-strong link-strong-unhovered">
-                        Start a Project
-                      </span>
-                      <span
-                        className="link-strong link-strong-hovered"
-                        aria-hidden="true"
-                      >
-                        Start a Project
-                      </span>
-                    </a>
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <Link
-                      href={`/elegant-contact${dark ? "-dark" : ""}`}
-                      className="link-hover-anim link-circle-1 align-middle"
-                      data-link-animate="y"
-                    >
-                      <span className="link-strong link-strong-unhovered">
-                        Start a Project
-                      </span>
-                      <span
-                        className="link-strong link-strong-hovered"
-                        aria-hidden="true"
-                      >
-                        Start a Project
-                      </span>
-                    </Link>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div> */}
       <section
         className={`page-section scrollSpysection   ${
           dark ? "bg-dark-1 light-content" : ""
@@ -210,12 +141,11 @@ export default function Home5({ onePage = false, dark = false }) {
           <div className="row mb-70 mb-sm-50">
             <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-center">
               <h2 className="section-title mb-30 mb-sm-20">
-                <span className="text-gray">Contact</span> Us
+                <span className="text-gray">Contact</span> Me
                 <span className="text-gray">.</span>
               </h2>
               <div className="text-gray">
-                Paints such as oil, acrylic, and encaustic are thicker and more
-                opaque and are used to create impressions on the surface.
+                Questions? I'd love to help you start your journey.
               </div>
             </div>
           </div>

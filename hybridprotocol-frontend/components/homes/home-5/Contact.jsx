@@ -7,8 +7,8 @@ export default function Contact() {
     <div className="container">
       <div className="row mt-n10 mb-60 mb-xs-40">
         <div className="col-md-10 offset-md-1">
-          <div className="row">
-            {/* Phone */}
+          <div className="row justify-content-center">
+            {/* Email */}
             {contactItems.map((item, index) => (
               <React.Fragment key={index}>
                 <div className={`col-md-6 col-lg-4 mb-md-30 `}>
@@ -36,18 +36,18 @@ export default function Contact() {
           </div>
         </div>
       </div>
-      {/* Contact Form */}
-      <div className="row">
+      {/* Contact Form - Commented Out */}
+      {/* <div className="row">
         <div className="col-md-10 offset-md-1">
           <form
-            onSubmit={(e) => e.preventDefault()}
+            action="https://formspree.io/f/YOUR_FORM_ID"
+            method="POST"
             className="form contact-form wow fadeInUp wch-unset"
             data-wow-delay=".5s"
             id="contact_form"
           >
             <div className="row">
               <div className="col-md-6">
-                {/* Name */}
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
                   <input
@@ -63,7 +63,6 @@ export default function Contact() {
                 </div>
               </div>
               <div className="col-md-6">
-                {/* Email */}
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
                   <input
@@ -79,7 +78,6 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-            {/* Message */}
             <div className="form-group">
               <label htmlFor="message">Message</label>
               <textarea
@@ -93,7 +91,6 @@ export default function Contact() {
             </div>
             <div className="row">
               <div className="col-sm-6">
-                {/* Inform Tip */}
                 <div className="form-tip pt-20 pt-sm-0">
                   <i className="icon-info size-16" />
                   All the fields are required. By sending the form you agree to
@@ -102,7 +99,6 @@ export default function Contact() {
                 </div>
               </div>
               <div className="col-sm-6">
-                {/* Send Button */}
                 <div className="text-end pt-10">
                   <button
                     type="submit"
@@ -140,7 +136,7 @@ export default function Contact() {
             />
           </form>
         </div>
-      </div>
+      </div> */}
       {/* End Contact Form */}
     </div>
   );
