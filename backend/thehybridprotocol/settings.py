@@ -212,13 +212,21 @@ CORS_ALLOWED_ORIGINS = config(
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
 
+# CSRF settings - always set trusted origins
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='https://thehybridprotocol-production.up.railway.app,http://localhost:8000,http://127.0.0.1:8000',
+    cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
+)
+
+# Debug CSRF settings
+print(f"🔍 DEBUG: CSRF_TRUSTED_ORIGINS = {CSRF_TRUSTED_ORIGINS}")
+print(f"🔍 DEBUG: DEBUG = {DEBUG}")
+
 # Additional CORS settings for production
 if not DEBUG:
-    CSRF_TRUSTED_ORIGINS = config(
-        'CSRF_TRUSTED_ORIGINS',
-        default='https://thehybridprotocol-production.up.railway.app',
-        cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
-    )
+    # Additional production-specific CORS settings
+    pass
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -243,5 +251,9 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+else:
+    # Development security settings
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
 
 
