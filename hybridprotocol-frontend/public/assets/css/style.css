@@ -12831,3 +12831,10 @@ html:not(.mobile) .owl-animate-fadeInDown {
 .works-grid.grid-intro-2 .work-item .work-descr {
   font-size: 16px;
 }
+
+/* About Page CTA Button Hover Effects */
+.about-cta-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: scale(1.05) !important;
+  transition: all 0.3s ease !important;
+}
