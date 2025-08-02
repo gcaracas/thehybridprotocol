@@ -27,7 +27,7 @@ class NewsletterSerializerTest(TestCase):
         expected_fields = {
             'id', 'title', 'slug', 'content', 'excerpt', 
             'featured_image', 'featured_image_url', 'published', 'created_at', 
-            'updated_at', 'published_at'
+            'updated_at', 'published_at', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
     
@@ -36,7 +36,7 @@ class NewsletterSerializerTest(TestCase):
         serializer = NewsletterListSerializer(self.newsletter)
         expected_fields = {
             'id', 'title', 'slug', 'excerpt', 
-            'featured_image_url', 'published_at'
+            'featured_image_url', 'published_at', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
     
@@ -90,7 +90,7 @@ class PodcastEpisodeSerializerTest(TestCase):
             'publish_date', 'episode_number', 'duration', 
             'audio_url', 'youtube_url', 'spotify_url',
             'cover_image', 'cover_image_url', 'published', 
-            'created_at', 'updated_at'
+            'created_at', 'updated_at', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
     
@@ -100,7 +100,7 @@ class PodcastEpisodeSerializerTest(TestCase):
         expected_fields = {
             'id', 'title', 'slug', 'description', 'publish_date',
             'episode_number', 'duration', 'audio_url', 'youtube_url', 
-            'spotify_url', 'cover_image_url', 'script_snippet'
+            'spotify_url', 'cover_image_url', 'script_snippet', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
     
