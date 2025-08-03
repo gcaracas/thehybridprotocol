@@ -1,7 +1,7 @@
 "use client";
 import { toggleMobileMenu } from "@/utlis/toggleMobileMenu";
 import Nav from "./components/Nav";
-
+import Link from "next/link";
 import Image from "next/image";
 export default function Header5({ links }) {
   return (
@@ -10,14 +10,14 @@ export default function Header5({ links }) {
               If you use a PNG logo image, the image resolution must be equal 200% of the visible logo
               image size for support of retina screens. See details in the template documentation. *) */}
       <div className="nav-logo-wrap local-scroll">
-        <a href="#top" className="logo font-alt">
+        <Link href="/" className="logo font-alt">
           <Image
             src="/assets/images/site/logo.png"
             alt="Your Company Logo"
             width={110}
             height={150}
           />
-        </a>
+        </Link>
       </div>
       {/* Mobile Menu Button */}
       <div
