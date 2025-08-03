@@ -31,61 +31,22 @@ export default function AboutPage() {
                 <div className="container min-height-100vh d-flex align-items-center pt-100 pb-100 pt-sm-120 pb-sm-120" style={{position: 'relative', zIndex: 2}}>
                   {/* About Hero Content */}
                   <div className="home-content text-center">
-                    <h1 className="hs-title-3 mb-50 mb-sm-30 wow fadeInDownShort font-hero-logo hero-slogan" style={{
-                      fontSize: 'clamp(1.8rem, 5vw, 3.2rem)',
-                      fontWeight: '500',
-                      color: '#6f8650',
-                      textShadow: '0 2px 2px rgba(0, 0, 0, 0.07)',
-                      letterSpacing: '-0.015em',
-                      lineHeight: '1.2',
-                      textAlign: 'center'
-                    }}>
+                    <h1 className="hero-title mb-50 mb-sm-30 wow fadeInDownShort">
                       The Story Behind the Protocol
                     </h1>
-                    <p className="hs-subheadline mb-30 wow fadeInDownShort" style={{
-                      fontSize: 'calc(1.1rem + 0.4vw)',
-                      fontWeight: '500',
-                      color: '#ffffff',
-                      textShadow: '0 2px 4px rgba(0,0,0,0.4)',
-                      lineHeight: '1.4',
-                      maxWidth: '80%',
-                      margin: '0 auto'
-                    }}>
+                    <p className="hero-subtitle wow fadeInDownShort">
                       Reverse Aging Through Science, Story, and a Second Chance at Health
                     </p>
                     <div className="local-scroll wow fadeInUpShort" data-wow-delay="0.57s">
                       <a
                         href="#about-content"
-                        className="link-hover-anim link-circle-1 align-middle about-cta-btn"
-                        data-link-animate="y"
-                        style={{
-                         
-                          background: 'transparent',
-                          color: '#ffffff',
-                          padding: '12px 30px',
-                          borderRadius: '50px',
-                          textDecoration: 'none',
-                          transition: 'all 0.3s ease',
-                          display: 'inline-block'
-                        }}
+                        className="hero-button"
                       >
-                        <span className="link-strong link-strong-unhovered">
-                          Start Your Journey{" "}
-                          <i
-                            className="mi-arrow-right size-18 align-middle"
-                            aria-hidden="true"
-                          ></i>
-                        </span>
-                        <span
-                          className="link-strong link-strong-hovered"
+                        Start Your Journey{" "}
+                        <i
+                          className="mi-arrow-right size-18 align-middle"
                           aria-hidden="true"
-                        >
-                          Start Your Journey{" "}
-                          <i
-                            className="mi-arrow-right size-18 align-middle"
-                            aria-hidden="true"
-                          ></i>
-                        </span>
+                        ></i>
                       </a>
                     </div>
                   </div>
