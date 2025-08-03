@@ -2,8 +2,9 @@
 import { archiveLinks } from "@/data/archeve";
 import { widgetPosts } from "@/data/blogs";
 import Image from "next/image";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CommentsWidget from "./CommentsWidget";
+import apiService from "@/utlis/api";
 
 export default function Widget1({
   searchInputClass = "form-control input-md search-field input-circle",
@@ -15,6 +16,10 @@ export default function Widget1({
   const categories = contentData?.category ? [contentData.category] : [];
   const tags = contentData?.tags || [];
 
+  // State for dynamic posts
+  const [dynamicPosts, setDynamicPosts] = useState([]);
+  const [loadingPosts, setLoadingPosts] = useState(false);
+
   // Helper function to get the display name (English by default)
   const getDisplayName = (item) => {
     if (item.name_english) {
@@ -25,6 +30,43 @@ export default function Widget1({
     }
     return 'Unknown';
   };
+
+  // Helper function to truncate text to 2 lines
+  const truncateText = (text, maxLength = 80) => {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
+  // Fetch dynamic posts based on contentType
+  useEffect(() => {
+    const fetchDynamicPosts = async () => {
+      if (!contentType) return;
+      
+      try {
+        setLoadingPosts(true);
+        let response;
+        
+        if (contentType === 'newsletter') {
+          response = await apiService.getNewsletters(1, 5); // Get 5 most recent newsletters
+        } else if (contentType === 'podcast') {
+          response = await apiService.getPodcastEpisodes(1, 5); // Get 5 most recent podcasts
+        } else {
+          return; // Use default widgetPosts for other content types
+        }
+        
+        const posts = response.results || response;
+        setDynamicPosts(posts);
+      } catch (error) {
+        console.error('Error fetching dynamic posts:', error);
+        setDynamicPosts([]);
+      } finally {
+        setLoadingPosts(false);
+      }
+    };
+
+    fetchDynamicPosts();
+  }, [contentType]);
 
   return (
     <>
@@ -97,26 +139,57 @@ export default function Widget1({
         <h3 className="widget-title">Latest posts</h3>
         <div className="widget-body">
           <ul className="clearlist widget-posts">
-            {widgetPosts.map((post, index) => (
-              <li key={index} className="clearfix">
-                <a href="#">
-                  <Image
-                    src={post.imgUrl}
-                    height={140}
-                    style={{ height: "fit-content" }}
-                    alt=""
-                    width={100}
-                    className="widget-posts-img"
-                  />
-                </a>
+            {loadingPosts ? (
+              <li className="clearfix">
                 <div className="widget-posts-descr">
-                  <a href="#" title="">
-                    {post.title}
-                  </a>
-                  <span>Posted by {post.author}</span>
+                  <span>Loading...</span>
                 </div>
               </li>
-            ))}
+            ) : contentType === 'newsletter' || contentType === 'podcast' ? (
+              // Dynamic posts for newsletter/podcast pages
+              dynamicPosts.map((post, index) => (
+                <li key={post.id || index} className="clearfix">
+                  <a href={`/${contentType === 'podcast' ? 'podcasts' : contentType}-single/${post.slug}`}>
+                    <Image
+                      src={contentType === 'newsletter' ? post.featured_image_url : post.cover_image_url}
+                      height={140}
+                      style={{ height: "fit-content" }}
+                      alt=""
+                      width={100}
+                      className="widget-posts-img"
+                    />
+                  </a>
+                  <div className="widget-posts-descr">
+                    <a href={`/${contentType === 'podcast' ? 'podcasts' : contentType}-single/${post.slug}`} title="">
+                      {contentType === 'newsletter' ? 'Excerpt:' : ''} {truncateText(contentType === 'newsletter' ? post.excerpt : post.description)}
+                    </a>
+                    <span>Posted on {new Date(contentType === 'newsletter' ? post.published_at : post.publish_date).toLocaleDateString()}</span>
+                  </div>
+                </li>
+              ))
+            ) : (
+              // Default widget posts for other content types
+              widgetPosts.map((post, index) => (
+                <li key={index} className="clearfix">
+                  <a href="#">
+                    <Image
+                      src={post.imgUrl}
+                      height={140}
+                      style={{ height: "fit-content" }}
+                      alt=""
+                      width={100}
+                      className="widget-posts-img"
+                    />
+                  </a>
+                  <div className="widget-posts-descr">
+                    <a href="#" title="">
+                      {post.title}
+                    </a>
+                    <span>Posted by {post.author}</span>
+                  </div>
+                </li>
+              ))
+            )}
           </ul>
         </div>
       </div>
