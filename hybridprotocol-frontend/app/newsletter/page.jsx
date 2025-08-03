@@ -10,6 +10,7 @@ import { elegantMultipage } from "@/data/menu";
 import Pagination from "@/components/common/Pagination";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
 import NewsLetter from "@/components/homes/home-5/NewsLetter";
+import { getLanguageDisplayText } from "@/utlis/languageUtils";
 
 export default function NewsletterPage() {
   const [newsletters, setNewsletters] = useState([]);
@@ -181,6 +182,12 @@ export default function NewsletterPage() {
                                 <div className="float-end">
                                   <i className="mi-calendar size-14 align-middle" />
                                   <a href="#">{new Date(newsletter.published_at).toLocaleDateString()}</a>
+                                </div>
+                              </div>
+                              <div className="post-prev-info clearfix language-indicator">
+                                <div className="float-start">
+                                  <i className="mi-language size-14 align-middle" />
+                                  <a href="#">{getLanguageDisplayText(newsletter)}</a>
                                 </div>
                               </div>
                             </div>

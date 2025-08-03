@@ -9153,6 +9153,51 @@ a.portfolio-5-link:hover .portfolio-5-title span {
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Remove horizontal line from language indicator */
+.post-prev-info:last-child:before {
+  display: none !important;
+}
+
+/* Elegant theme specific override */
+.theme-elegant .post-prev-info:last-child:before {
+  display: none !important;
+}
+
+/* Additional overrides to ensure no lines appear */
+.post-prev-info:last-child {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+.post-prev-info:last-child:before,
+.post-prev-info:last-child:after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Target language indicator specifically */
+.post-prev-info .mi-language {
+  border-top: none !important;
+}
+
+.post-prev-info:has(.mi-language):before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Language indicator specific overrides */
+.language-indicator:before {
+  display: none !important;
+  content: none !important;
+}
+
+.language-indicator {
+  border-top: none !important;
+  border-bottom: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
 /* ==============================
    Post previews 1
    ============================== */

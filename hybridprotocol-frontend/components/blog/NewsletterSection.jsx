@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import apiService from '@/utlis/api';
 import Link from 'next/link';
+import { getLanguageDisplayText } from "@/utlis/languageUtils";
 
 export default function NewsletterSection() {
   const [newsletters, setNewsletters] = useState([]);
@@ -93,6 +94,10 @@ export default function NewsletterSection() {
               <div className="card-footer text-muted">
                 <small>
                   Published: {new Date(newsletter.published_at).toLocaleDateString()}
+                </small>
+                <small className="ms-3">
+                  <i className="mi-language size-12 align-middle me-1" />
+                  {getLanguageDisplayText(newsletter)}
                 </small>
               </div>
             </div>

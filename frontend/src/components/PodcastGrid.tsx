@@ -17,6 +17,8 @@ interface PodcastEpisode {
   spotify_url?: string;
   cover_image_url?: string;
   script_snippet?: string;
+  available_in_english?: boolean;
+  available_in_spanish?: boolean;
 }
 
 interface PodcastGridProps {
@@ -24,6 +26,20 @@ interface PodcastGridProps {
   showTitle?: boolean;
   className?: string;
 }
+
+const getLanguageDisplayText = (episode: PodcastEpisode): string => {
+  const { available_in_english, available_in_spanish } = episode;
+  
+  if (available_in_english && available_in_spanish) {
+    return 'English/Spanish';
+  } else if (available_in_english) {
+    return 'English';
+  } else if (available_in_spanish) {
+    return 'Spanish';
+  } else {
+    return 'English'; // Default fallback
+  }
+};
 
 export default function PodcastGrid({ 
   limit, 
@@ -249,9 +265,17 @@ export default function PodcastGrid({
                   )}
                 </div>
 
-                {/* Episode Date */}
-                <div className="text-sm text-gray-500">
-                  Published on {formatDate(episode.publish_date)}
+                {/* Episode Date and Language */}
+                <div className="flex justify-between items-center text-sm text-gray-500">
+                  <div>
+                    Published on {formatDate(episode.publish_date)}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.01-4.65.83-6.99l-.01-.01-.01-.01c-1.74-1.94-4.65-2.01-6.99-.83l-.01.01-.01.01c-1.74 1.94-2.01 4.65-.83 6.99l.01.01.01.01c1.74 1.94 4.65 2.01 6.99.83l.01-.01.01-.01c1.74-1.94 2.01-4.65.83-6.99l-.01-.01-.01-.01z"/>
+                    </svg>
+                    {getLanguageDisplayText(episode)}
+                  </div>
                 </div>
               </div>
             </div>

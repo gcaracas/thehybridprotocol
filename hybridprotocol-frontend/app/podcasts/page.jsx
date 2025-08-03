@@ -9,6 +9,7 @@ import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import Pagination from "@/components/common/Pagination";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
+import { getLanguageDisplayText } from "@/utlis/languageUtils";
 
 export default function PodcastsPage() {
   const [podcasts, setPodcasts] = useState([]);
@@ -180,6 +181,12 @@ export default function PodcastsPage() {
                                 <div className="float-end">
                                   <i className="mi-calendar size-14 align-middle" />
                                   <a href="#">{new Date(podcast.publish_date).toLocaleDateString()}</a>
+                                </div>
+                              </div>
+                              <div className="post-prev-info clearfix language-indicator">
+                                <div className="float-start">
+                                  <i className="mi-language size-14 align-middle" />
+                                  <a href="#">{getLanguageDisplayText(podcast)}</a>
                                 </div>
                               </div>
                             </div>

@@ -9,6 +9,7 @@ import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import Widget1 from "@/components/blog/widgets/Widget1";
 import CommentSection from "@/components/common/CommentSection";
+import { getLanguageDisplayText } from "@/utlis/languageUtils";
 
 export default function PodcastSinglePage({ params }) {
   const resolvedParams = use(params);
@@ -133,6 +134,11 @@ export default function PodcastSinglePage({ params }) {
                       <a href="#">{podcast.duration}</a>
                     </div>
                   )}
+                  <div className="d-inline-block me-3">
+                    <i className="mi-language size-16" />
+                    <span className="visually-hidden">Language:</span>
+                    <a href="#">{getLanguageDisplayText(podcast)}</a>
+                  </div>
                 </div>
                 {/* End Author, Categories, Comments */}
               </div>

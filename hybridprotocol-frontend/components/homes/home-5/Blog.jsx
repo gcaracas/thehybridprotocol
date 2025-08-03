@@ -5,6 +5,7 @@ import apiService from '@/utlis/api';
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getLanguageDisplayText } from "@/utlis/languageUtils";
 
 export default function Blog() {
   const [newsletters, setNewsletters] = useState([]);
@@ -116,6 +117,12 @@ export default function Blog() {
                   <div className="float-end">
                     <i className="mi-calendar size-14 align-middle" />
                     <a href="#">{new Date(newsletter.published_at).toLocaleDateString()}</a>
+                  </div>
+                </div>
+                <div className="post-prev-info clearfix language-indicator">
+                  <div className="float-start">
+                    <i className="mi-language size-14 align-middle" />
+                    <a href="#">{getLanguageDisplayText(newsletter)}</a>
                   </div>
                 </div>
               </div>
