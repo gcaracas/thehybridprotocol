@@ -124,7 +124,7 @@ export default function Home5({ onePage = false, dark = false }) {
         <Blog />
       </section>
       <section
-        className="small-section bg-dark-1 bg-dark-alpha-70 bg-scroll light-content"
+        className="small-section bg-dark-1 bg-scroll light-content"
         style={{
           backgroundImage: "url(/assets/images/demo-elegant/section-bg-4.jpg)",
         }}

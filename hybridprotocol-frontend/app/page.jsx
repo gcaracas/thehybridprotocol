@@ -20,7 +20,7 @@ export default function HomePage() {
           </nav>
           <main id="main">
             <ParallaxContainer
-              className="home-section bg-dark-alpha-30 parallax-5 light-content z-index-1 scrollSpysection"
+              className="home-section  parallax-5 light-content z-index-1 scrollSpysection"
               style={{
                 backgroundImage:
                   "url(/assets/images/site/main-background.png)",

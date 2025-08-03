@@ -40,7 +40,7 @@ export default function PodcastSinglePage({ params }) {
             <Header5 links={elegantMultipage} />
           </nav>
           <main id="main">
-            <section className="page-section bg-dark-alpha-50 light-content">
+            <section className="page-section light-content">
               <div className="container position-relative pt-20 pt-sm-20 text-center">
                 <h1 className="hs-title-3a mb-0">Loading...</h1>
               </div>
@@ -62,7 +62,7 @@ export default function PodcastSinglePage({ params }) {
             <Header5 links={elegantMultipage} />
           </nav>
           <main id="main">
-            <section className="page-section bg-dark-alpha-50 light-content">
+            <section className="page-section light-content">
               <div className="container position-relative pt-20 pt-sm-20 text-center">
                 <h1 className="hs-title-3a mb-0">Podcast not found</h1>
                 <p>Sorry, this podcast episode could not be found.</p>
@@ -86,7 +86,7 @@ export default function PodcastSinglePage({ params }) {
           </nav>
           <main id="main">
             <section
-              className="page-section bg-dark-alpha-50 light-content"
+              className="page-section light-content"
               style={{
                 backgroundImage:
                   "url(/assets/images/site/main-background.png)",

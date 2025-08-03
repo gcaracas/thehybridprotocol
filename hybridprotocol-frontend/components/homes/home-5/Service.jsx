@@ -5,7 +5,7 @@ export default function Service() {
   return (
     <>
       <div
-        className="page-section bg-dark-1 bg-dark-alpha-70 light-content parallax-7 pb-140"
+        className="page-section bg-dark-1 light-content parallax-7 pb-140"
         style={{
           backgroundImage: "url(/assets/images/demo-elegant/section-bg-3.jpg)",
         }}

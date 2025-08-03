@@ -931,7 +931,7 @@ h6,
 h1,
 .h1 {
   margin-bottom: 0.5em;
-  font-size: 42px;
+  font-size: 35px;
   letter-spacing: -0.04em;
 }
 h2,
@@ -1228,18 +1228,18 @@ hr.thick {
 }
 
 .hs-welcome {
-  font-size: calc(1.1rem + 0.6vw) !important;
+  font-size: calc(1.2rem + 0.6vw) !important;
   font-weight: 400 !important;
   line-height: 1.3 !important;
-  color: #ffffff !important;
+  color: #70966cd9 !important;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1) !important;
 }
 
 .hs-subheadline {
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: #9eaba4d9 !important;
   font-weight: 300 !important;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.1) !important;
-  font-size: calc(1rem + 0.4vw) !important;
+  font-size: calc(0.8rem + 0.4vw) !important;
   line-height: 1.5 !important;
   font-style: italic !important;
   letter-spacing: 0.03em !important;
@@ -1261,7 +1261,7 @@ hr.thick {
 
 .hs-quote {
   font-style: italic !important;
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: #70966cd9 !important;
   font-size: 1rem !important;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.08) !important;
   font-weight: 400 !important;
@@ -1342,7 +1342,7 @@ hr.thick {
 
 /* Restore circle effect for Discover Now button */
 .hs-discover-btn.link-circle-1:before {
-  border: 2px solid #ffffff !important;
+  border: 2px solid #4e584861 !important;
   background: transparent !important;
 }
 .hs-title-4 {
@@ -1562,7 +1562,7 @@ hr.thick {
 }
 .light-content .link-strong,
 .light-content .link-hover-anim {
-  color: #fff !important;
+  color: #4e584861 !important;
 }
 
 .link-hover-anim.link-gradient .link-strong {
@@ -1619,7 +1619,7 @@ hr.thick {
   left: 27px;
 }
 .light-content .link-circle-1:before {
-  border-color: #fff;
+  border-color: #4e584861;
   opacity: 0.25;
 }
 .link-circle-1:hover:before {
@@ -3014,7 +3014,7 @@ textarea:-webkit-autofill:focus {
   background: var(--color-dark-1);
 }
 .light-content .scroll-down-3 {
-  color: #fff;
+  color: #4e58489c;
 }
 .light-content .scroll-down-3:after {
   background: rgba(193, 193, 193, 0.9);
@@ -4459,12 +4459,12 @@ a.logo:hover {
   backdrop-filter: blur(10px);
 }
 .main-nav.dark .inner-nav ul > li > a {
-  color: #fff;
-  opacity: 0.78;
+  color: #49a205; 
+  opacity: 0.98;
 }
 .main-nav.dark .inner-nav ul > li > a:hover,
 .main-nav.dark .inner-nav ul > li > a.active {
-  color: #fff;
+  color: #d2078f;
   opacity: 1 !important;
 }
 .main-nav.dark .inner-nav ul li .mn-sub li a {
@@ -4823,7 +4823,7 @@ a.logo:hover {
   opacity: 0.17;
 }
 .light-content {
-  color: #fff !important;
+  color: rgb(165, 198, 99) !important;
 }
 .light-content a {
   color: rgba(255, 255, 255, 0.8);
@@ -12866,4 +12866,124 @@ html:not(.mobile) .owl-animate-fadeInDown {
   background: rgba(255, 255, 255, 0.1) !important;
   transform: scale(1.05) !important;
   transition: all 0.3s ease !important;
+}
+
+/* ==============================
+   Font Experiments - Logo Matching
+   ============================== */
+
+/* Option 1: Inter - Most similar to logo */
+.font-logo-inter {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Override animation classes to ensure Inter font is applied */
+.font-logo-inter .char,
+.font-logo-inter .word,
+.font-logo-inter.charsAnimInLong .char,
+.font-logo-inter.charsAnimInLong .word {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Elongated Inter font to match logo better */
+.font-logo-inter-elongated {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600; /* Reduce weight */
+  font-stretch: 70%; /* Narrower appearance */
+  letter-spacing: 0.01em; /* Tighten spacing */
+  line-height: 1.1;
+  transform: scaleY(1.1); /* Slight vertical stretch */
+  font-size: clamp(1.8rem, 4vw, 4rem); /* More responsive sizing */
+  color: #6c7b42; /* Brand green */
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.05); /* Subtle depth */
+  text-align: center;
+}
+
+/* Override animation classes for elongated version */
+.font-logo-inter-elongated .char,
+.font-logo-inter-elongated .word,
+.font-logo-inter-elongated.charsAnimInLong .char,
+.font-logo-inter-elongated.charsAnimInLong .word {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-stretch: 75% !important;
+  letter-spacing: 0.05em !important;
+  line-height: 0.9 !important;
+  transform: scaleY(1.2) !important;
+}
+
+/* Option 2: Plus Jakarta Sans - Modern geometric */
+.font-logo-jakarta {
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Option 3: Clash Grotesk - Clean geometric */
+.font-logo-clash {
+  font-family: "Clash Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Option 4: Satoshi - Modern professional */
+.font-logo-satoshi {
+  font-family: "Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Option 5: Poppins - Rounded geometric */
+.font-logo-poppins {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Option 6: Epilogue - Modern with personality */
+.font-logo-epilogue {
+  font-family: "Epilogue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Hero Logo Font - Barlow Semi Condensed */
+.font-hero-logo {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  letter-spacing: -0.015em;  /* tighter cohesion */
+  line-height: 1.2;
+  color: #6f8650;            /* slight tonal tweak */
+  text-align: center;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.07);
+}
+
+.hero-slogan {
+  letter-spacing: -0.015em;
+}
+
+.hero-cta-button {
+  color: #3b5032; /* Higher contrast */
+  font-weight: 500;
+}
+
+/* Override animation classes for hero logo font */
+.font-hero-logo .char,
+.font-hero-logo .word,
+.font-hero-logo.charsAnimInLong .char,
+.font-hero-logo.charsAnimInLong .word {
+  font-family: 'Barlow Semi Condensed', sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.2 !important;
+  color: #6f8650 !important;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.07) !important;
+}
+
+/* Strong override for hs-title-3 conflicts */
+.hs-title-3.font-hero-logo {
+  font-size: clamp(1.8rem, 5vw, 3.2rem) !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.2 !important;
+  color: #6f8650 !important;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.07) !important;
+}
+
+/* Remove hover effects for hero titles */
+.hs-title-3.font-hero-logo:hover,
+.hs-title-3.font-hero-logo:hover span {
+  letter-spacing: -0.015em !important;
+  transition: none !important;
 }

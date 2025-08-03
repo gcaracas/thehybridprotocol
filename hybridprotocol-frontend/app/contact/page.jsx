@@ -17,7 +17,7 @@ export default function ContactPage() {
           </nav>
           <main id="main">
             <section
-              className="page-section bg-dark-alpha-50 light-content"
+              className="page-section light-content"
               style={{
                 backgroundImage:
                   "url(/assets/images/site/main-background.png)",
@@ -26,10 +26,19 @@ export default function ContactPage() {
             >
               <div className="container position-relative pt-20 pt-sm-20 text-center">
                 <h1
-                  className="hs-title-3 mb-10 wow fadeInUpShort"
+                  className="hs-title-3 mb-10 wow fadeInUpShort font-hero-logo hero-slogan"
                   data-wow-duration="0.6s"
+                  style={{
+                    fontSize: 'clamp(1.8rem, 5vw, 3.2rem)',
+                    fontWeight: '500',
+                    color: '#6f8650',
+                    textShadow: '0 2px 2px rgba(0, 0, 0, 0.07)',
+                    letterSpacing: '-0.015em',
+                    lineHeight: '1.2',
+                    textAlign: 'center'
+                  }}
                 >
-                  CONTACT
+                  Contact
                 </h1>
                 <div className="row wow fadeIn" data-wow-delay="0.2s">
                   <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">

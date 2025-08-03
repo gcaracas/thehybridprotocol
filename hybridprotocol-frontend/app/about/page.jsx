@@ -18,7 +18,7 @@ export default function AboutPage() {
           </nav>
           <main id="main">
             <ParallaxContainer
-              className="home-section bg-dark-alpha-30 parallax-5 light-content z-index-1 scrollSpysection"
+              className="home-section parallax-5 light-content z-index-1 scrollSpysection"
               style={{
                 backgroundImage:
                   "url(/assets/images/site/main-background.png)",
@@ -26,36 +26,26 @@ export default function AboutPage() {
               id="home"
             >
               <div style={{position: 'relative'}}>
-                {/* Dark Overlay */}
-                <div 
-                  style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    width: '100%',
-                    height: '100%',
-                    background: 'rgba(0, 0, 0, 0.20)',
-                    zIndex: 1,
-                    pointerEvents: 'none'
-                  }}
-                ></div>
+                
                 
                 <div className="container min-height-100vh d-flex align-items-center pt-100 pb-100 pt-sm-120 pb-sm-120" style={{position: 'relative', zIndex: 2}}>
                   {/* About Hero Content */}
                   <div className="home-content text-center">
-                    <h1 className="hs-title-3 mb-50 mb-sm-30 wow fadeInDownShort" style={{
-                      fontSize: 'calc(2.5rem + 1.5vw)',
-                      fontWeight: '700',
-                      color: '#ffffff',
-                      textShadow: '0 2px 4px rgba(0,0,0,0.4)',
-                      letterSpacing: '0.05em'
+                    <h1 className="hs-title-3 mb-50 mb-sm-30 wow fadeInDownShort font-hero-logo hero-slogan" style={{
+                      fontSize: 'clamp(1.8rem, 5vw, 3.2rem)',
+                      fontWeight: '500',
+                      color: '#6f8650',
+                      textShadow: '0 2px 2px rgba(0, 0, 0, 0.07)',
+                      letterSpacing: '-0.015em',
+                      lineHeight: '1.2',
+                      textAlign: 'center'
                     }}>
-                      The Hybrid Protocol
+                      The Story Behind the Protocol
                     </h1>
                     <p className="hs-subheadline mb-30 wow fadeInDownShort" style={{
                       fontSize: 'calc(1.1rem + 0.4vw)',
                       fontWeight: '500',
-                      color: 'rgba(255, 255, 255, 0.9)',
+                      color: '#ffffff',
                       textShadow: '0 2px 4px rgba(0,0,0,0.4)',
                       lineHeight: '1.4',
                       maxWidth: '80%',
@@ -69,7 +59,7 @@ export default function AboutPage() {
                         className="link-hover-anim link-circle-1 align-middle about-cta-btn"
                         data-link-animate="y"
                         style={{
-                          border: '2px solid rgba(255, 255, 255, 0.8)',
+                         
                           background: 'transparent',
                           color: '#ffffff',
                           padding: '12px 30px',
