@@ -184,12 +184,12 @@ export default function NewsletterPage() {
                                   <a href="#">{new Date(newsletter.published_at).toLocaleDateString()}</a>
                                 </div>
                               </div>
-                              <div className="post-prev-info clearfix language-indicator">
-                                <div className="float-start">
-                                  <i className="mi-language size-14 align-middle" />
-                                  <a href="#">{getLanguageDisplayText(newsletter)}</a>
+                                                              <div className="post-prev-info clearfix language-indicator">
+                                  <div className="float-start">
+                                    <i className="mi-flag size-14 align-middle" />
+                                    <a href="#">{getLanguageDisplayText(newsletter)}</a>
+                                  </div>
                                 </div>
-                              </div>
                             </div>
                           </div>
                         ))}

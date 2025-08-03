@@ -95,10 +95,10 @@ export default function NewsletterSection() {
                 <small>
                   Published: {new Date(newsletter.published_at).toLocaleDateString()}
                 </small>
-                <small className="ms-3">
-                  <i className="mi-language size-12 align-middle me-1" />
-                  {getLanguageDisplayText(newsletter)}
-                </small>
+                                        <small className="ms-3">
+                          <i className="mi-flag size-12 align-middle me-1" />
+                          {getLanguageDisplayText(newsletter)}
+                        </small>
               </div>
             </div>
           </div>

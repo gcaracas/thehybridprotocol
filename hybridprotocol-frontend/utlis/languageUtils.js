@@ -29,17 +29,17 @@ export function getLanguageDisplayText(content) {
  * @returns {string} - The icon class name
  */
 export function getLanguageIconClass(content) {
-  if (!content) return 'mi-language size-16';
-  
+  if (!content) return 'mi-flag size-16';
+
   const { available_in_english, available_in_spanish } = content;
-  
+
   if (available_in_english && available_in_spanish) {
-    return 'mi-language size-16'; // For multilingual content
+    return 'mi-flag size-16'; // For multilingual content
   } else if (available_in_english) {
-    return 'mi-language size-16'; // For English content
+    return 'mi-flag size-16'; // For English content
   } else if (available_in_spanish) {
-    return 'mi-language size-16'; // For Spanish content
+    return 'mi-flag size-16'; // For Spanish content
   } else {
-    return 'mi-language size-16'; // Default fallback
+    return 'mi-flag size-16'; // Default fallback
   }
 } 

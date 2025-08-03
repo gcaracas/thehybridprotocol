@@ -183,12 +183,12 @@ export default function PodcastsPage() {
                                   <a href="#">{new Date(podcast.publish_date).toLocaleDateString()}</a>
                                 </div>
                               </div>
-                              <div className="post-prev-info clearfix language-indicator">
-                                <div className="float-start">
-                                  <i className="mi-language size-14 align-middle" />
-                                  <a href="#">{getLanguageDisplayText(podcast)}</a>
+                                                              <div className="post-prev-info clearfix language-indicator">
+                                  <div className="float-start">
+                                    <i className="mi-flag size-14 align-middle" />
+                                    <a href="#">{getLanguageDisplayText(podcast)}</a>
+                                  </div>
                                 </div>
-                              </div>
                             </div>
                           </div>
                         ))}

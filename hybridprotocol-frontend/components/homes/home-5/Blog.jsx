@@ -121,7 +121,7 @@ export default function Blog() {
                 </div>
                 <div className="post-prev-info clearfix language-indicator">
                   <div className="float-start">
-                    <i className="mi-language size-14 align-middle" />
+                    <i className="mi-flag size-14 align-middle" />
                     <a href="#">{getLanguageDisplayText(newsletter)}</a>
                   </div>
                 </div>

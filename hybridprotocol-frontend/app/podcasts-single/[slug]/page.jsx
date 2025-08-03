@@ -135,7 +135,7 @@ export default function PodcastSinglePage({ params }) {
                     </div>
                   )}
                   <div className="d-inline-block me-3">
-                    <i className="mi-language size-16" />
+                    <i className="mi-flag size-16" />
                     <span className="visually-hidden">Language:</span>
                     <a href="#">{getLanguageDisplayText(podcast)}</a>
                   </div>

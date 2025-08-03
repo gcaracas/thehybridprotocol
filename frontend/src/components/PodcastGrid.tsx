@@ -272,7 +272,7 @@ export default function PodcastGrid({
                   </div>
                   <div className="flex items-center gap-1">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.01-4.65.83-6.99l-.01-.01-.01-.01c-1.74-1.94-4.65-2.01-6.99-.83l-.01.01-.01.01c-1.74 1.94-2.01 4.65-.83 6.99l.01.01.01.01c1.74 1.94 4.65 2.01 6.99.83l.01-.01.01-.01c1.74-1.94 2.01-4.65.83-6.99l-.01-.01-.01-.01z"/>
+                      <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/>
                     </svg>
                     {getLanguageDisplayText(episode)}
                   </div>
