@@ -11,6 +11,13 @@ from .serializers import (
     EmailSignupSerializer, EmailSignupCreateSerializer,
     CategorySerializer, TagSerializer, ArchiveSerializer
 )
+from rest_framework.decorators import throttle_classes
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+from django.core.cache import cache
+from django.utils import timezone
+from datetime import timedelta
+from .serializers import CommentSerializer, CommentCreateSerializer
+from .models import Comment
 
 
 class NewsletterListView(generics.ListAPIView):
@@ -84,6 +91,66 @@ class ArchiveListView(generics.ListAPIView):
     
     def get_queryset(self):
         return Archive.objects.filter(is_active=True)
+
+
+class CommentListView(generics.ListAPIView):
+    """List comments for a specific podcast or newsletter"""
+    serializer_class = CommentSerializer
+    
+    def get_queryset(self):
+        """Get approved comments for the specified content"""
+        content_type = self.request.query_params.get('content_type')
+        content_id = self.request.query_params.get('content_id')
+        
+        if not content_type or not content_id:
+            return Comment.objects.none()
+        
+        queryset = Comment.objects.filter(is_approved=True)
+        
+        if content_type == 'podcast':
+            queryset = queryset.filter(podcast_episode_id=content_id)
+        elif content_type == 'newsletter':
+            queryset = queryset.filter(newsletter_id=content_id)
+        else:
+            return Comment.objects.none()
+        
+        return queryset.order_by('-created_at')
+
+
+class CommentCreateView(generics.CreateAPIView):
+    """Create a new comment with rate limiting and security"""
+    serializer_class = CommentCreateSerializer
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    
+    def perform_create(self, serializer):
+        """Create comment with additional security checks"""
+        # Rate limiting check (additional to DRF throttling)
+        client_ip = self.get_client_ip()
+        cache_key = f"comment_rate_limit:{client_ip}"
+        
+        # Check if user has commented recently (max 1 comment per 5 minutes)
+        recent_comments = cache.get(cache_key, 0)
+        if recent_comments >= 1:
+            raise serializers.ValidationError(
+                "You can only submit one comment every 5 minutes. Please wait before submitting another comment."
+            )
+        
+        # Create the comment
+        comment = serializer.save()
+        
+        # Update rate limiting cache
+        cache.set(cache_key, recent_comments + 1, 300)  # 5 minutes
+        
+        return comment
+    
+    def get_client_ip(self):
+        """Get client IP address for rate limiting"""
+        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = self.request.META.get('REMOTE_ADDR')
+        return ip
 
 
 @api_view(['GET'])

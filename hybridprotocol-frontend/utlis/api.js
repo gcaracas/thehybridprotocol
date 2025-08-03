@@ -22,6 +22,10 @@ export const API_ENDPOINTS = {
   categories: `${API_BASE_URL}/categories/`,
   tags: `${API_BASE_URL}/tags/`,
   archives: `${API_BASE_URL}/archives/`,
+  
+  // Comments
+  comments: `${API_BASE_URL}/comments/`,
+  commentsCreate: `${API_BASE_URL}/comments/create/`,
 };
 
 // Generic API request function
@@ -104,6 +108,25 @@ export const apiService = {
 
   async getArchives() {
     return apiRequest(API_ENDPOINTS.archives);
+  },
+  
+  // Comment functions
+  async getComments(contentType, contentId) {
+    const params = new URLSearchParams({
+      content_type: contentType,
+      content_id: contentId
+    });
+    return apiRequest(`${API_ENDPOINTS.comments}?${params}`);
+  },
+
+  async createComment(commentData) {
+    return apiRequest(API_ENDPOINTS.commentsCreate, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(commentData)
+    });
   },
 };
 

@@ -28,4 +28,8 @@ urlpatterns = [
     path('categories/', views.CategoryListView.as_view(), name='category_list'),
     path('tags/', views.TagListView.as_view(), name='tag_list'),
     path('archives/', views.ArchiveListView.as_view(), name='archive_list'),
+    
+    # Comment endpoints
+    path('comments/', views.CommentListView.as_view(), name='comment_list'),
+    path('comments/create/', views.CommentCreateView.as_view(), name='comment_create'),
 ]

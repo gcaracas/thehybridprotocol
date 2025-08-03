@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import (
     Newsletter, PodcastEpisode, EmailSignup,
-    LocalizedElement, Category, Tag, Archive, TextWidget
+    LocalizedElement, Category, Tag, Archive, TextWidget, Comment
 )
 import re
 
@@ -244,3 +244,70 @@ class TextWidgetAdmin(admin.ModelAdmin):
             )
         return "No image"
     image_preview.short_description = "Image"
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    """Admin interface for Comment model"""
+    list_display = [
+        'author_name', 'content_preview', 'content_type', 'content_title',
+        'created_at', 'is_approved'
+    ]
+    list_filter = [
+        'is_approved', 'created_at', 'podcast_episode', 'newsletter'
+    ]
+    search_fields = [
+        'author_name', 'author_email', 'content', 'podcast_episode__title', 'newsletter__title'
+    ]
+    readonly_fields = ['created_at']
+    list_editable = ['is_approved']
+    actions = ['approve_comments', 'reject_comments']
+    
+    fieldsets = (
+        ('Comment Information', {
+            'fields': ('content', 'author_name', 'author_email', 'author_website')
+        }),
+        ('Content Association', {
+            'fields': ('podcast_episode', 'newsletter'),
+            'description': 'Comment must be associated with either a podcast episode or newsletter'
+        }),
+        ('Moderation', {
+            'fields': ('is_approved', 'created_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def content_preview(self, obj):
+        """Show first 50 characters of comment content"""
+        return obj.content[:50] + "..." if len(obj.content) > 50 else obj.content
+    content_preview.short_description = "Content Preview"
+    
+    def content_type(self, obj):
+        """Show whether comment is for podcast or newsletter"""
+        return "Podcast" if obj.podcast_episode else "Newsletter"
+    content_type.short_description = "Content Type"
+    
+    def content_title(self, obj):
+        """Show the title of the associated content"""
+        if obj.podcast_episode:
+            return obj.podcast_episode.title
+        elif obj.newsletter:
+            return obj.newsletter.title
+        return "Unknown"
+    content_title.short_description = "Content Title"
+    
+    def approve_comments(self, request, queryset):
+        """Approve selected comments"""
+        updated = queryset.update(is_approved=True)
+        self.message_user(request, f"{updated} comment(s) were successfully approved.")
+    approve_comments.short_description = "Approve selected comments"
+    
+    def reject_comments(self, request, queryset):
+        """Reject selected comments"""
+        updated = queryset.update(is_approved=False)
+        self.message_user(request, f"{updated} comment(s) were successfully rejected.")
+    reject_comments.short_description = "Reject selected comments"
+    
+    def get_queryset(self, request):
+        """Show most recent comments first"""
+        return super().get_queryset(request).select_related('podcast_episode', 'newsletter')

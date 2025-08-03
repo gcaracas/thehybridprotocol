@@ -7,9 +7,8 @@ import { useState, useEffect } from 'react';
 import { use } from 'react';
 import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
-import Comments from "@/components/blog/Comments";
-import Form4 from "@/components/blog/commentForm/Form4";
 import Widget1 from "@/components/blog/widgets/Widget1";
+import CommentSection from "@/components/common/CommentSection";
 
 export default function NewsletterSinglePage({ params }) {
   const resolvedParams = use(params);
@@ -160,24 +159,13 @@ export default function NewsletterSinglePage({ params }) {
                       </div>
                     </div>
                     {/* End Post */}
-                    {/* Comments */}
-                    <div className="mb-80 mb-xs-40">
-                      <h4 className="blog-page-title">
-                        Comments <small className="number">(0)</small>
-                      </h4>
-                      <ul className="media-list comment-list clearlist">
-                        <Comments />
-                      </ul>
-                    </div>
-                    {/* End Comments */}
-                    {/* Add Comment */}
-                    <div className="mb-80 mb-xs-40">
-                      <h4 className="blog-page-title">Leave a comment</h4>
-                      {/* Form */}
-                      <Form4 />
-                      {/* End Form */}
-                    </div>
-                    {/* End Add Comment */}
+                    {/* Comments Section */}
+                    <CommentSection 
+                      contentType="newsletter" 
+                      contentId={newsletter.id} 
+                      contentTitle={newsletter.title}
+                    />
+                    {/* End Comments Section */}
                     {/* Prev/Next Post */}
                     <div className="clearfix mt-40">
                       <a href="/newsletter" className="blog-item-more left">

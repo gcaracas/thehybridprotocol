@@ -274,3 +274,84 @@ class EmailSignup(models.Model):
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}".strip()
+
+
+class Comment(models.Model):
+    """Model for user comments on podcast episodes and newsletters"""
+    content = models.TextField(
+        max_length=2000,
+        help_text="Comment content (max 2000 characters)"
+    )
+    author_name = models.CharField(
+        max_length=100,
+        help_text="Author's display name"
+    )
+    author_email = models.EmailField(
+        help_text="Author's email address"
+    )
+    author_website = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Author's website (optional)"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(
+        default=False,
+        help_text="Whether this comment has been approved for display"
+    )
+    
+    # Foreign key relationships - only one should be set
+    podcast_episode = models.ForeignKey(
+        PodcastEpisode,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='comments',
+        help_text="Related podcast episode (if this is a podcast comment)"
+    )
+    newsletter = models.ForeignKey(
+        Newsletter,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='comments',
+        help_text="Related newsletter (if this is a newsletter comment)"
+    )
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+        # Ensure only one relationship is set
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(podcast_episode__isnull=False, newsletter__isnull=True) |
+                       models.Q(podcast_episode__isnull=True, newsletter__isnull=False),
+                name='comment_must_belong_to_one_content_type'
+            )
+        ]
+    
+    def __str__(self):
+        content_type = "Podcast" if self.podcast_episode else "Newsletter"
+        content_title = self.podcast_episode.title if self.podcast_episode else self.newsletter.title
+        return f"Comment by {self.author_name} on {content_type}: {content_title}"
+    
+    def clean(self):
+        """Custom validation"""
+        from django.core.exceptions import ValidationError
+        
+        # Ensure exactly one relationship is set
+        if bool(self.podcast_episode) == bool(self.newsletter):
+            raise ValidationError("Comment must be associated with either a podcast episode or newsletter, but not both or neither.")
+        
+        # Validate content length
+        if len(self.content.strip()) < 10:
+            raise ValidationError("Comment must be at least 10 characters long.")
+        
+        # Validate author name
+        if len(self.author_name.strip()) < 2:
+            raise ValidationError("Author name must be at least 2 characters long.")
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Run validation before saving
+        super().save(*args, **kwargs)

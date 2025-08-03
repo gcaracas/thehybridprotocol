@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.conf import settings
-from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive
+from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive, Comment
 
 
 class NewsletterSerializer(serializers.ModelSerializer):
@@ -296,3 +296,84 @@ class ArchiveSerializer(serializers.ModelSerializer):
             'is_active', 'created_at'
         ]
         read_only_fields = ['id', 'created_at'] 
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    """Serializer for Comment model"""
+    
+    class Meta:
+        model = Comment
+        fields = [
+            'id', 'content', 'author_name', 'author_email', 'author_website',
+            'created_at', 'is_approved'
+        ]
+        read_only_fields = ['id', 'created_at', 'is_approved']
+
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    """Serializer for creating comments with enhanced security"""
+    
+    class Meta:
+        model = Comment
+        fields = [
+            'content', 'author_name', 'author_email', 'author_website',
+            'podcast_episode', 'newsletter'
+        ]
+    
+    def validate_content(self, value):
+        """Validate comment content"""
+        content = value.strip()
+        if len(content) < 10:
+            raise serializers.ValidationError("Comment must be at least 10 characters long.")
+        if len(content) > 2000:
+            raise serializers.ValidationError("Comment cannot exceed 2000 characters.")
+        return content
+    
+    def validate_author_name(self, value):
+        """Validate author name"""
+        name = value.strip()
+        if len(name) < 2:
+            raise serializers.ValidationError("Name must be at least 2 characters long.")
+        if len(name) > 100:
+            raise serializers.ValidationError("Name cannot exceed 100 characters.")
+        return name
+    
+    def validate_author_email(self, value):
+        """Validate email format"""
+        email = value.strip().lower()
+        # Django's EmailField already validates format
+        return email
+    
+    def validate_author_website(self, value):
+        """Validate website URL if provided"""
+        if value:
+            website = value.strip()
+            if not website.startswith(('http://', 'https://')):
+                website = 'https://' + website
+            return website
+        return value
+    
+    def validate(self, data):
+        """Ensure exactly one relationship is set"""
+        podcast_episode = data.get('podcast_episode')
+        newsletter = data.get('newsletter')
+        
+        if bool(podcast_episode) == bool(newsletter):
+            raise serializers.ValidationError(
+                "Comment must be associated with either a podcast episode or newsletter, but not both or neither."
+            )
+        
+        return data
+    
+    def create(self, validated_data):
+        """Create comment with additional security measures"""
+        # Sanitize inputs
+        validated_data['content'] = validated_data['content'].strip()
+        validated_data['author_name'] = validated_data['author_name'].strip()
+        validated_data['author_email'] = validated_data['author_email'].strip().lower()
+        
+        if validated_data.get('author_website'):
+            validated_data['author_website'] = validated_data['author_website'].strip()
+        
+        # Create comment (approval will be handled by admin)
+        return super().create(validated_data) 
