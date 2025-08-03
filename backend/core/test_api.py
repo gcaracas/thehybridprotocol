@@ -195,9 +195,7 @@ class EmailSignupAPITest(APITestCase):
         self.client = APIClient()
         self.valid_signup_data = {
             'email': 'test@example.com',
-            'first_name': 'John',
-            'last_name': 'Doe',
-            'source': 'website'
+            'source': 'home'
         }
     
     def test_email_signup_creation_success(self):
@@ -211,11 +209,10 @@ class EmailSignupAPITest(APITestCase):
         
         # Verify signup was created
         signup = EmailSignup.objects.get(email='test@example.com')
-        self.assertEqual(signup.first_name, 'John')
-        self.assertEqual(signup.source, 'website')
+        self.assertEqual(signup.source, 'home')
     
     def test_email_signup_minimal_data(self):
-        """Test email signup with only email"""
+        """Test email signup with only email (should succeed - source has default)"""
         data = {'email': 'minimal@example.com'}
         url = reverse('core:email_signup')
         response = self.client.post(url, data, format='json')
@@ -223,8 +220,7 @@ class EmailSignupAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
         signup = EmailSignup.objects.get(email='minimal@example.com')
-        self.assertEqual(signup.first_name, '')
-        self.assertEqual(signup.source, 'website')  # Default
+        self.assertEqual(signup.source, 'website')  # Default value
     
     def test_email_signup_duplicate_email_error(self):
         """Test duplicate email returns error"""
@@ -242,7 +238,7 @@ class EmailSignupAPITest(APITestCase):
         """Test invalid email format returns error"""
         data = {
             'email': 'invalid-email',
-            'first_name': 'John'
+            'source': 'home'
         }
         url = reverse('core:email_signup')
         response = self.client.post(url, data, format='json')

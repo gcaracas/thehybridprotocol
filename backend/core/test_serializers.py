@@ -175,14 +175,12 @@ class EmailSignupSerializerTest(TestCase):
         """Test EmailSignupCreateSerializer includes only writable fields"""
         data = {
             'email': 'new@example.com',
-            'first_name': 'Jane',
-            'last_name': 'Smith',
-            'source': 'podcast'
+            'source': 'home'
         }
         serializer = EmailSignupCreateSerializer(data=data)
         self.assertTrue(serializer.is_valid())
         
-        expected_fields = {'email', 'first_name', 'last_name', 'source'}
+        expected_fields = {'email', 'source'}
         self.assertEqual(set(serializer.validated_data.keys()), expected_fields)
     
     def test_email_signup_serializer_data_accuracy(self):
@@ -218,9 +216,7 @@ class EmailSignupSerializerTest(TestCase):
         """Test creating new signup via serializer"""
         data = {
             'email': 'new@example.com',
-            'first_name': 'Jane',
-            'last_name': 'Smith',
-            'source': 'podcast'
+            'source': 'home'
         }
         serializer = EmailSignupCreateSerializer(data=data)
         
@@ -228,20 +224,17 @@ class EmailSignupSerializerTest(TestCase):
         signup = serializer.save()
         
         self.assertEqual(signup.email, 'new@example.com')
-        self.assertEqual(signup.first_name, 'Jane')
-        self.assertEqual(signup.source, 'podcast')
+        self.assertEqual(signup.source, 'home')
     
     def test_email_signup_partial_data(self):
         """Test creating signup with minimal data"""
         data = {'email': 'minimal@example.com'}
         serializer = EmailSignupCreateSerializer(data=data)
         
-        self.assertTrue(serializer.is_valid())
+        self.assertTrue(serializer.is_valid())  # source has default value
         signup = serializer.save()
         
         self.assertEqual(signup.email, 'minimal@example.com')
-        self.assertEqual(signup.first_name, '')
-        self.assertEqual(signup.last_name, '')
         self.assertEqual(signup.source, 'website')  # Default value
     
     def test_invalid_email_format(self):

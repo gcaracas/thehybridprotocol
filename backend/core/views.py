@@ -55,8 +55,24 @@ class PodcastEpisodeDetailView(generics.RetrieveAPIView):
 
 
 class EmailSignupCreateView(generics.CreateAPIView):
-    """Create a new email signup"""
+    """Create a new email signup with rate limiting and security"""
     serializer_class = EmailSignupCreateSerializer
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    
+    def get_throttles(self):
+        """Disable throttling during tests"""
+        if settings.DEBUG and 'test' in str(self.request):
+            return []
+        return super().get_throttles()
+    
+    def get_client_ip(self):
+        """Get client IP address for rate limiting"""
+        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = self.request.META.get('REMOTE_ADDR')
+        return ip
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

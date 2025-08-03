@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
 from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive, Comment
 
 
@@ -244,17 +246,48 @@ class EmailSignupSerializer(serializers.ModelSerializer):
 
 
 class EmailSignupCreateSerializer(serializers.ModelSerializer):
-    """Serializer for creating email signups (public endpoint)"""
+    """Serializer for creating email signups (public endpoint) with enhanced security"""
     
     class Meta:
         model = EmailSignup
-        fields = ['email', 'first_name', 'last_name', 'source']
+        fields = ['email', 'source']
     
     def validate_email(self, value):
         """Validate email format and uniqueness"""
-        if EmailSignup.objects.filter(email=value).exists():
+        email = value.strip().lower()
+        
+        # Check for duplicate email
+        if EmailSignup.objects.filter(email=email).exists():
             raise serializers.ValidationError("This email is already subscribed.")
-        return value
+        
+        # Additional email validation
+        if len(email) > 254:  # RFC 5321 limit
+            raise serializers.ValidationError("Email address is too long.")
+        
+        return email
+    
+    def validate_source(self, value):
+        """Validate source field"""
+        source = value.strip()
+        allowed_sources = ['home', 'newsletter', 'website']
+        if source not in allowed_sources:
+            raise serializers.ValidationError("Invalid source specified.")
+        return source
+    
+    def validate(self, data):
+        """Additional validation"""
+        # Rate limiting check (basic)
+        email = data.get('email')
+        if email:
+            # Check for recent submissions from same email
+            recent_submissions = EmailSignup.objects.filter(
+                email=email,
+                created_at__gte=timezone.now() - timedelta(minutes=1)
+            ).count()
+            if recent_submissions > 0:
+                raise serializers.ValidationError("Please wait a moment before submitting again.")
+        
+        return data
 
 
 class CategorySerializer(serializers.ModelSerializer):

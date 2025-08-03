@@ -79,7 +79,7 @@ export default function Home5({ onePage = false, dark = false }) {
                     <>
                       {" "}
                       <Link
-                        href={`/elegant-about${dark ? "-dark" : ""}`}
+                        href="/newsletter"
                         className="link-hover-anim link-circle-1 align-middle learn-more-button"
                         data-link-animate="y"
                       >
