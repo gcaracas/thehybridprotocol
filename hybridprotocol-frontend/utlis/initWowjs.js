@@ -1,7 +1,5 @@
 export function init_wow() {
   const { WOW } = require("wowjs");
-  
-  // Reduced timeout for better mobile performance
   setTimeout(() => {
     /* Wow init */
     if (document.body.classList.contains("appear-animate")) {
@@ -11,9 +9,9 @@ export function init_wow() {
     }
     var wow = new WOW({
       boxClass: "wow",
-      animateClass: "animated", // Fixed animation class name
-      offset: 50, // Reduced offset for better mobile detection
-      mobile: true, // Enable on mobile devices
+      animateClass: "animatedfgfg",
+      offset: 100,
+
       live: false,
       callback: function (box) {
         box.classList.add("animated");
@@ -22,19 +20,6 @@ export function init_wow() {
 
     if (document.body.classList.contains("appear-animate")) {
       wow.init();
-      
-      // Force remove no-animate class from elements that are already in view
-      setTimeout(() => {
-        document.querySelectorAll(".wow").forEach((el) => {
-          const rect = el.getBoundingClientRect();
-          const isInView = rect.top < window.innerHeight && rect.bottom > 0;
-          if (isInView) {
-            el.classList.remove("no-animate");
-            el.style.opacity = "1";
-            el.style.visibility = "visible";
-          }
-        });
-      }, 100);
     } else {
       document
         .querySelectorAll(".wow")
@@ -49,9 +34,9 @@ export function init_wow() {
     }
     var wow_p = new WOW({
       boxClass: "wow-p",
-      animateClass: "animated", // Fixed animation class name
-      offset: 50, // Reduced offset for better mobile detection
-      mobile: true, // Enable on mobile devices
+      animateClass: "animatedfgfg",
+      offset: 100,
+
       live: false,
       callback: function (box) {
         box.classList.add("animated");
@@ -66,19 +51,22 @@ export function init_wow() {
         .forEach((el) => (el.style.opacity = "1"));
     }
 
-    /* Wow for menu bar init - simplified for mobile */
-    if (document.body.classList.contains("appear-animate")) {
+    /* Wow for menu bar init */
+    if (
+      document.body.classList.contains("appear-animate") &&
+      window.innerWidth >= 1024 &&
+      document.documentElement.classList.contains("no-mobile")
+    ) {
       document.querySelectorAll(".wow-menubar").forEach((el) => {
         el.classList.add("no-animate", "fadeInDown", "animated");
-        // Reduced interval for mobile
-        setTimeout(() => {
+        setInterval(() => {
           el.classList.remove("no-animate");
-        }, 800);
+        }, 1500);
       });
     } else {
       document
         .querySelectorAll(".wow-menubar")
         .forEach((el) => (el.style.opacity = "1"));
     }
-  }, 200); // Reduced timeout for faster initialization
+  }, 400);
 }

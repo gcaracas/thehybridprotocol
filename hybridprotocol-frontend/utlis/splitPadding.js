@@ -1,17 +1,21 @@
 export const splitPadding = ()=>{
      const addPaddingLeft = () => {
-      document.getElementById("paddingLeft")?.style.paddingLeft = `${
-        (window.innerWidth -
-          document.getElementById("paddingLeftContainer")?.offsetWidth) /
-        2
-      }px`;
+      const paddingLeftElement = document.getElementById("paddingLeft");
+      const paddingLeftContainerElement = document.getElementById("paddingLeftContainer");
+      if (paddingLeftElement && paddingLeftContainerElement) {
+        paddingLeftElement.style.paddingLeft = `${
+          (window.innerWidth - paddingLeftContainerElement.offsetWidth) / 2
+        }px`;
+      }
     };
     const addPaddingRight = () => {
-      document.getElementById("paddingRight")?.style.paddingRight = `${
-        (window.innerWidth -
-          document.getElementById("paddingRightContainer")?.offsetWidth) /
-        2
-      }px`;
+      const paddingRightElement = document.getElementById("paddingRight");
+      const paddingRightContainerElement = document.getElementById("paddingRightContainer");
+      if (paddingRightElement && paddingRightContainerElement) {
+        paddingRightElement.style.paddingRight = `${
+          (window.innerWidth - paddingRightContainerElement.offsetWidth) / 2
+        }px`;
+      }
     };
     addPaddingLeft();
     addPaddingRight();

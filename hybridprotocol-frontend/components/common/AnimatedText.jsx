@@ -6,7 +6,7 @@ export default function AnimatedText({
   return (
     <>
       <span
-        className="wow charsAnimIn words chars splitting"
+        className="wow charsAnimInLong words chars splitting"
         data-splitting="chars"
         aria-hidden="true"
         style={{
