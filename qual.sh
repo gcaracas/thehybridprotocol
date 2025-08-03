@@ -141,6 +141,11 @@ run_backend_tests() {
     python manage.py test core.test_management_commands --verbosity=1
     print_success "Management Commands Test - PASSED"
     
+    # Pagination Tests
+    print_test "Pagination Tests"
+    python manage.py test core.test_pagination --verbosity=1
+    print_success "Pagination Tests - PASSED"
+    
     # Code Quality Tests
     print_test "Code Quality Analysis"
     python -c "
@@ -258,6 +263,15 @@ run_frontend_tests() {
     fi
     
     print_success "Frontend Code Quality - PASSED"
+    
+    # Frontend Pagination Tests
+    print_test "Frontend Pagination Tests"
+    if [[ -f "scripts/test_pagination.js" ]]; then
+        node scripts/test_pagination.js
+        print_success "Frontend Pagination Tests - PASSED"
+    else
+        print_warning "Frontend pagination test script not found"
+    fi
     
     cd ..
 }

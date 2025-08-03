@@ -42,14 +42,26 @@ class NewsletterListView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         
-        # Get pagination parameters
-        page = int(request.query_params.get('page', 1))
-        page_size = int(request.query_params.get('page_size', 6))
+        # Get pagination parameters with validation
+        try:
+            page = max(1, int(request.query_params.get('page', 1)))
+        except (ValueError, TypeError):
+            page = 1
+            
+        try:
+            page_size = max(1, int(request.query_params.get('page_size', 6)))
+        except (ValueError, TypeError):
+            page_size = 6
         
         # Calculate pagination
         total_count = queryset.count()
         start = (page - 1) * page_size
         end = start + page_size
+        
+        # Ensure start is not negative
+        if start < 0:
+            start = 0
+            end = page_size
         
         # Get paginated data
         paginated_queryset = queryset[start:end]
@@ -97,14 +109,26 @@ class PodcastEpisodeListView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         
-        # Get pagination parameters
-        page = int(request.query_params.get('page', 1))
-        page_size = int(request.query_params.get('page_size', 6))
+        # Get pagination parameters with validation
+        try:
+            page = max(1, int(request.query_params.get('page', 1)))
+        except (ValueError, TypeError):
+            page = 1
+            
+        try:
+            page_size = max(1, int(request.query_params.get('page_size', 6)))
+        except (ValueError, TypeError):
+            page_size = 6
         
         # Calculate pagination
         total_count = queryset.count()
         start = (page - 1) * page_size
         end = start + page_size
+        
+        # Ensure start is not negative
+        if start < 0:
+            start = 0
+            end = page_size
         
         # Get paginated data
         paginated_queryset = queryset[start:end]
