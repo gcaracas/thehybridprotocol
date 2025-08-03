@@ -33,7 +33,7 @@ export default function ContactPage() {
                 </h1>
                 <div className="row wow fadeIn" data-wow-delay="0.2s">
                   <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-                    <p className="section-title-tiny mb-0 opacity-075">
+                    <p className="hero-subtitle mb-0">
                       Get in touch with us.
                     </p>
                   </div>
