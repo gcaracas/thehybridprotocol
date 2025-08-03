@@ -95,14 +95,17 @@ export default function NewsletterSinglePage({ params }) {
               id="home"
             >
               <div className="container position-relative pt-20 pt-sm-20 text-center">
-                <div className="row">
-                  <div className="col-lg-10 offset-lg-1">
-                    <h1
-                      className="hs-title-3a mb-0 wow fadeInUpShort"
-                      data-wow-duration="0.6s"
-                    >
-                      {newsletter.title}
-                    </h1>
+                <h1
+                  className="hero-title mb-10 wow fadeInUpShort"
+                  data-wow-duration="0.6s"
+                >
+                  Newsletter Article:
+                </h1>
+                <div className="row wow fadeIn" data-wow-delay="0.2s">
+                  <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                    <p className="hero-subtitle mb-0">
+                      Title: {newsletter.title}
+                    </p>
                   </div>
                 </div>
                 {/* Author, Categories, Comments */}
