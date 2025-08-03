@@ -2,13 +2,15 @@
 import { archiveLinks } from "@/data/archeve";
 import { widgetPosts } from "@/data/blogs";
 import { categories } from "@/data/categories";
-import { comments } from "@/data/comments";
 import { tags } from "@/data/tags";
 import Image from "next/image";
 import React from "react";
+import CommentsWidget from "./CommentsWidget";
 
 export default function Widget1({
   searchInputClass = "form-control input-md search-field input-circle",
+  contentType,
+  contentId,
 }) {
   return (
     <>
@@ -64,6 +66,11 @@ export default function Widget1({
         </div>
       </div>
       {/* End Widget */}
+      {/* Comments Widget */}
+      {contentType && contentId && (
+        <CommentsWidget contentType={contentType} contentId={contentId} />
+      )}
+      {/* End Comments Widget */}
       {/* Widget */}
       <div className="widget">
         <h3 className="widget-title">Latest posts</h3>
@@ -93,23 +100,7 @@ export default function Widget1({
         </div>
       </div>
       {/* End Widget */}
-      {/* Widget */}
-      <div className="widget">
-        <h3 className="widget-title">Comments</h3>
-        <div className="widget-body">
-          <ul className="clearlist widget-comments">
-            {comments.map((comment, index) => (
-              <li key={index}>
-                {comment.author} on{" "}
-                <a href="#" title="">
-                  {comment.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      {/* End Widget */}
+      {/* Comments section removed - now handled by CommentsWidget */}
       {/* Widget */}
       <div className="widget">
         <h3 className="widget-title">Text widget</h3>
