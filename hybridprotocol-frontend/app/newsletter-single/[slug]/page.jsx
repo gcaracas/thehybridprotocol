@@ -188,6 +188,7 @@ export default function NewsletterSinglePage({ params }) {
                       searchInputClass="form-control input-lg search-field round"
                       contentType="newsletter"
                       contentId={newsletter.id}
+                      contentData={newsletter}
                     />
                   </div>
                   {/* End Sidebar */}

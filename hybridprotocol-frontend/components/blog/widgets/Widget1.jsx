@@ -1,8 +1,6 @@
 "use client";
 import { archiveLinks } from "@/data/archeve";
 import { widgetPosts } from "@/data/blogs";
-import { categories } from "@/data/categories";
-import { tags } from "@/data/tags";
 import Image from "next/image";
 import React from "react";
 import CommentsWidget from "./CommentsWidget";
@@ -11,7 +9,23 @@ export default function Widget1({
   searchInputClass = "form-control input-md search-field input-circle",
   contentType,
   contentId,
+  contentData, // Pass the actual newsletter/podcast data
 }) {
+  // Extract categories and tags from the content data
+  const categories = contentData?.category ? [contentData.category] : [];
+  const tags = contentData?.tags || [];
+
+  // Helper function to get the display name (English by default)
+  const getDisplayName = (item) => {
+    if (item.name_english) {
+      return item.name_english;
+    }
+    if (item.name) {
+      return item.name;
+    }
+    return 'Unknown';
+  };
+
   return (
     <>
       <div className="widget">
@@ -35,42 +49,49 @@ export default function Widget1({
         </form>
       </div>
       {/* End Search Widget */}
-      {/* Widget */}
-      <div className="widget">
-        <h3 className="widget-title">Categories</h3>
-        <div className="widget-body">
-          <ul className="clearlist widget-menu">
-            {categories.map((category) => (
-              <li key={category.id}>
-                <a href="#" title="">
-                  {category.name}
-                </a>
-                <small> - {category.count} </small>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      {/* End Widget */}
-      {/* Widget */}
-      <div className="widget">
-        <h3 className="widget-title">Tags</h3>
-        <div className="widget-body">
-          <div className="tags">
-            {tags.map((tag) => (
-              <a href="#" key={tag.id}>
-                {tag.name}
-              </a>
-            ))}
+      
+      {/* Categories Widget - Only show if content has categories */}
+      {categories.length > 0 && (
+        <div className="widget">
+          <h3 className="widget-title">Categories</h3>
+          <div className="widget-body">
+            <ul className="clearlist widget-menu">
+              {categories.map((category) => (
+                <li key={category.id}>
+                  <span className="text-muted">
+                    {getDisplayName(category)}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </div>
-      {/* End Widget */}
+      )}
+      {/* End Categories Widget */}
+      
+      {/* Tags Widget - Only show if content has tags */}
+      {tags.length > 0 && (
+        <div className="widget">
+          <h3 className="widget-title">Tags</h3>
+          <div className="widget-body">
+            <div className="tags">
+              {tags.map((tag) => (
+                <span key={tag.id} className="tag-display">
+                  {getDisplayName(tag)}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {/* End Tags Widget */}
+      
       {/* Comments Widget */}
       {contentType && contentId && (
         <CommentsWidget contentType={contentType} contentId={contentId} />
       )}
       {/* End Comments Widget */}
+      
       {/* Widget */}
       <div className="widget">
         <h3 className="widget-title">Latest posts</h3>
@@ -103,7 +124,7 @@ export default function Widget1({
         </div>
       </div>
       {/* End Widget */}
-      {/* Comments section removed - now handled by CommentsWidget */}
+      
       {/* Widget */}
       <div className="widget">
         <h3 className="widget-title">Text widget</h3>
@@ -127,6 +148,7 @@ export default function Widget1({
         </div>
       </div>
       {/* End Widget */}
+      
       {/* Widget */}
       <div className="widget">
         <h3 className="widget-title">Archive</h3>

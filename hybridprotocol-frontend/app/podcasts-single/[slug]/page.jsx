@@ -227,6 +227,7 @@ export default function PodcastSinglePage({ params }) {
                       searchInputClass="form-control input-lg search-field round"
                       contentType="podcast"
                       contentId={podcast.id}
+                      contentData={podcast}
                     />
                   </div>
                   {/* End Sidebar */}
