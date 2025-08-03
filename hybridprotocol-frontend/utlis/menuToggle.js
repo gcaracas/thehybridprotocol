@@ -14,12 +14,12 @@ export function init_classic_menu_resize() {
   }
 
   // Mobile menu style toggle
-  if (window.innerWidth <= 1024) {
+  if (window.innerWidth <= 768) {
     document.querySelector(".main-nav").classList.add("mobile-on");
     if (!mobile_nav.classList.contains("active")) {
       desktop_nav.style.display = "none";
     }
-  } else if (window.innerWidth > 1024) {
+  } else if (window.innerWidth > 768) {
     document.querySelector(".main-nav").classList.remove("mobile-on");
     desktop_nav.style.display = "block";
   }

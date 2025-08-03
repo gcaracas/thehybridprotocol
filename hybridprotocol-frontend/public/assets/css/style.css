@@ -4482,6 +4482,13 @@ a.logo:hover {
 .main-nav.dark .mobile-nav-icon:after {
   background: #fff;
 }
+
+/* Hamburger menu lines for transparent navigation (at top of page) */
+.main-nav.transparent .mobile-nav-icon,
+.main-nav.transparent .mobile-nav-icon:before,
+.main-nav.transparent .mobile-nav-icon:after {
+  background: #333;
+}
 .main-nav.dark .mobile-nav.active .mobile-nav-icon {
   background: transparent;
 }
