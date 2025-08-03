@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Comprehensive Quality Assurance Script for The Hybrid Protocol
-# Tests both frontend and backend with coverage and quality checks
+# Critical Railway Deployment Tests for The Hybrid Protocol
+# Fast, essential tests that can prevent deployment failures
+# Used by pre-push git hook
 
 set -e  # Exit on any error
 
@@ -10,7 +11,6 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 WHITE='\033[1;37m'
 NC='\033[0m' # No Color
@@ -23,8 +23,6 @@ ROCKET="🚀"
 GEAR="⚙️"
 MICROSCOPE="🔬"
 SHIELD="🛡️"
-CHART="📊"
-PACKAGE="📦"
 
 # Function to print colored output
 print_color() {
@@ -68,9 +66,8 @@ run_test() {
 
 # Detect Python command for backend
 detect_python() {
-    # When running from root directory, check for venv in backend
     if [[ -f "backend/venv/bin/python" ]]; then
-        echo "venv/bin/python"  # Will be relative to backend directory
+        echo "venv/bin/python"
     elif command -v python3 &> /dev/null; then
         echo "python3"
     elif command -v python &> /dev/null; then
@@ -94,15 +91,12 @@ add_result() {
 
 # Main function
 main() {
-    print_header "${MICROSCOPE} THE HYBRID PROTOCOL - COMPREHENSIVE QUALITY SUITE"
+    print_header "${MICROSCOPE} THE HYBRID PROTOCOL - CRITICAL DEPLOYMENT TESTS"
     
     local start_time=$(date +%s)
     
-    # Get current directory
-    local project_root=$(pwd)
-    
     # Pre-flight checks
-    print_header "${PACKAGE} Pre-flight Checks"
+    print_header "${SHIELD} Pre-flight Checks"
     
     # Check if we're in the right directory
     if [[ ! -f "README.md" ]] || [[ ! -d "backend" ]]; then
@@ -112,108 +106,59 @@ main() {
     
     print_color $GREEN "${CHECKMARK} Project structure validated"
     
-    # Backend Tests
-    print_header "${MICROSCOPE} BACKEND QUALITY TESTS"
+    # CRITICAL BACKEND TESTS (Railway deployment blockers)
+    print_header "${MICROSCOPE} CRITICAL BACKEND TESTS"
     
-    # Check if backend dependencies are available
-    if [[ -f "backend/requirements.txt" ]]; then
-        print_color $BLUE "${PACKAGE} Backend dependencies found"
-    else
-        print_color $YELLOW "${WARNING} Backend requirements.txt not found"
-    fi
-    
-    # Backend Django checks
+    # 1. Django System Check - Critical for deployment
     run_test "Django System Check" "$PYTHON_CMD manage.py check" "backend"
     add_result $? "Django System Check"
     
-    run_test "Django Security Check" "$PYTHON_CMD manage.py check --deploy" "backend"
-    add_result $? "Django Security Check"
-    
+    # 2. Migration Check - Prevents deployment failures
     run_test "Migration Check" "$PYTHON_CMD manage.py makemigrations --check --dry-run" "backend"
     add_result $? "Migration Check"
     
-    # Backend unit tests
-    if [[ -f "backend/scripts/test_backend.py" ]]; then
-        run_test "Backend Unit Tests" "$PYTHON_CMD scripts/test_backend.py" "backend"
-        add_result $? "Backend Unit Tests"
+    # 3. Critical Unit Tests - Core functionality
+    run_test "Critical Unit Tests" "$PYTHON_CMD manage.py test core.test_models core.test_serializers --verbosity=1" "backend"
+    add_result $? "Critical Unit Tests"
+    
+    # 4. API Tests - Essential for Railway deployment
+    run_test "API Tests" "$PYTHON_CMD manage.py test core.test_api --verbosity=1" "backend"
+    add_result $? "API Tests"
+    
+    # CRITICAL FRONTEND TESTS (Railway deployment blockers)
+    print_header "${MICROSCOPE} CRITICAL FRONTEND TESTS"
+    
+    # 1. Frontend Build Test - Critical for deployment
+    if [[ -f "hybridprotocol-frontend/package.json" ]]; then
+        run_test "Frontend Build Test" "npm run build" "hybridprotocol-frontend"
+        add_result $? "Frontend Build Test"
     else
-        run_test "Backend Unit Tests (Basic)" "$PYTHON_CMD manage.py test --verbosity=2" "backend"
-        add_result $? "Backend Unit Tests"
+        print_color $YELLOW "${WARNING} Frontend not found - skipping build test"
+        add_result 0 "Frontend Build Test"
     fi
     
-    # Frontend Tests (COMMENTED OUT - frontend will be removed soon)
-    # print_header "${MICROSCOPE} FRONTEND QUALITY TESTS"
+    # 2. Frontend Linting - Code quality for deployment
+    if [[ -f "hybridprotocol-frontend/package.json" ]]; then
+        run_test "Frontend Linting" "npm run lint" "hybridprotocol-frontend"
+        add_result $? "Frontend Linting"
+    else
+        print_color $YELLOW "${WARNING} Frontend not found - skipping linting"
+        add_result 0 "Frontend Linting"
+    fi
     
-    # Check if frontend dependencies are available
-    # if [[ -f "frontend/package.json" ]]; then
-    #     print_color $BLUE "${PACKAGE} Frontend package.json found"
-    # else
-    #     print_color $RED "${CROSS} Frontend package.json not found"
-    #     add_result 1 "Frontend Dependencies"
-    # fi
+    # CRITICAL SECURITY CHECKS (Railway deployment blockers)
+    print_header "${SHIELD} CRITICAL SECURITY CHECKS"
     
-    # Frontend dependency check
-    # run_test "Frontend Dependencies" "npm list --depth=0" "frontend"
-    # add_result $? "Frontend Dependencies"
-    
-    # Frontend linting
-    # run_test "Frontend Linting" "npm run lint" "frontend"
-    # add_result $? "Frontend Linting"
-    
-    # Frontend TypeScript check
-    # run_test "TypeScript Check" "npx tsc --noEmit" "frontend"
-    # add_result $? "TypeScript Check"
-    
-    # Frontend build compilation check (catches Next.js specific issues)
-    # run_test "Next.js Compilation Check" "npm run build" "frontend"
-    # add_result $? "Next.js Compilation Check"
-    
-    # Frontend tests
-    # if [[ -f "frontend/scripts/test_frontend.js" ]]; then
-    #     run_test "Frontend Tests" "node scripts/test_frontend.js" "frontend"
-    #     add_result $? "Frontend Tests"
-    # elif [[ -f "frontend/package.json" ]] && grep -q '"test"' frontend/package.json; then
-    #     run_test "Frontend Unit Tests" "npm test -- --watchAll=false --coverage" "frontend"
-    #     add_result $? "Frontend Unit Tests"
-    # else
-    #     print_color $YELLOW "${WARNING} No frontend tests configured"
-    #     add_result 1 "Frontend Tests"
-    # fi
-    
-    # Frontend build test (already done in compilation check above)
-    
-    # Integration Tests
-    print_header "${SHIELD} INTEGRATION TESTS"
-    
-    # API Health Check (if backend is running)
-    run_test "API Health Check" "curl -f http://localhost:8000/api/health/ || echo 'Backend not running - skipping health check'" ""
-    add_result $? "API Health Check"
-    
-    # Security Checks
-    print_header "${SHIELD} SECURITY CHECKS"
-    
-    # Check for sensitive files
-    run_test "Sensitive Files Check" "! find . -name '*.env' -not -path './frontend/env.local.example' -not -path './env.sample' | grep -q ." ""
+    # 1. Sensitive Files Check - Prevents secrets in deployment
+    run_test "Sensitive Files Check" "! find . -name '*.env' -not -path './hybridprotocol-frontend/env.local.example' -not -path './env.sample' | grep -q ." ""
     add_result $? "Sensitive Files Check"
     
-    # Check for TODO/FIXME comments in critical files
-    run_test "Code Quality Check" "! grep -r 'TODO\\|FIXME\\|XXX' backend/core/ || true" ""
-    add_result $? "Code Quality Check"
-    
-    # Performance Tests
-    print_header "${CHART} PERFORMANCE CHECKS"
-    
-    # Check frontend bundle size (COMMENTED OUT - frontend will be removed soon)
-    # if [[ -d "frontend/.next" ]]; then
-    #     run_test "Bundle Size Check" "du -sh .next/static 2>/dev/null || echo 'Build artifacts found'" "frontend"
-    #     add_result $? "Bundle Size Check"
-    # else
-    #     print_color $YELLOW "${WARNING} No build artifacts to analyze"
-    #     add_result 0 "Bundle Size Check"  # Success - no build artifacts is not a failure
-    # fi
+    # 2. Merge Conflict Check - Prevents broken deployments
+    run_test "Merge Conflict Check" "! grep -r '<<<<<<< HEAD\\|=======\\|>>>>>>> ' --include='*.py' --include='*.js' --include='*.jsx' --include='*.ts' --include='*.tsx' --exclude-dir='node_modules' --exclude-dir='venv' --exclude-dir='.next' . 2>/dev/null" ""
+    add_result $? "Merge Conflict Check"
     
     # Final Results
-    print_header "${CHART} TEST RESULTS SUMMARY"
+    print_header "${CHART} CRITICAL TEST RESULTS"
     
     local total_tests=${#results[@]}
     local passed_tests=0
@@ -247,28 +192,29 @@ main() {
     echo ""
     
     if [[ $failed_tests -eq 0 ]]; then
-        print_color $GREEN "${ROCKET} ALL TESTS PASSED! Ready for deployment!"
+        print_color $GREEN "${ROCKET} ALL CRITICAL TESTS PASSED! Ready for Railway deployment!"
         echo ""
-        print_color $CYAN "Coverage reports:"
-        [[ -d "backend/htmlcov" ]] && print_color $WHITE "  Backend: backend/htmlcov/index.html"
-        # [[ -d "frontend/coverage" ]] && print_color $WHITE "  Frontend: frontend/coverage/lcov-report/index.html"
+        print_color $CYAN "Next steps:"
+        print_color $WHITE "  • Run './qual.sh' for comprehensive quality analysis"
+        print_color $WHITE "  • Deploy to Railway with confidence"
         echo ""
         exit 0
     else
-        print_color $RED "${CROSS} $failed_tests test(s) failed. Please fix issues before deployment."
+        print_color $RED "${CROSS} $failed_tests critical test(s) failed. Railway deployment blocked."
         echo ""
-        print_color $YELLOW "Troubleshooting tips:"
-        print_color $WHITE "  1. Check individual test output above"
-        print_color $WHITE "  2. Run tests individually to debug: python/python3 manage.py test (backend)"
-        print_color $WHITE "  3. Ensure all dependencies are installed"
-        print_color $WHITE "  4. Check for linting errors: npm run lint"
+        print_color $YELLOW "Critical issues to fix:"
+        print_color $WHITE "  1. Fix Django system errors"
+        print_color $WHITE "  2. Resolve migration conflicts"
+        print_color $WHITE "  3. Fix API endpoint issues"
+        print_color $WHITE "  4. Resolve frontend build errors"
+        print_color $WHITE "  5. Remove sensitive files from repository"
         echo ""
         exit 1
     fi
 }
 
 # Handle script interruption
-trap 'echo ""; print_color $YELLOW "${WARNING} Test suite interrupted by user"; exit 130' INT
+trap 'echo ""; print_color $YELLOW "${WARNING} Critical tests interrupted by user"; exit 130' INT
 
 # Run main function
 main "$@" 

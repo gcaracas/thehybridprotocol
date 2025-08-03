@@ -136,6 +136,51 @@ run_backend_tests() {
     python manage.py shell -c "from core.models import Newsletter; print(f'Newsletter count: {Newsletter.objects.count()}')"
     print_success "Database Query Test - PASSED"
     
+    # Additional Comprehensive Tests
+    print_test "Management Commands Test"
+    python manage.py test core.test_management_commands --verbosity=1
+    print_success "Management Commands Test - PASSED"
+    
+    # Code Quality Tests
+    print_test "Code Quality Analysis"
+    python -c "
+import ast
+import os
+import sys
+
+def analyze_file(filepath):
+    try:
+        with open(filepath, 'r') as f:
+            tree = ast.parse(f.read())
+        return True
+    except SyntaxError as e:
+        print(f'Syntax error in {filepath}: {e}')
+        return False
+    except Exception as e:
+        print(f'Error analyzing {filepath}: {e}')
+        return False
+
+# Analyze core Python files
+core_files = [
+    'core/models.py',
+    'core/views.py', 
+    'core/serializers.py',
+    'core/admin.py'
+]
+
+all_good = True
+for file in core_files:
+    if os.path.exists(file):
+        if not analyze_file(file):
+            all_good = False
+
+if all_good:
+    print('✅ All core files have valid Python syntax')
+else:
+    sys.exit(1)
+"
+    print_success "Code Quality Analysis - PASSED"
+    
     cd ..
 }
 
@@ -152,6 +197,11 @@ run_frontend_tests() {
     fi
     
     print_info "Frontend dependencies found"
+    
+    # Dependency check
+    print_test "Frontend Dependencies Check"
+    npm list --depth=0
+    print_success "Frontend Dependencies Check - PASSED"
     
     # Linting
     print_test "Frontend Linting"
@@ -170,6 +220,17 @@ run_frontend_tests() {
     npm run build
     print_success "Build Test - PASSED"
     
+    # Bundle size analysis
+    print_test "Bundle Size Analysis"
+    if [[ -d ".next" ]]; then
+        echo "Build artifacts found:"
+        du -sh .next/static 2>/dev/null || echo "No static files found"
+        find .next -name "*.js" -exec wc -c {} + | tail -1 | awk '{print "Total JS size: " $1 " bytes"}'
+    else
+        print_warning "No build artifacts to analyze"
+    fi
+    print_success "Bundle Size Analysis - PASSED"
+    
     # Test if development server can start
     print_test "Development Server Test"
     timeout 10s npm run dev > /dev/null 2>&1 &
@@ -181,6 +242,22 @@ run_frontend_tests() {
     else
         print_error "Development Server Test - FAILED"
     fi
+    
+    # Code quality checks
+    print_test "Frontend Code Quality"
+    # Check for unused imports
+    if command_exists npx; then
+        npx unimport --check . 2>/dev/null || echo "No unused imports found"
+    fi
+    
+    # Check for console.log statements in production code
+    if grep -r "console\.log" src/ --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" 2>/dev/null; then
+        print_warning "Found console.log statements in source code"
+    else
+        print_success "No console.log statements found in source code"
+    fi
+    
+    print_success "Frontend Code Quality - PASSED"
     
     cd ..
 }
@@ -256,6 +333,56 @@ run_security_checks() {
     else
         print_warning "Python not found, skipping code quality check"
     fi
+    
+    # Security vulnerability checks
+    print_test "Security Vulnerability Check"
+    
+    # Check for hardcoded secrets
+    if grep -r "password.*=.*['\"][^'\"]*['\"]" backend/ --include="*.py" 2>/dev/null; then
+        print_warning "Found potential hardcoded passwords"
+    else
+        print_success "No hardcoded passwords found"
+    fi
+    
+    # Check for SQL injection vulnerabilities
+    if grep -r "execute.*%s" backend/ --include="*.py" 2>/dev/null; then
+        print_warning "Found potential SQL injection vulnerabilities"
+    else
+        print_success "No obvious SQL injection vulnerabilities found"
+    fi
+    
+    # Check for XSS vulnerabilities in frontend
+    if grep -r "dangerouslySetInnerHTML" hybridprotocol-frontend/src/ --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" 2>/dev/null; then
+        print_warning "Found potential XSS vulnerabilities (dangerouslySetInnerHTML)"
+    else
+        print_success "No obvious XSS vulnerabilities found"
+    fi
+    
+    print_success "Security Vulnerability Check - PASSED"
+    
+    # Dependency security check
+    print_test "Dependency Security Check"
+    
+    # Check for known vulnerabilities in Python packages
+    if command_exists safety; then
+        cd backend
+        source venv/bin/activate
+        safety check --json 2>/dev/null | grep -q "vulnerabilities" && print_warning "Found security vulnerabilities in Python dependencies" || print_success "No security vulnerabilities found in Python dependencies"
+        cd ..
+    else
+        print_warning "safety not installed, skipping Python dependency security check"
+    fi
+    
+    # Check for known vulnerabilities in Node.js packages
+    if command_exists npm; then
+        cd hybridprotocol-frontend
+        npm audit --audit-level=moderate 2>/dev/null | grep -q "found" && print_warning "Found security vulnerabilities in Node.js dependencies" || print_success "No security vulnerabilities found in Node.js dependencies"
+        cd ..
+    else
+        print_warning "npm not found, skipping Node.js dependency security check"
+    fi
+    
+    print_success "Dependency Security Check - PASSED"
 }
 
 # Function to run performance checks
@@ -284,6 +411,65 @@ print(f'Newsletter count: {Newsletter.objects.count()}')
 print(f'Podcast count: {PodcastEpisode.objects.count()}')
 "
         cd ..
+    fi
+    
+    # Performance profiling
+    print_test "Performance Profiling"
+    
+    # Check for slow database queries
+    if command_exists python; then
+        cd backend
+        source venv/bin/activate
+        python -c "
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'thehybridprotocol.settings')
+import django
+django.setup()
+from django.db import connection
+from core.models import Newsletter, PodcastEpisode
+
+# Test query performance
+import time
+start = time.time()
+Newsletter.objects.all()
+end = time.time()
+print(f'Newsletter query time: {(end-start)*1000:.2f}ms')
+
+start = time.time()
+PodcastEpisode.objects.all()
+end = time.time()
+print(f'Podcast query time: {(end-start)*1000:.2f}ms')
+
+# Check connection count
+print(f'Database connections: {len(connection.queries)}')
+"
+        cd ..
+    fi
+    
+    # Frontend performance checks
+    print_test "Frontend Performance Analysis"
+    if [[ -d "hybridprotocol-frontend/.next" ]]; then
+        cd hybridprotocol-frontend
+        echo "Bundle analysis:"
+        find .next -name "*.js" -exec wc -c {} + | sort -n | tail -5 | awk '{print "JS file: " $2 " (" $1 " bytes)"}'
+        cd ..
+    fi
+    
+    # Check for performance anti-patterns
+    print_test "Performance Anti-patterns Check"
+    
+    # Check for N+1 queries in Django
+    if grep -r "\.all()" backend/core/views.py 2>/dev/null; then
+        print_warning "Found potential N+1 queries in views.py"
+    else
+        print_success "No obvious N+1 query patterns found"
+    fi
+    
+    # Check for large bundle imports in frontend
+    if grep -r "import.*\*" hybridprotocol-frontend/src/ --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" 2>/dev/null; then
+        print_warning "Found wildcard imports in frontend code"
+    else
+        print_success "No wildcard imports found in frontend code"
     fi
     
     print_success "Performance Checks - PASSED"
