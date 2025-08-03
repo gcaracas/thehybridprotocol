@@ -69,7 +69,7 @@ export default function CommentSection({ contentType, contentId, contentTitle })
         author_name: formData.author_name.trim(),
         author_email: formData.author_email.trim().toLowerCase(),
         author_website: formData.author_website.trim() || '',
-        [contentType]: contentId
+        [contentType === 'podcast' ? 'podcast_episode' : 'newsletter']: contentId
       };
 
       // Submit comment
