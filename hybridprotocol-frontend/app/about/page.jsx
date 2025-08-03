@@ -31,13 +31,13 @@ export default function AboutPage() {
                 <div className="container min-height-100vh d-flex align-items-center pt-100 pb-100 pt-sm-120 pb-sm-120" style={{position: 'relative', zIndex: 2}}>
                   {/* About Hero Content */}
                   <div className="home-content text-center">
-                    <h1 className="hero-title mb-50 mb-sm-30 wow fadeInDownShort">
+                    <h1 className="hero-title mb-50 mb-sm-30 wow fadeInDownShort" style={{ opacity: 1, visibility: 'visible' }}>
                       The Story Behind the Protocol
                     </h1>
-                    <p className="hero-subtitle wow fadeInDownShort">
+                    <p className="hero-subtitle wow fadeInDownShort" style={{ opacity: 1, visibility: 'visible' }}>
                       Reverse Aging Through Science, Story, and a Second Chance at Health
                     </p>
-                    <div className="local-scroll wow fadeInUpShort" data-wow-delay="0.57s">
+                    <div className="local-scroll wow fadeInUpShort" data-wow-delay="0.57s" style={{ opacity: 1, visibility: 'visible' }}>
                       <a
                         href="#about-content"
                         className="hero-button"

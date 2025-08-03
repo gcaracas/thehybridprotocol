@@ -22,6 +22,19 @@ export function init_wow() {
 
     if (document.body.classList.contains("appear-animate")) {
       wow.init();
+      
+      // Force remove no-animate class from elements that are already in view
+      setTimeout(() => {
+        document.querySelectorAll(".wow").forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+          if (isInView) {
+            el.classList.remove("no-animate");
+            el.style.opacity = "1";
+            el.style.visibility = "visible";
+          }
+        });
+      }, 100);
     } else {
       document
         .querySelectorAll(".wow")
