@@ -26,7 +26,8 @@ class NewsletterSerializerTest(TestCase):
         serializer = NewsletterSerializer(self.newsletter)
         expected_fields = {
             'id', 'title', 'slug', 'content', 'excerpt', 
-            'featured_image', 'featured_image_url', 'published', 'created_at', 
+            'featured_image', 'featured_image_url', 'published', 'available_in_english', 
+            'available_in_spanish', 'available_languages', 'is_multilingual', 'created_at', 
             'updated_at', 'published_at', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
@@ -36,7 +37,8 @@ class NewsletterSerializerTest(TestCase):
         serializer = NewsletterListSerializer(self.newsletter)
         expected_fields = {
             'id', 'title', 'slug', 'excerpt', 
-            'featured_image_url', 'published_at', 'category', 'tags'
+            'featured_image_url', 'published_at', 'available_in_english', 
+            'available_in_spanish', 'available_languages', 'is_multilingual', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
     
@@ -89,7 +91,8 @@ class PodcastEpisodeSerializerTest(TestCase):
             'id', 'title', 'slug', 'description', 'script', 
             'publish_date', 'episode_number', 'duration', 
             'audio_url', 'youtube_url', 'spotify_url',
-            'cover_image', 'cover_image_url', 'published', 
+            'cover_image', 'cover_image_url', 'published', 'available_in_english', 
+            'available_in_spanish', 'available_languages', 'is_multilingual',
             'created_at', 'updated_at', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
@@ -100,7 +103,8 @@ class PodcastEpisodeSerializerTest(TestCase):
         expected_fields = {
             'id', 'title', 'slug', 'description', 'publish_date',
             'episode_number', 'duration', 'audio_url', 'youtube_url', 
-            'spotify_url', 'cover_image_url', 'script_snippet', 'category', 'tags'
+            'spotify_url', 'cover_image_url', 'script_snippet', 'available_in_english', 
+            'available_in_spanish', 'available_languages', 'is_multilingual', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
     

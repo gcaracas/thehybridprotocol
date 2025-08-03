@@ -15,10 +15,11 @@ class NewsletterSerializer(serializers.ModelSerializer):
         model = Newsletter
         fields = [
             'id', 'title', 'slug', 'content', 'excerpt', 
-            'featured_image', 'featured_image_url', 'published', 'created_at', 
+            'featured_image', 'featured_image_url', 'published', 'available_in_english', 
+            'available_in_spanish', 'available_languages', 'is_multilingual', 'created_at', 
             'updated_at', 'published_at', 'category', 'tags'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'published_at', 'featured_image_url']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'published_at', 'featured_image_url', 'available_languages', 'is_multilingual']
     
     def get_featured_image_url(self, obj):
         """Return full absolute URL for featured image"""
@@ -69,7 +70,8 @@ class NewsletterListSerializer(serializers.ModelSerializer):
         model = Newsletter
         fields = [
             'id', 'title', 'slug', 'excerpt', 
-            'featured_image_url', 'published_at', 'category', 'tags'
+            'featured_image_url', 'published_at', 'available_in_english', 
+            'available_in_spanish', 'available_languages', 'is_multilingual', 'category', 'tags'
         ]
     
     def get_featured_image_url(self, obj):
@@ -123,10 +125,11 @@ class PodcastEpisodeSerializer(serializers.ModelSerializer):
             'id', 'title', 'slug', 'description', 'script', 
             'publish_date', 'episode_number', 'duration', 
             'audio_url', 'youtube_url', 'spotify_url',
-            'cover_image', 'cover_image_url', 'published', 
+            'cover_image', 'cover_image_url', 'published', 'available_in_english', 
+            'available_in_spanish', 'available_languages', 'is_multilingual',
             'created_at', 'updated_at', 'category', 'tags'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'cover_image_url']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'cover_image_url', 'available_languages', 'is_multilingual']
     
     def get_cover_image_url(self, obj):
         """Return full absolute URL for cover image"""
@@ -179,7 +182,8 @@ class PodcastEpisodeListSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'slug', 'description', 'publish_date',
             'episode_number', 'duration', 'audio_url', 'youtube_url', 
-            'spotify_url', 'cover_image_url', 'script_snippet', 'category', 'tags'
+            'spotify_url', 'cover_image_url', 'script_snippet', 'available_in_english', 
+            'available_in_spanish', 'available_languages', 'is_multilingual', 'category', 'tags'
         ]
     
     def get_cover_image_url(self, obj):

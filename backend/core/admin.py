@@ -9,11 +9,11 @@ import re
 
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'category', 'published', 'published_at', 'featured_image_preview', 'created_at']
-    list_filter = ['published', 'category', 'tags', 'created_at', 'published_at']
+    list_display = ['title', 'slug', 'category', 'published', 'available_in_english', 'available_in_spanish', 'languages_display', 'published_at', 'featured_image_preview', 'created_at']
+    list_filter = ['published', 'category', 'tags', 'available_in_english', 'available_in_spanish', 'created_at', 'published_at']
     search_fields = ['title', 'content', 'slug', 'category__name__english', 'tags__name__english']
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ['published']
+    list_editable = ['published', 'available_in_english', 'available_in_spanish']
     date_hierarchy = 'published_at'
     actions = ['delete_selected']
     list_per_page = 25
@@ -21,6 +21,10 @@ class NewsletterAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Basic Information', {
             'fields': ('title', 'slug', 'excerpt', 'published')
+        }),
+        ('Language Availability', {
+            'fields': ('available_in_english', 'available_in_spanish'),
+            'description': 'Select which languages this content is available in. Both can be selected.'
         }),
         ('Content', {
             'fields': ('content',),
@@ -45,6 +49,16 @@ class NewsletterAdmin(admin.ModelAdmin):
         return "No image"
     featured_image_preview.short_description = "Featured Image"
     
+    def languages_display(self, obj):
+        """Display available languages in a readable format"""
+        languages = []
+        if obj.available_in_english:
+            languages.append('🇺🇸 EN')
+        if obj.available_in_spanish:
+            languages.append('🇪🇸 ES')
+        return ' | '.join(languages) if languages else '—'
+    languages_display.short_description = "Languages"
+    
     def get_actions(self, request):
         """Enable delete action for maximum control"""
         actions = super().get_actions(request)
@@ -53,11 +67,11 @@ class NewsletterAdmin(admin.ModelAdmin):
 
 @admin.register(PodcastEpisode)
 class PodcastEpisodeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'category', 'publish_date', 'episode_number', 'published', 'cover_image_preview']
-    list_filter = ['published', 'category', 'tags', 'publish_date']
+    list_display = ['title', 'slug', 'category', 'publish_date', 'episode_number', 'published', 'available_in_english', 'available_in_spanish', 'languages_display', 'cover_image_preview']
+    list_filter = ['published', 'category', 'tags', 'available_in_english', 'available_in_spanish', 'publish_date']
     search_fields = ['title', 'description', 'slug', 'episode_number', 'category__name__english', 'tags__name__english']
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ['published']
+    list_editable = ['published', 'available_in_english', 'available_in_spanish']
     date_hierarchy = 'publish_date'
     actions = ['delete_selected']
     list_per_page = 25
@@ -65,6 +79,10 @@ class PodcastEpisodeAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Basic Information', {
             'fields': ('title', 'slug', 'description', 'episode_number', 'publish_date', 'published')
+        }),
+        ('Language Availability', {
+            'fields': ('available_in_english', 'available_in_spanish'),
+            'description': 'Select which languages this content is available in. Both can be selected.'
         }),
         ('Content', {
             'fields': ('script',),
@@ -92,6 +110,16 @@ class PodcastEpisodeAdmin(admin.ModelAdmin):
             )
         return "No image"
     cover_image_preview.short_description = "Cover Image"
+    
+    def languages_display(self, obj):
+        """Display available languages in a readable format"""
+        languages = []
+        if obj.available_in_english:
+            languages.append('🇺🇸 EN')
+        if obj.available_in_spanish:
+            languages.append('🇪🇸 ES')
+        return ' | '.join(languages) if languages else '—'
+    languages_display.short_description = "Languages"
 
 
 @admin.register(EmailSignup)

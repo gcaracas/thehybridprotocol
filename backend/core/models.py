@@ -166,6 +166,15 @@ class Newsletter(models.Model):
         help_text="Tags for this newsletter"
     )
     published = models.BooleanField(default=False)
+    # Language availability - both can be True (non-mutually exclusive)
+    available_in_english = models.BooleanField(
+        default=True,
+        help_text="Content is available in English"
+    )
+    available_in_spanish = models.BooleanField(
+        default=False,
+        help_text="Content is available in Spanish"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(blank=True, null=True)
@@ -195,6 +204,21 @@ class Newsletter(models.Model):
             except (ValueError, AttributeError):
                 return None
         return None
+    
+    @property
+    def available_languages(self):
+        """Return list of available languages"""
+        languages = []
+        if self.available_in_english:
+            languages.append('english')
+        if self.available_in_spanish:
+            languages.append('spanish')
+        return languages
+    
+    @property
+    def is_multilingual(self):
+        """Return True if content is available in both languages"""
+        return self.available_in_english and self.available_in_spanish
 
 
 class PodcastEpisode(models.Model):
@@ -225,6 +249,15 @@ class PodcastEpisode(models.Model):
         help_text="Tags for this episode"
     )
     published = models.BooleanField(default=False)
+    # Language availability - both can be True (non-mutually exclusive)
+    available_in_english = models.BooleanField(
+        default=True,
+        help_text="Content is available in English"
+    )
+    available_in_spanish = models.BooleanField(
+        default=False,
+        help_text="Content is available in Spanish"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -248,6 +281,21 @@ class PodcastEpisode(models.Model):
             except (ValueError, AttributeError):
                 return None
         return None
+    
+    @property
+    def available_languages(self):
+        """Return list of available languages"""
+        languages = []
+        if self.available_in_english:
+            languages.append('english')
+        if self.available_in_spanish:
+            languages.append('spanish')
+        return languages
+    
+    @property
+    def is_multilingual(self):
+        """Return True if content is available in both languages"""
+        return self.available_in_english and self.available_in_spanish
 
 
 class EmailSignup(models.Model):

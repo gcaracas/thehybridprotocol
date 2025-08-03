@@ -21,11 +21,22 @@ from .models import Comment
 
 
 class NewsletterListView(generics.ListAPIView):
-    """List all published newsletter articles"""
+    """List all published newsletter articles with optional language filtering"""
     serializer_class = NewsletterListSerializer
     
     def get_queryset(self):
-        return Newsletter.objects.filter(published=True)
+        queryset = Newsletter.objects.filter(published=True)
+        
+        # Filter by language if specified
+        language = self.request.query_params.get('language', '').lower()
+        if language == 'english':
+            queryset = queryset.filter(available_in_english=True)
+        elif language == 'spanish':
+            queryset = queryset.filter(available_in_spanish=True)
+        elif language == 'both':
+            queryset = queryset.filter(available_in_english=True, available_in_spanish=True)
+        
+        return queryset
 
 
 class NewsletterDetailView(generics.RetrieveAPIView):
@@ -38,11 +49,22 @@ class NewsletterDetailView(generics.RetrieveAPIView):
 
 
 class PodcastEpisodeListView(generics.ListAPIView):
-    """List all published podcast episodes"""
+    """List all published podcast episodes with optional language filtering"""
     serializer_class = PodcastEpisodeListSerializer
     
     def get_queryset(self):
-        return PodcastEpisode.objects.filter(published=True)
+        queryset = PodcastEpisode.objects.filter(published=True)
+        
+        # Filter by language if specified
+        language = self.request.query_params.get('language', '').lower()
+        if language == 'english':
+            queryset = queryset.filter(available_in_english=True)
+        elif language == 'spanish':
+            queryset = queryset.filter(available_in_spanish=True)
+        elif language == 'both':
+            queryset = queryset.filter(available_in_english=True, available_in_spanish=True)
+        
+        return queryset
 
 
 class PodcastEpisodeDetailView(generics.RetrieveAPIView):
