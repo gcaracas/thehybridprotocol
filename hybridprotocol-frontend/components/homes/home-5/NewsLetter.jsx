@@ -1,7 +1,56 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import apiService from '@/utlis/api';
 
-export default function NewsLetter() {
+export default function NewsLetter({ source = 'home' }) {
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      // Validate email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email.trim() || !emailRegex.test(email.trim())) {
+        throw new Error('Please enter a valid email address.');
+      }
+
+      // Rate limiting check (client-side basic check)
+      const lastSubmission = localStorage.getItem('newsletter_last_submission');
+      const now = Date.now();
+      if (lastSubmission && (now - parseInt(lastSubmission)) < 60000) { // 1 minute
+        throw new Error('Please wait a moment before submitting again.');
+      }
+
+      // Prepare subscription data
+      const subscriptionData = {
+        email: email.trim().toLowerCase(),
+        source: source // 'home' or 'newsletter'
+      };
+
+      // Submit subscription
+      await apiService.createEmailSignup(subscriptionData);
+      
+      // Store submission time for rate limiting
+      localStorage.setItem('newsletter_last_submission', now.toString());
+      
+      // Reset form
+      setEmail('');
+      setSuccess('Thank you for subscribing! You will receive our newsletter soon.');
+      
+    } catch (error) {
+      setError(error.message || 'Failed to subscribe. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="container position-relative newsletter-section">
       <div className="row">
@@ -19,9 +68,35 @@ export default function NewsLetter() {
           }}>
             Subscribe to our newsletter
           </h2>
+          {error && (
+            <div className="alert alert-danger mb-20" style={{
+              backgroundColor: 'rgba(220, 53, 69, 0.1)',
+              border: '1px solid rgba(220, 53, 69, 0.3)',
+              color: '#ffffff',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '20px'
+            }}>
+              {error}
+            </div>
+          )}
+          
+          {success && (
+            <div className="alert alert-success mb-20" style={{
+              backgroundColor: 'rgba(40, 167, 69, 0.1)',
+              border: '1px solid rgba(40, 167, 69, 0.3)',
+              color: '#ffffff',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '20px'
+            }}>
+              {success}
+            </div>
+          )}
+          
           <form
-            onSubmit={(e) => e.preventDefault()}
-            id="mailchimp"
+            onSubmit={handleSubmit}
+            id="newsletter-signup"
             className="form newsletter-elegant"
             autoComplete="off"
           >
@@ -31,9 +106,12 @@ export default function NewsLetter() {
                   placeholder="Enter your email"
                   className="newsletter-field input-lg form-control mb-20"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   pattern=".{5,100}"
                   required
                   aria-required="true"
+                  disabled={submitting}
                   style={{
                     color: '#ffffff',
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -60,21 +138,23 @@ export default function NewsLetter() {
                   aria-controls="subscribe-result"
                   className="link-hover-anim link-circle-1 align-middle"
                   data-link-animate="y"
+                  disabled={submitting}
                   style={{
                     color: '#ffffff',
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    backgroundColor: submitting ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.2)',
                     fontWeight: '600',
                     borderRadius: '8px',
                     padding: '12px 24px',
                     border: '1px solid rgba(255, 255, 255, 0.4)',
-                    cursor: 'pointer',
+                    cursor: submitting ? 'not-allowed' : 'pointer',
                     transition: 'all 0.3s ease',
                     backdropFilter: 'blur(5px)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                    opacity: submitting ? 0.7 : 1
                   }}
                 >
                   <span className="link-strong link-strong-unhovered" style={{color: '#ffffff'}}>
-                    Subscribe
+                    {submitting ? 'Subscribing...' : 'Subscribe'}
                     <i
                       className="mi-arrow-right size-18 align-middle"
                       aria-hidden="true"
@@ -86,7 +166,7 @@ export default function NewsLetter() {
                     aria-hidden="true"
                     style={{color: '#ffffff'}}
                   >
-                    Subscribe
+                    {submitting ? 'Subscribing...' : 'Subscribe'}
                     <i
                       className="mi-arrow-right size-18 align-middle"
                       aria-hidden="true"

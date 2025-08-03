@@ -129,7 +129,7 @@ export default function Home5({ onePage = false, dark = false }) {
           backgroundImage: "url(/assets/images/site/newsletter.png)",
         }}
       >
-        <NewsLetter />
+        <NewsLetter source="home" />
       </section>
       <section
         className={`page-section  scrollSpysection  ${

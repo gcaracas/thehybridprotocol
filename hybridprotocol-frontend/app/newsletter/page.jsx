@@ -9,6 +9,7 @@ import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import Pagination from "@/components/common/Pagination";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
+import NewsLetter from "@/components/homes/home-5/NewsLetter";
 
 export default function NewsletterPage() {
   const [newsletters, setNewsletters] = useState([]);
@@ -205,6 +206,16 @@ export default function NewsletterPage() {
                 onFilterChange={handleFilterChange}
               />
             </>
+            
+            {/* Newsletter Signup Section */}
+            <section
+              className="small-section bg-dark-1 bg-scroll light-content"
+              style={{
+                backgroundImage: "url(/assets/images/site/newsletter.png)",
+              }}
+            >
+              <NewsLetter source="newsletter" />
+            </section>
           </main>
           <footer className="bg-dark-1 light-content footer z-index-1 position-relative">
             <Footer5 />
