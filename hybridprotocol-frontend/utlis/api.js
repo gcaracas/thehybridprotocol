@@ -72,8 +72,12 @@ export const apiService = {
   },
 
   // Newsletter functions
-  async getNewsletters() {
-    return apiRequest(API_ENDPOINTS.newsletters);
+  async getNewsletters(page = 1, pageSize = 6) {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      page_size: pageSize.toString()
+    });
+    return apiRequest(`${API_ENDPOINTS.newsletters}?${params}`);
   },
 
   async getNewsletterBySlug(slug) {
@@ -81,8 +85,12 @@ export const apiService = {
   },
 
   // Podcast functions
-  async getPodcastEpisodes() {
-    return apiRequest(API_ENDPOINTS.podcastEpisodes);
+  async getPodcastEpisodes(page = 1, pageSize = 6) {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      page_size: pageSize.toString()
+    });
+    return apiRequest(`${API_ENDPOINTS.podcastEpisodes}?${params}`);
   },
 
   async getPodcastEpisodeBySlug(slug) {

@@ -23,6 +23,7 @@ from .models import Comment
 class NewsletterListView(generics.ListAPIView):
     """List all published newsletter articles with optional language filtering"""
     serializer_class = NewsletterListSerializer
+    pagination_class = None  # We'll handle pagination manually
     
     def get_queryset(self):
         queryset = Newsletter.objects.filter(published=True)
@@ -37,6 +38,32 @@ class NewsletterListView(generics.ListAPIView):
             queryset = queryset.filter(available_in_english=True, available_in_spanish=True)
         
         return queryset
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        
+        # Get pagination parameters
+        page = int(request.query_params.get('page', 1))
+        page_size = int(request.query_params.get('page_size', 6))
+        
+        # Calculate pagination
+        total_count = queryset.count()
+        start = (page - 1) * page_size
+        end = start + page_size
+        
+        # Get paginated data
+        paginated_queryset = queryset[start:end]
+        
+        # Serialize the data
+        serializer = self.get_serializer(paginated_queryset, many=True)
+        
+        # Return paginated response
+        return Response({
+            'count': total_count,
+            'next': f"?page={page + 1}&page_size={page_size}" if end < total_count else None,
+            'previous': f"?page={page - 1}&page_size={page_size}" if page > 1 else None,
+            'results': serializer.data
+        })
 
 
 class NewsletterDetailView(generics.RetrieveAPIView):
@@ -51,6 +78,7 @@ class NewsletterDetailView(generics.RetrieveAPIView):
 class PodcastEpisodeListView(generics.ListAPIView):
     """List all published podcast episodes with optional language filtering"""
     serializer_class = PodcastEpisodeListSerializer
+    pagination_class = None  # We'll handle pagination manually
     
     def get_queryset(self):
         queryset = PodcastEpisode.objects.filter(published=True)
@@ -65,6 +93,32 @@ class PodcastEpisodeListView(generics.ListAPIView):
             queryset = queryset.filter(available_in_english=True, available_in_spanish=True)
         
         return queryset
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        
+        # Get pagination parameters
+        page = int(request.query_params.get('page', 1))
+        page_size = int(request.query_params.get('page_size', 6))
+        
+        # Calculate pagination
+        total_count = queryset.count()
+        start = (page - 1) * page_size
+        end = start + page_size
+        
+        # Get paginated data
+        paginated_queryset = queryset[start:end]
+        
+        # Serialize the data
+        serializer = self.get_serializer(paginated_queryset, many=True)
+        
+        # Return paginated response
+        return Response({
+            'count': total_count,
+            'next': f"?page={page + 1}&page_size={page_size}" if end < total_count else None,
+            'previous': f"?page={page - 1}&page_size={page_size}" if page > 1 else None,
+            'results': serializer.data
+        })
 
 
 class PodcastEpisodeDetailView(generics.RetrieveAPIView):

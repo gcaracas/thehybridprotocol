@@ -17,6 +17,10 @@ export default function NewsletterPage() {
   const [filteredNewsletters, setFilteredNewsletters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [itemsPerPage] = useState(6);
   const [activeFilters, setActiveFilters] = useState({
     category: null,
     tags: [],
@@ -25,7 +29,7 @@ export default function NewsletterPage() {
 
   useEffect(() => {
     fetchNewsletters();
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     applyFilters();
@@ -64,15 +68,35 @@ export default function NewsletterPage() {
 
   const handleFilterChange = (filters) => {
     setActiveFilters(filters);
+    // Reset to page 1 when filters change
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // Scroll to top when page changes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const fetchNewsletters = async () => {
     try {
       setLoading(true);
-      const response = await apiService.getNewsletters();
+      const response = await apiService.getNewsletters(currentPage, itemsPerPage);
+      
       // Handle paginated response
       const data = response.results || response;
       setNewsletters(data);
+      
+      // Set pagination info
+      if (response.count !== undefined) {
+        setTotalItems(response.count);
+        setTotalPages(Math.ceil(response.count / itemsPerPage));
+      }
+      
+      // Reset to page 1 if current page is beyond total pages
+      if (response.count !== undefined && currentPage > Math.ceil(response.count / itemsPerPage)) {
+        setCurrentPage(1);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -203,7 +227,13 @@ export default function NewsletterPage() {
                   </div>
                   {/* End Blog Posts Grid */}
                   {/* Pagination */}
-                  <Pagination />
+                  <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    itemsPerPage={itemsPerPage}
+                    onPageChange={handlePageChange}
+                  />
                   {/* End Pagination */}
                 </div>
               </section>
