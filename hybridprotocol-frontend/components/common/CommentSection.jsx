@@ -104,8 +104,45 @@ export default function CommentSection({ contentType, contentId, contentTitle })
           <div className="col-lg-8 offset-lg-2">
             <h3 className="section-title mb-30">Comments</h3>
             
+            {/* Comments List */}
+            <div className="comments-list mb-50">
+              <h4 className="mb-20">
+                {loading ? 'Loading comments...' : `${comments.length} Comment${comments.length !== 1 ? 's' : ''}`}
+              </h4>
+              
+              {!loading && comments.length === 0 && (
+                <p className="text-muted">No comments yet. Be the first to comment!</p>
+              )}
+              
+              {comments.map((comment) => (
+                <div key={comment.id} className="comment-item mb-30">
+                  <div className="comment-header">
+                    <h5 className="comment-author">{comment.author_name}</h5>
+                    <span className="comment-date">
+                      {new Date(comment.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div className="comment-content">
+                    <p>{comment.content}</p>
+                  </div>
+                  {comment.author_website && (
+                    <div className="comment-website">
+                      <a 
+                        href={comment.author_website} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-muted"
+                      >
+                        {comment.author_website}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            
             {/* Comment Form */}
-            <div className="comment-form mb-50">
+            <div className="comment-form">
               <h4 className="mb-20">Leave a comment</h4>
               
               {error && (
@@ -197,43 +234,6 @@ export default function CommentSection({ contentType, contentId, contentTitle })
                   <i className="mi-arrow-right ml-2"></i>
                 </button>
               </form>
-            </div>
-            
-            {/* Comments List */}
-            <div className="comments-list">
-              <h4 className="mb-20">
-                {loading ? 'Loading comments...' : `${comments.length} Comment${comments.length !== 1 ? 's' : ''}`}
-              </h4>
-              
-              {!loading && comments.length === 0 && (
-                <p className="text-muted">No comments yet. Be the first to comment!</p>
-              )}
-              
-              {comments.map((comment) => (
-                <div key={comment.id} className="comment-item mb-30">
-                  <div className="comment-header">
-                    <h5 className="comment-author">{comment.author_name}</h5>
-                    <span className="comment-date">
-                      {new Date(comment.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <div className="comment-content">
-                    <p>{comment.content}</p>
-                  </div>
-                  {comment.author_website && (
-                    <div className="comment-website">
-                      <a 
-                        href={comment.author_website} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-muted"
-                      >
-                        {comment.author_website}
-                      </a>
-                    </div>
-                  )}
-                </div>
-              ))}
             </div>
           </div>
         </div>
