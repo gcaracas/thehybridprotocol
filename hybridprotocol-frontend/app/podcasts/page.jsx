@@ -160,6 +160,10 @@ export default function PodcastsPage() {
                                       src={podcast.cover_image_url}
                                       width={607}
                                       height={358}
+                                      style={{
+                                        width: 'auto',
+                                        height: 'auto'
+                                      }}
                                       alt={podcast.title}
                                     />
                                   </Link>

@@ -16,6 +16,10 @@ export default function Header5({ links }) {
             alt="Your Company Logo"
             width={110}
             height={150}
+            style={{
+              width: 'auto',
+              height: 'auto'
+            }}
           />
         </Link>
       </div>

@@ -206,8 +206,11 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                     src="/assets/images/blog/previews/post-prev-6.jpg"
                     alt="Image Description"
                     height={140}
-                    style={{ height: "fit-content" }}
                     width={100}
+                    style={{
+                      width: 'auto',
+                      height: 'auto'
+                    }}
                     className="left img-left"
                   />
                   Consectetur adipiscing elit. Quisque magna ante

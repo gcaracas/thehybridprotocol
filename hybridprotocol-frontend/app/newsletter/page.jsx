@@ -161,6 +161,10 @@ export default function NewsletterPage() {
                                       src={newsletter.featured_image_url}
                                       width={607}
                                       height={358}
+                                      style={{
+                                        width: 'auto',
+                                        height: 'auto'
+                                      }}
                                       alt={newsletter.title}
                                     />
                                   </Link>
