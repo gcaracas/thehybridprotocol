@@ -17,6 +17,22 @@ export default function Blog() {
     fetchLatestInsights();
   }, []);
 
+  // Ensure elements are visible on mobile after data loads
+  useEffect(() => {
+    if (!loading && (latestNewsletter || latestPodcast)) {
+      // Force visibility after a short delay to ensure WOW.js has initialized
+      setTimeout(() => {
+        const elements = document.querySelectorAll('.wow.fadeInLeft, .wow.fadeInRight');
+        elements.forEach(el => {
+          if (el.style.opacity === '0' || el.style.opacity === '') {
+            el.style.opacity = '1';
+            el.style.visibility = 'visible';
+          }
+        });
+      }, 500);
+    }
+  }, [loading, latestNewsletter, latestPodcast]);
+
   const fetchLatestInsights = async () => {
     try {
       setLoading(true);
@@ -96,7 +112,7 @@ export default function Blog() {
         <div className="row mt-n30">
           {/* Latest Newsletter */}
           {latestNewsletter && (
-            <div className="post-prev col-md-6 mt-30 wow fadeInLeft" data-wow-delay="0.2s">
+            <div className="post-prev col-md-6 mt-30 wow fadeInLeft" data-wow-delay="0.2s" style={{ opacity: 1 }}>
               <div className="post-prev-container">
                 <div className="post-prev-category">
                   <Link href="/newsletter">Newsletter</Link>
@@ -143,7 +159,7 @@ export default function Blog() {
 
           {/* Latest Podcast */}
           {latestPodcast && (
-            <div className="post-prev col-md-6 mt-30 wow fadeInRight" data-wow-delay="0.4s">
+            <div className="post-prev col-md-6 mt-30 wow fadeInRight" data-wow-delay="0.4s" style={{ opacity: 1 }}>
               <div className="post-prev-container">
                 <div className="post-prev-category">
                   <Link href="/podcasts">Podcast</Link>

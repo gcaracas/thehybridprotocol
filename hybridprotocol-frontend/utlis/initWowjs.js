@@ -1,5 +1,7 @@
 export function init_wow() {
   const { WOW } = require("wowjs");
+  
+  // Reduced timeout for better mobile performance
   setTimeout(() => {
     /* Wow init */
     if (document.body.classList.contains("appear-animate")) {
@@ -9,9 +11,9 @@ export function init_wow() {
     }
     var wow = new WOW({
       boxClass: "wow",
-      animateClass: "animatedfgfg",
-      offset: 100,
-
+      animateClass: "animated", // Fixed animation class name
+      offset: 50, // Reduced offset for better mobile detection
+      mobile: true, // Enable on mobile devices
       live: false,
       callback: function (box) {
         box.classList.add("animated");
@@ -34,9 +36,9 @@ export function init_wow() {
     }
     var wow_p = new WOW({
       boxClass: "wow-p",
-      animateClass: "animatedfgfg",
-      offset: 100,
-
+      animateClass: "animated", // Fixed animation class name
+      offset: 50, // Reduced offset for better mobile detection
+      mobile: true, // Enable on mobile devices
       live: false,
       callback: function (box) {
         box.classList.add("animated");
@@ -51,22 +53,19 @@ export function init_wow() {
         .forEach((el) => (el.style.opacity = "1"));
     }
 
-    /* Wow for menu bar init */
-    if (
-      document.body.classList.contains("appear-animate") &&
-      window.innerWidth >= 1024 &&
-      document.documentElement.classList.contains("no-mobile")
-    ) {
+    /* Wow for menu bar init - simplified for mobile */
+    if (document.body.classList.contains("appear-animate")) {
       document.querySelectorAll(".wow-menubar").forEach((el) => {
         el.classList.add("no-animate", "fadeInDown", "animated");
-        setInterval(() => {
+        // Reduced interval for mobile
+        setTimeout(() => {
           el.classList.remove("no-animate");
-        }, 1500);
+        }, 800);
       });
     } else {
       document
         .querySelectorAll(".wow-menubar")
         .forEach((el) => (el.style.opacity = "1"));
     }
-  }, 400);
+  }, 200); // Reduced timeout for faster initialization
 }
