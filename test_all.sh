@@ -1,4 +1,4 @@
-ok#!/bin/bash
+#!/bin/bash
 
 # Critical Railway Deployment Tests for The Hybrid Protocol
 # Fast, essential tests that can prevent deployment failures

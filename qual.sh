@@ -16,6 +16,15 @@ CYAN='\033[0;36m'
 WHITE='\033[1;37m'
 NC='\033[0m' # No Color
 
+# Initialize results tracking
+declare -a results
+declare -a test_names
+
+add_result() {
+    results+=($1)
+    test_names+=("$2")
+}
+
 # Function to print colored output
 print_header() {
     echo -e "${WHITE}============================================================${NC}"
@@ -64,6 +73,7 @@ check_project_structure() {
     fi
     
     print_success "Project structure validated"
+    add_result 0 "Project Structure"
 }
 
 # Function to run backend tests
@@ -90,28 +100,46 @@ run_backend_tests() {
     
     # Django System Check
     print_test "Django System Check"
-    python manage.py check
-    print_success "Django System Check - PASSED"
+    if python manage.py check; then
+        print_success "Django System Check - PASSED"
+        add_result 0 "Django System Check"
+    else
+        print_error "Django System Check - FAILED"
+        add_result 1 "Django System Check"
+    fi
     
     # Django Security Check
     print_test "Django Security Check"
-    python manage.py check --deploy
-    print_success "Django Security Check - PASSED"
+    if python manage.py check --deploy; then
+        print_success "Django Security Check - PASSED"
+        add_result 0 "Django Security Check"
+    else
+        print_error "Django Security Check - FAILED"
+        add_result 1 "Django Security Check"
+    fi
     
     # Migration Check
     print_test "Migration Check"
-    python manage.py makemigrations --check --dry-run
-    print_success "Migration Check - PASSED"
+    if python manage.py makemigrations --check --dry-run; then
+        print_success "Migration Check - PASSED"
+        add_result 0 "Migration Check"
+    else
+        print_error "Migration Check - FAILED"
+        add_result 1 "Migration Check"
+    fi
     
     # Unit Tests with Coverage
     print_test "Unit Tests with Coverage"
-    python -m coverage run --source=. manage.py test --settings=test_settings --verbosity=2
-    
-    # Generate coverage report
-    python -m coverage report
-    python -m coverage html -d htmlcov
-    
-    print_success "Backend Unit Tests - PASSED"
+    if python -m coverage run --source=. manage.py test --settings=test_settings --verbosity=2; then
+        # Generate coverage report
+        python -m coverage report
+        python -m coverage html -d htmlcov
+        print_success "Backend Unit Tests - PASSED"
+        add_result 0 "Backend Unit Tests"
+    else
+        print_error "Backend Unit Tests - FAILED"
+        add_result 1 "Backend Unit Tests"
+    fi
     
     # Test Management Commands
     print_test "Testing Management Commands"
@@ -238,14 +266,16 @@ run_frontend_tests() {
     
     # Test if development server can start
     print_test "Development Server Test"
-    timeout 10s npm run dev > /dev/null 2>&1 &
+    npm run dev > /dev/null 2>&1 &
     DEV_PID=$!
     sleep 5
     if kill -0 $DEV_PID 2>/dev/null; then
         kill $DEV_PID
         print_success "Development Server Test - PASSED"
+        add_result 0 "Development Server Test"
     else
         print_error "Development Server Test - FAILED"
+        add_result 1 "Development Server Test"
     fi
     
     # Code quality checks
@@ -493,22 +523,37 @@ print(f'Database connections: {len(connection.queries)}')
 generate_report() {
     print_section "📊 QUALITY REPORT SUMMARY"
     
+    local total_tests=${#results[@]}
+    local passed_tests=0
+    
     echo -e "${WHITE}Individual Test Results:${NC}"
-    echo -e "${GREEN}✅ Backend Tests${NC}"
-    echo -e "${GREEN}✅ Frontend Tests${NC}"
-    echo -e "${GREEN}✅ Integration Tests${NC}"
-    echo -e "${GREEN}✅ Security Checks${NC}"
-    echo -e "${GREEN}✅ Performance Checks${NC}"
+    for i in "${!results[@]}"; do
+        if [[ ${results[$i]} -eq 0 ]]; then
+            echo -e "${GREEN}✅ ${test_names[$i]}${NC}"
+            ((passed_tests++))
+        else
+            echo -e "${RED}❌ ${test_names[$i]}${NC}"
+        fi
+    done
+    
+    local failed_tests=$((total_tests - passed_tests))
+    local success_rate=$(( (passed_tests * 100) / total_tests ))
     
     echo -e "\n${WHITE}Summary:${NC}"
-    echo -e "${GREEN}✅ Passed: 5${NC}"
-    echo -e "${RED}❌ Failed: 0${NC}"
-    echo -e "${CYAN}📊 Success Rate: 100%${NC}"
+    echo -e "${GREEN}✅ Passed: $passed_tests${NC}"
+    echo -e "${RED}❌ Failed: $failed_tests${NC}"
+    echo -e "${CYAN}📊 Success Rate: ${success_rate}%${NC}"
     
     echo -e "\n${CYAN}Coverage reports:${NC}"
     echo -e "${WHITE}  Backend: backend/htmlcov/index.html${NC}"
     
-    echo -e "\n${GREEN}🚀 ALL TESTS PASSED! Quality suite completed successfully!${NC}"
+    if [[ $failed_tests -eq 0 ]]; then
+        echo -e "\n${GREEN}🚀 ALL TESTS PASSED! Quality suite completed successfully!${NC}"
+        return 0
+    else
+        echo -e "\n${RED}❌ $failed_tests test(s) failed. Quality suite failed.${NC}"
+        return 1
+    fi
 }
 
 # Function to cleanup
@@ -542,11 +587,15 @@ main() {
     RUNTIME=$((END_TIME - START_TIME))
     
     # Generate final report
-    generate_report
-    
-    echo -e "\n${BLUE}⚙️ Total Runtime: ${RUNTIME}s${NC}"
-    
-    print_header "🎉 QUALITY SUITE COMPLETED SUCCESSFULLY!"
+    if generate_report; then
+        echo -e "\n${BLUE}⚙️ Total Runtime: ${RUNTIME}s${NC}"
+        print_header "🎉 QUALITY SUITE COMPLETED SUCCESSFULLY!"
+        exit 0
+    else
+        echo -e "\n${BLUE}⚙️ Total Runtime: ${RUNTIME}s${NC}"
+        print_header "❌ QUALITY SUITE FAILED!"
+        exit 1
+    fi
 }
 
 # Run main function
