@@ -1619,7 +1619,7 @@ hr.thick {
   left: 27px;
 }
 .light-content .link-circle-1:before {
-  border-color: #4e584861;
+  border-color: #ffffff;
   opacity: 0.25;
 }
 .link-circle-1:hover:before {
@@ -12873,6 +12873,131 @@ html:not(.mobile) .owl-animate-fadeInDown {
   background: rgba(255, 255, 255, 0.1) !important;
   transform: scale(1.05) !important;
   transition: all 0.3s ease !important;
+}
+
+/* ==============================
+   Newsletter Section - Enhanced Visibility
+   ============================== */
+
+/* Newsletter overlay container */
+.newsletter-overlay {
+  background: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 2rem !important;
+}
+
+/* Newsletter title */
+.newsletter-section .section-title-tiny {
+  color: #ffffff !important;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8) !important;
+  font-weight: 600 !important;
+}
+
+/* Newsletter input field */
+.newsletter-section .newsletter-field {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(5px) !important;
+  transition: all 0.3s ease !important;
+}
+
+.newsletter-section .newsletter-field:focus {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+}
+
+.newsletter-section .newsletter-field::placeholder {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 500 !important;
+}
+
+/* Newsletter form tip text */
+.newsletter-section .form-tip {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7) !important;
+}
+
+.newsletter-section .form-tip a {
+  color: #ffffff !important;
+  text-decoration: underline !important;
+  transition: all 0.2s ease !important;
+}
+
+.newsletter-section .form-tip a:hover {
+  color: #6c7b42 !important;
+  text-shadow: none !important;
+}
+
+/* Newsletter button */
+.newsletter-section .link-hover-anim {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(5px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.newsletter-section .link-hover-anim .link-strong {
+  color: #ffffff !important;
+}
+
+.newsletter-section .link-hover-anim .link-strong i {
+  color: #ffffff !important;
+}
+
+.newsletter-section .link-hover-anim:hover {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.newsletter-section .link-hover-anim:hover .link-strong {
+  color: #ffffff !important;
+}
+
+.newsletter-section .link-hover-anim:hover .link-strong i {
+  color: #ffffff !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .newsletter-overlay {
+    padding: 1.5rem !important;
+    margin: 0 1rem !important;
+  }
+  
+  .newsletter-section .link-hover-anim {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+  }
+  
+  .newsletter-section .section-title-tiny {
+    font-size: 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletter-overlay {
+    padding: 1rem !important;
+  }
+  
+  .newsletter-section .newsletter-field {
+    padding: 10px 12px !important;
+  }
 }
 
 /* ==============================

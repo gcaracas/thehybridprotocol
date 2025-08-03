@@ -126,7 +126,7 @@ export default function Home5({ onePage = false, dark = false }) {
       <section
         className="small-section bg-dark-1 bg-scroll light-content"
         style={{
-          backgroundImage: "url(/assets/images/demo-elegant/section-bg-4.jpg)",
+          backgroundImage: "url(/assets/images/site/newsletter.png)",
         }}
       >
         <NewsLetter />

@@ -51,7 +51,7 @@
     font-size: 7.5vw !important;
   }
   .hs-title-3 {
-    font-size: calc(1.5rem + 0.7vw) !important;
+    font-size: calc(1.2rem + 0.7vw) !important;
   }
   .hs-title-3a {
     font-size: calc(1.559rem + 0.96vw) !important;
@@ -285,7 +285,7 @@
   }
 
   .form.newsletter-elegant input.newsletter-field {
-    font-size: calc(1.309rem + 0.96vw) !important;
+    font-size: calc(1.109rem + 0.96vw) !important;
   }
 }
 @media only screen and (max-width: 1200px) {
