@@ -10970,6 +10970,26 @@ a.blog-item-more:hover {
   color: var(--color-gray-3);
 }
 
+/* Widget Comment Author and Content */
+.widget-comment-author {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.widget-comment-author strong {
+  color: var(--color-dark-4);
+  font-weight: 600;
+}
+.widget-comment-author small {
+  color: var(--color-gray-3);
+  font-size: 12px;
+}
+.widget-comment-content {
+  color: var(--color-gray-2);
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
 .light-content .widget-comments {
   color: var(--color-gray-light-6);
 }
@@ -10981,6 +11001,15 @@ a.blog-item-more:hover {
 }
 .light-content .widget-comments li a:hover {
   color: #fff;
+}
+.light-content .widget-comment-author strong {
+  color: var(--color-gray-light-5);
+}
+.light-content .widget-comment-author small {
+  color: var(--color-gray-light-6);
+}
+.light-content .widget-comment-content {
+  color: var(--color-gray-light-6);
 }
 
 /* Posts */

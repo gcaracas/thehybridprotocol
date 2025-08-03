@@ -9,6 +9,7 @@ import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import Widget1 from "@/components/blog/widgets/Widget1";
 import CommentSection from "@/components/common/CommentSection";
+import CommentsWidget from "@/components/blog/widgets/CommentsWidget";
 
 export default function NewsletterSinglePage({ params }) {
   const resolvedParams = use(params);
@@ -179,7 +180,9 @@ export default function NewsletterSinglePage({ params }) {
                   {/* Sidebar */}
                   <div className="col-lg-4 col-xl-3">
                     <Widget1 searchInputClass="form-control input-lg search-field round" />
-                    {/* End Widget */}
+                    {/* Comments Widget */}
+                    <CommentsWidget contentType="newsletter" contentId={newsletter.id} />
+                    {/* End Comments Widget */}
                   </div>
                   {/* End Sidebar */}
                 </div>
