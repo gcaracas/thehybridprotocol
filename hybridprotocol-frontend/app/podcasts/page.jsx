@@ -129,7 +129,7 @@ export default function PodcastsPage() {
                 <div className="row wow fadeIn" data-wow-delay="0.2s">
                   <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                     <p className="hero-subtitle mb-0">
-                      Insights and inspiration at your fingertips.
+                      Where science meets story, to help you heal, burn fat, and reverse aging after 40.
                     </p>
                   </div>
                 </div>

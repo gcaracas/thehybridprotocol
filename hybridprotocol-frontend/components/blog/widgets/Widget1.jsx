@@ -103,12 +103,9 @@ export default function Widget1({
                   <Image
                     src={post.imgUrl}
                     height={140}
-                    width={100}
-                    style={{
-                      width: 'auto',
-                      height: 'auto'
-                    }}
+                    style={{ height: "fit-content" }}
                     alt=""
+                    width={100}
                     className="widget-posts-img"
                   />
                 </a>
@@ -133,12 +130,9 @@ export default function Widget1({
             <Image
               src="/assets/images/blog/previews/post-prev-6.jpg"
               height={140}
-              width={100}
-              style={{
-                width: 'auto',
-                height: 'auto'
-              }}
               alt="Image Description"
+              style={{ height: "fit-content" }}
+              width={100}
               className="left img-left"
             />
             Consectetur adipiscing elit. Quisque magna ante eleifend eleifend.
