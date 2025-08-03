@@ -8,22 +8,34 @@ import Link from "next/link";
 import { getLanguageDisplayText } from "@/utlis/languageUtils";
 
 export default function Blog() {
-  const [newsletters, setNewsletters] = useState([]);
+  const [latestNewsletter, setLatestNewsletter] = useState(null);
+  const [latestPodcast, setLatestPodcast] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchNewsletters();
+    fetchLatestInsights();
   }, []);
 
-  const fetchNewsletters = async () => {
+  const fetchLatestInsights = async () => {
     try {
       setLoading(true);
-      const response = await apiService.getNewsletters();
-      // Handle paginated response
-      const data = response.results || response;
-      setNewsletters(data);
+      
+      // Fetch latest newsletter
+      const newsletterResponse = await apiService.getNewsletters();
+      const newsletterData = newsletterResponse.results || newsletterResponse;
+      if (newsletterData && newsletterData.length > 0) {
+        setLatestNewsletter(newsletterData[0]); // First item is the latest
+      }
+      
+      // Fetch latest podcast
+      const podcastResponse = await apiService.getPodcastEpisodes();
+      const podcastData = podcastResponse.results || podcastResponse;
+      if (podcastData && podcastData.length > 0) {
+        setLatestPodcast(podcastData[0]); // First item is the latest
+      }
     } catch (err) {
+      console.error('Error fetching insights:', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -69,7 +81,7 @@ export default function Blog() {
         </div>
       )}
 
-      {!loading && !error && newsletters.length === 0 && (
+      {!loading && !error && !latestNewsletter && !latestPodcast && (
         <div className="row">
           <div className="col-12 text-center">
             <p>No insights published yet.</p>
@@ -80,33 +92,33 @@ export default function Blog() {
         </div>
       )}
 
-      {!loading && !error && newsletters.length > 0 && (
+      {!loading && !error && (latestNewsletter || latestPodcast) && (
         <div className="row mt-n30">
-          {newsletters.map((newsletter, index) => (
-            <div
-              key={index}
-              className={`post-prev col-md-6 col-lg-4 mt-30 wow fadeInLeft`}
-              data-wow-delay={`${(index + 1) * 0.2}s`}
-            >
+          {/* Latest Newsletter */}
+          {latestNewsletter && (
+            <div className="post-prev col-md-6 mt-30 wow fadeInLeft" data-wow-delay="0.2s">
               <div className="post-prev-container">
-                {newsletter.featured_image_url && (
+                <div className="post-prev-category">
+                  <Link href="/newsletter">Newsletter</Link>
+                </div>
+                {latestNewsletter.featured_image_url && (
                   <div className="post-prev-img">
-                    <Link href={`/newsletter/${newsletter.slug}`}>
+                    <Link href={`/newsletter-single/${latestNewsletter.slug}`}>
                       <Image
-                        src={newsletter.featured_image_url}
+                        src={latestNewsletter.featured_image_url}
                         width={607}
                         height={358}
-                        alt={newsletter.title}
+                        alt={latestNewsletter.title}
                       />
                     </Link>
                   </div>
                 )}
                 <h3 className="post-prev-title">
-                  <Link href={`/newsletter/${newsletter.slug}`}>
-                    {newsletter.title}
+                  <Link href={`/newsletter-single/${latestNewsletter.slug}`}>
+                    {latestNewsletter.title}
                   </Link>
                 </h3>
-                <div className="post-prev-text">{newsletter.excerpt}</div>
+                <div className="post-prev-text">{latestNewsletter.excerpt}</div>
                 <div className="post-prev-info clearfix">
                   <div className="float-start">
                     <a href="#" className="icon-author">
@@ -116,18 +128,65 @@ export default function Blog() {
                   </div>
                   <div className="float-end">
                     <i className="mi-calendar size-14 align-middle" />
-                    <a href="#">{new Date(newsletter.published_at).toLocaleDateString()}</a>
+                    <a href="#">{new Date(latestNewsletter.published_at).toLocaleDateString()}</a>
                   </div>
                 </div>
                 <div className="post-prev-info clearfix language-indicator">
                   <div className="float-start">
                     <i className="mi-flag size-14 align-middle" />
-                    <a href="#">{getLanguageDisplayText(newsletter)}</a>
+                    <a href="#">{getLanguageDisplayText(latestNewsletter)}</a>
                   </div>
                 </div>
               </div>
             </div>
-          ))}
+          )}
+
+          {/* Latest Podcast */}
+          {latestPodcast && (
+            <div className="post-prev col-md-6 mt-30 wow fadeInRight" data-wow-delay="0.4s">
+              <div className="post-prev-container">
+                <div className="post-prev-category">
+                  <Link href="/podcasts">Podcast</Link>
+                </div>
+                {latestPodcast.cover_image_url && (
+                  <div className="post-prev-img">
+                    <Link href={`/podcasts-single/${latestPodcast.slug}`}>
+                      <Image
+                        src={latestPodcast.cover_image_url}
+                        width={607}
+                        height={358}
+                        alt={latestPodcast.title}
+                      />
+                    </Link>
+                  </div>
+                )}
+                <h3 className="post-prev-title">
+                  <Link href={`/podcasts-single/${latestPodcast.slug}`}>
+                    {latestPodcast.title}
+                  </Link>
+                </h3>
+                <div className="post-prev-text">{latestPodcast.description}</div>
+                <div className="post-prev-info clearfix">
+                  <div className="float-start">
+                    <a href="#" className="icon-author">
+                      <i className="mi-user size-14 align-middle" />
+                    </a>
+                    <a href="#">The Hybrid Protocol</a>
+                  </div>
+                  <div className="float-end">
+                    <i className="mi-calendar size-14 align-middle" />
+                    <a href="#">{new Date(latestPodcast.publish_date).toLocaleDateString()}</a>
+                  </div>
+                </div>
+                <div className="post-prev-info clearfix language-indicator">
+                  <div className="float-start">
+                    <i className="mi-flag size-14 align-middle" />
+                    <a href="#">{getLanguageDisplayText(latestPodcast)}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
