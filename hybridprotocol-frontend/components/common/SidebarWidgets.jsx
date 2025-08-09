@@ -19,8 +19,7 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
   const languageOptions = [
     { id: 'all', name: 'All Languages', value: null },
     { id: 'english', name: 'English', value: 'english' },
-    { id: 'spanish', name: 'Spanish', value: 'spanish' },
-    { id: 'both', name: 'English & Spanish', value: 'both' }
+    { id: 'spanish', name: 'Spanish', value: 'spanish' }
   ];
 
   useEffect(() => {
