@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import Image from "next/image";
 import apiService from '@/utlis/api';
+import ContentMetadata from './ContentMetadata';
 
-export default function SidebarWidgets({ contentType = 'podcast', onFilterChange, isSidebar = false, showFilters = true }) {
+export default function SidebarWidgets({ contentType = 'podcast', onFilterChange, isSidebar = false, showFilters = true, contentData = null }) {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [archives, setArchives] = useState([]);
@@ -344,6 +345,13 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                 </div>
               </div>
             </>
+          )}
+
+          {/* Content Metadata Widget - Only show in sidebar when contentData is provided */}
+          {isSidebar && contentData && (
+            <div className="widget mb-0">
+              <ContentMetadata contentData={contentData} contentType={contentType} isSidebar={true} />
+            </div>
           )}
 
           {textWidgets.length > 0 && textWidgets.map((widget) => (

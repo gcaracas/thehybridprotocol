@@ -2,7 +2,7 @@
 
 import { getLanguageDisplayText } from "@/utlis/languageUtils";
 
-export default function ContentMetadata({ contentData, contentType }) {
+export default function ContentMetadata({ contentData, contentType, isSidebar = false }) {
   // Extract categories and tags from the content data
   const categories = contentData?.category ? [contentData.category] : [];
   const tags = contentData?.tags || [];
@@ -22,7 +22,7 @@ export default function ContentMetadata({ contentData, contentType }) {
   const languageText = getLanguageDisplayText(contentData);
 
   return (
-    <div className="content-metadata mb-40 mb-xs-30">
+    <div className={`content-metadata ${isSidebar ? 'sidebar-metadata' : 'mb-40 mb-xs-30'}`}>
       {/* Categories Section */}
       {categories.length > 0 && (
         <div className="metadata-section mb-20">
@@ -76,6 +76,13 @@ export default function ContentMetadata({ contentData, contentType }) {
           padding: 20px;
           border-radius: 8px;
           border-left: 4px solid #2c3e50;
+        }
+
+        .sidebar-metadata {
+          background: transparent;
+          padding: 0;
+          border-radius: 0;
+          border-left: none;
         }
 
         .metadata-section:last-child {

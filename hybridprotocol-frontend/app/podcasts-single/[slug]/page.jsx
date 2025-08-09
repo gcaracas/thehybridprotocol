@@ -164,9 +164,6 @@ export default function PodcastSinglePage({ params }) {
                           <p>{podcast.description}</p>
                         </div>
 
-                        {/* Content Metadata */}
-                        <ContentMetadata contentData={podcast} contentType="podcast" />
-
                         {podcast.script_snippet && (
                           <div className="mb-40 mb-xs-30">
                             <h4>Episode Highlights</h4>
@@ -304,6 +301,7 @@ export default function PodcastSinglePage({ params }) {
                       onFilterChange={() => {}}
                       isSidebar={true}
                       showFilters={false}
+                      contentData={podcast}
                     />
                   </div>
                   {/* End Sidebar */}

@@ -152,9 +152,6 @@ export default function NewsletterSinglePage({ params }) {
                           <p className="lead">{newsletter.excerpt}</p>
                         </div>
 
-                        {/* Content Metadata */}
-                        <ContentMetadata contentData={newsletter} contentType="newsletter" />
-
                         <div className="mb-40 mb-xs-30">
                           <div dangerouslySetInnerHTML={{ __html: newsletter.content }} />
                         </div>
@@ -185,6 +182,7 @@ export default function NewsletterSinglePage({ params }) {
                       onFilterChange={() => {}}
                       isSidebar={true}
                       showFilters={false}
+                      contentData={newsletter}
                     />
                   </div>
                   {/* End Sidebar */}

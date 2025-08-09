@@ -151,6 +151,9 @@ The `qual.sh` script has been updated to include:
 - ✅ Hides sections when no data available
 - ✅ Always shows language section
 - ✅ Proper styling and user experience
+- ✅ **NEW: Displays in sidebar for single pages**
+- ✅ **NEW: Compact sidebar styling**
+- ✅ **NEW: Integrated with SidebarWidgets component**
 
 ### CommentSection Component ✅ **FULLY WORKING**
 - ✅ Comment display and formatting
