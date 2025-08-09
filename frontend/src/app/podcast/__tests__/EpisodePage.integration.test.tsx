@@ -33,7 +33,7 @@ describe.skip('Episode Page Integration Test - Reproduces Production Error', () 
     episode_number: 2,
     duration: '25:30',
     publish_date: '2025-07-30',
-    audio_url: 'https://example.com/audio.mp3',
+            facebook_url: 'https://example.com/facebook.mp3',
     youtube_url: 'https://youtube.com/watch?v=test',
     spotify_url: 'https://spotify.com/episode/test',
     cover_image_url: 'https://example.com/cover.jpg'

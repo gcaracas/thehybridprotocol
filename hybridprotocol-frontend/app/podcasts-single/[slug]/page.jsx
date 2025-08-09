@@ -179,11 +179,11 @@ export default function PodcastSinglePage({ params }) {
                         {/* Audio Links */}
                         <div className="mb-40 mb-xs-30">
                           <h4>Listen to this episode</h4>
-                          {podcast.audio_url && (
+                          {podcast.facebook_url && (
                             <div className="mb-20">
-                              <a href={podcast.audio_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                              <a href={podcast.facebook_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                                 <i className="mi-play-circle size-16 me-2" />
-                                Listen on Spotify
+                                Listen on Facebook
                               </a>
                             </div>
                           )}
