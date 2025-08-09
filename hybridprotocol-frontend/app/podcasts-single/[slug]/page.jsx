@@ -181,7 +181,32 @@ export default function PodcastSinglePage({ params }) {
                           <h4>Listen to this episode</h4>
                           {podcast.facebook_url && (
                             <div className="mb-20">
-                              <a href={podcast.facebook_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                              <a 
+                                href={podcast.facebook_url} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                style={{
+                                  display: 'inline-block',
+                                  padding: '6px 12px',
+                                  borderRadius: '4px',
+                                  textDecoration: 'none',
+                                  fontSize: '14px',
+                                  transition: 'all 0.2s ease',
+                                  backgroundColor: 'white',
+                                  color: '#666',
+                                  border: '1px solid #ddd',
+                                  fontWeight: 'normal',
+                                  cursor: 'pointer'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.target.style.color = '#2c3e50';
+                                  e.target.style.fontWeight = '600';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.target.style.color = '#666';
+                                  e.target.style.fontWeight = 'normal';
+                                }}
+                              >
                                 <i className="mi-play-circle size-16 me-2" />
                                 Listen on Facebook
                               </a>
@@ -189,7 +214,32 @@ export default function PodcastSinglePage({ params }) {
                           )}
                           {podcast.youtube_url && (
                             <div className="mb-20">
-                              <a href={podcast.youtube_url} target="_blank" rel="noopener noreferrer" className="btn btn-danger">
+                              <a 
+                                href={podcast.youtube_url} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                style={{
+                                  display: 'inline-block',
+                                  padding: '6px 12px',
+                                  borderRadius: '4px',
+                                  textDecoration: 'none',
+                                  fontSize: '14px',
+                                  transition: 'all 0.2s ease',
+                                  backgroundColor: 'white',
+                                  color: '#666',
+                                  border: '1px solid #ddd',
+                                  fontWeight: 'normal',
+                                  cursor: 'pointer'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.target.style.color = '#2c3e50';
+                                  e.target.style.fontWeight = '600';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.target.style.color = '#666';
+                                  e.target.style.fontWeight = 'normal';
+                                }}
+                              >
                                 <i className="mi-play-circle size-16 me-2" />
                                 Watch on YouTube
                               </a>
@@ -197,7 +247,32 @@ export default function PodcastSinglePage({ params }) {
                           )}
                           {podcast.spotify_url && (
                             <div className="mb-20">
-                              <a href={podcast.spotify_url} target="_blank" rel="noopener noreferrer" className="btn btn-success">
+                              <a 
+                                href={podcast.spotify_url} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                style={{
+                                  display: 'inline-block',
+                                  padding: '6px 12px',
+                                  borderRadius: '4px',
+                                  textDecoration: 'none',
+                                  fontSize: '14px',
+                                  transition: 'all 0.2s ease',
+                                  backgroundColor: 'white',
+                                  color: '#666',
+                                  border: '1px solid #ddd',
+                                  fontWeight: 'normal',
+                                  cursor: 'pointer'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.target.style.color = '#2c3e50';
+                                  e.target.style.fontWeight = '600';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.target.style.color = '#666';
+                                  e.target.style.fontWeight = 'normal';
+                                }}
+                              >
                                 <i className="mi-play-circle size-16 me-2" />
                                 Listen on Spotify
                               </a>

@@ -188,21 +188,36 @@ export function PodcastSection() {
                   href="https://youtube.com/watch?v=your-video-id" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="block"
+                  style={{
+                    display: 'inline-block',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    textDecoration: 'none',
+                    fontSize: '14px',
+                    transition: 'all 0.2s ease',
+                    backgroundColor: 'white',
+                    color: '#666',
+                    border: '1px solid #ddd',
+                    fontWeight: 'normal',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = '#2c3e50';
+                    e.target.style.fontWeight = '600';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = '#666';
+                    e.target.style.fontWeight = 'normal';
+                  }}
                 >
-                  <Button 
-                    size="lg"
-                    className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex items-center justify-center gap-2"
-                  >
-                    <Image 
-                      src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" 
-                      alt="YouTube" 
-                      width={20} 
-                      height={20}
-                      className="filter brightness-0 invert"
-                    />
-                    Watch on YouTube
-                  </Button>
+                  <Image 
+                    src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" 
+                    alt="YouTube" 
+                    width={20} 
+                    height={20}
+                    className="filter brightness-0 invert"
+                  />
+                  Watch on YouTube
                 </a>
               </div>
             </div>
@@ -231,42 +246,72 @@ export function PodcastSection() {
                 href="https://open.spotify.com/show/your-show-id" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex-1"
+                style={{
+                  display: 'inline-block',
+                  padding: '6px 12px',
+                  borderRadius: '4px',
+                  textDecoration: 'none',
+                  fontSize: '14px',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: 'white',
+                  color: '#666',
+                  border: '1px solid #ddd',
+                  fontWeight: 'normal',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = '#2c3e50';
+                  e.target.style.fontWeight = '600';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = '#666';
+                  e.target.style.fontWeight = 'normal';
+                }}
               >
-                <Button 
-                  size="lg"
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg flex items-center justify-center gap-2"
-                >
-                  <Image 
-                    src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/spotify.svg" 
-                    alt="Spotify" 
-                    width={20} 
-                    height={20}
-                    className="filter brightness-0 invert"
-                  />
-                  Follow on Spotify
-                </Button>
+                <Image 
+                  src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/spotify.svg" 
+                  alt="Spotify" 
+                  width={20} 
+                  height={20}
+                  className="filter brightness-0 invert"
+                />
+                Follow on Spotify
               </a>
               
               <a 
                 href="https://youtube.com/@your-channel" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex-1"
+                style={{
+                  display: 'inline-block',
+                  padding: '6px 12px',
+                  borderRadius: '4px',
+                  textDecoration: 'none',
+                  fontSize: '14px',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: 'white',
+                  color: '#666',
+                  border: '1px solid #ddd',
+                  fontWeight: 'normal',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = '#2c3e50';
+                  e.target.style.fontWeight = '600';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = '#666';
+                  e.target.style.fontWeight = 'normal';
+                }}
               >
-                <Button 
-                  size="lg"
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg flex items-center justify-center gap-2"
-                >
-                  <Image 
-                    src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" 
-                    alt="YouTube" 
-                    width={20} 
-                    height={20}
-                    className="filter brightness-0 invert"
-                  />
-                  Subscribe on YouTube
-                </Button>
+                <Image 
+                  src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" 
+                  alt="YouTube" 
+                  width={20} 
+                  height={20}
+                  className="filter brightness-0 invert"
+                />
+                Subscribe on YouTube
               </a>
             </div>
           </div>
