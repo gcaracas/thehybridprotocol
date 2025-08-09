@@ -38,6 +38,7 @@ export default function CommentsWidget({ contentType, contentId }) {
   };
 
   const truncateText = (text, maxLength = 50) => {
+    if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   };
@@ -49,7 +50,7 @@ export default function CommentsWidget({ contentType, contentId }) {
         {loading ? (
           <p className="text-muted">Loading comments...</p>
         ) : comments.length === 0 ? (
-          <p className="text-muted">No comments yet.</p>
+          <p className="text-muted">No comments yet. Be the first to comment!</p>
         ) : (
           <ul className="clearlist widget-comments">
             {comments.map((comment) => (
@@ -59,6 +60,19 @@ export default function CommentsWidget({ contentType, contentId }) {
                   <small className="text-muted ml-10">
                     {formatDate(comment.created_at)}
                   </small>
+                  {comment.author_website && (
+                    <>
+                      <br />
+                      <a
+                        href={comment.author_website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted"
+                      >
+                        {comment.author_website}
+                      </a>
+                    </>
+                  )}
                 </div>
                 <div className="widget-comment-content">
                   {truncateText(comment.content)}

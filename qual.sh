@@ -303,6 +303,124 @@ run_frontend_tests() {
         print_warning "Frontend pagination test script not found"
     fi
     
+    # Frontend Unit Tests - Single Pages Functionality
+    print_test "Frontend Unit Tests - Single Pages"
+    if [[ -f "__tests__/single-pages.test.js" ]]; then
+        # Install testing dependencies if not present
+        if ! npm list @testing-library/react > /dev/null 2>&1; then
+            print_info "Installing testing dependencies..."
+            npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event jest jest-environment-jsdom
+        fi
+        
+        # Run the tests
+        if npm test -- __tests__/single-pages.test.js --passWithNoTests; then
+            print_success "Frontend Unit Tests - Single Pages - PASSED"
+            add_result 0 "Frontend Unit Tests - Single Pages"
+        else
+            print_error "Frontend Unit Tests - Single Pages - FAILED"
+            add_result 1 "Frontend Unit Tests - Single Pages"
+        fi
+    else
+        print_warning "Frontend unit test file not found: __tests__/single-pages.test.js"
+        add_result 1 "Frontend Unit Tests - Single Pages"
+    fi
+    
+    # Frontend Component Tests - Tags and Categories
+    print_test "Frontend Component Tests - Tags and Categories Display"
+    if [[ -f "__tests__/single-pages.test.js" ]]; then
+        # Test tags and categories functionality
+        if npm test -- --testNamePattern="Tags and Categories Display" --passWithNoTests; then
+            print_success "Frontend Component Tests - Tags and Categories Display - PASSED"
+            add_result 0 "Frontend Component Tests - Tags and Categories Display"
+        else
+            print_error "Frontend Component Tests - Tags and Categories Display - FAILED"
+            add_result 1 "Frontend Component Tests - Tags and Categories Display"
+        fi
+    else
+        print_warning "Frontend component test file not found"
+        add_result 1 "Frontend Component Tests - Tags and Categories Display"
+    fi
+    
+    # Frontend Component Tests - Comments Functionality
+    print_test "Frontend Component Tests - Comments Functionality"
+    if [[ -f "__tests__/single-pages.test.js" ]]; then
+        # Test comments functionality
+        if npm test -- --testNamePattern="Comments Functionality" --passWithNoTests; then
+            print_success "Frontend Component Tests - Comments Functionality - PASSED"
+            add_result 0 "Frontend Component Tests - Comments Functionality"
+        else
+            print_error "Frontend Component Tests - Comments Functionality - FAILED"
+            add_result 1 "Frontend Component Tests - Comments Functionality"
+        fi
+    else
+        print_warning "Frontend component test file not found"
+        add_result 1 "Frontend Component Tests - Comments Functionality"
+    fi
+    
+    # Frontend Component Tests - Latest Episodes/Posts
+    print_test "Frontend Component Tests - Latest Episodes/Posts"
+    if [[ -f "__tests__/single-pages.test.js" ]]; then
+        # Test latest episodes/posts functionality
+        if npm test -- --testNamePattern="Latest Episodes/Posts" --passWithNoTests; then
+            print_success "Frontend Component Tests - Latest Episodes/Posts - PASSED"
+            add_result 0 "Frontend Component Tests - Latest Episodes/Posts"
+        else
+            print_error "Frontend Component Tests - Latest Episodes/Posts - FAILED"
+            add_result 1 "Frontend Component Tests - Latest Episodes/Posts"
+        fi
+    else
+        print_warning "Frontend component test file not found"
+        add_result 1 "Frontend Component Tests - Latest Episodes/Posts"
+    fi
+    
+    # Frontend Component Tests - Text Truncation
+    print_test "Frontend Component Tests - Text Truncation"
+    if [[ -f "__tests__/single-pages.test.js" ]]; then
+        # Test text truncation functionality
+        if npm test -- --testNamePattern="Text Truncation Tests" --passWithNoTests; then
+            print_success "Frontend Component Tests - Text Truncation - PASSED"
+            add_result 0 "Frontend Component Tests - Text Truncation"
+        else
+            print_error "Frontend Component Tests - Text Truncation - FAILED"
+            add_result 1 "Frontend Component Tests - Text Truncation"
+        fi
+    else
+        print_warning "Frontend component test file not found"
+        add_result 1 "Frontend Component Tests - Text Truncation"
+    fi
+    
+    # Frontend Component Tests - Date Formatting
+    print_test "Frontend Component Tests - Date Formatting"
+    if [[ -f "__tests__/single-pages.test.js" ]]; then
+        # Test date formatting functionality
+        if npm test -- --testNamePattern="Date Formatting Tests" --passWithNoTests; then
+            print_success "Frontend Component Tests - Date Formatting - PASSED"
+            add_result 0 "Frontend Component Tests - Date Formatting"
+        else
+            print_error "Frontend Component Tests - Date Formatting - FAILED"
+            add_result 1 "Frontend Component Tests - Date Formatting"
+        fi
+    else
+        print_warning "Frontend component test file not found"
+        add_result 1 "Frontend Component Tests - Date Formatting"
+    fi
+    
+    # Frontend Component Tests - Error Handling
+    print_test "Frontend Component Tests - Error Handling"
+    if [[ -f "__tests__/single-pages.test.js" ]]; then
+        # Test error handling functionality
+        if npm test -- --testNamePattern="Error Handling Tests" --passWithNoTests; then
+            print_success "Frontend Component Tests - Error Handling - PASSED"
+            add_result 0 "Frontend Component Tests - Error Handling"
+        else
+            print_error "Frontend Component Tests - Error Handling - FAILED"
+            add_result 1 "Frontend Component Tests - Error Handling"
+        fi
+    else
+        print_warning "Frontend component test file not found"
+        add_result 1 "Frontend Component Tests - Error Handling"
+    fi
+    
     cd ..
 }
 
