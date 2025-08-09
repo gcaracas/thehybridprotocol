@@ -9,7 +9,7 @@ import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
 import CommentSection from "@/components/common/CommentSection";
-import { getLanguageDisplayText } from "@/utlis/languageUtils";
+import ContentMetadata from "@/components/common/ContentMetadata";
 
 export default function PodcastSinglePage({ params }) {
   const resolvedParams = use(params);
@@ -108,7 +108,7 @@ export default function PodcastSinglePage({ params }) {
                     </p>
                   </div>
                 </div>
-                {/* Author, Categories, Comments */}
+                {/* Author, Date, Episode, Duration */}
                 <div
                   className="blog-item-data mt-30 mt-sm-10 mb-0 wow fadeIn"
                   data-wow-delay="0.2s"
@@ -137,13 +137,8 @@ export default function PodcastSinglePage({ params }) {
                       <a href="#">{podcast.duration}</a>
                     </div>
                   )}
-                  <div className="d-inline-block me-3">
-                    <i className="mi-flag size-16" />
-                    <span className="visually-hidden">Language:</span>
-                    <a href="#">{getLanguageDisplayText(podcast)}</a>
-                  </div>
                 </div>
-                {/* End Author, Categories, Comments */}
+                {/* End Author, Date, Episode, Duration */}
               </div>
             </section>
             <section className="page-section">
@@ -168,6 +163,9 @@ export default function PodcastSinglePage({ params }) {
                         <div className="mb-40 mb-xs-30">
                           <p>{podcast.description}</p>
                         </div>
+
+                        {/* Content Metadata */}
+                        <ContentMetadata contentData={podcast} contentType="podcast" />
 
                         {podcast.script_snippet && (
                           <div className="mb-40 mb-xs-30">
@@ -305,6 +303,7 @@ export default function PodcastSinglePage({ params }) {
                       contentType="podcast"
                       onFilterChange={() => {}}
                       isSidebar={true}
+                      showFilters={false}
                     />
                   </div>
                   {/* End Sidebar */}

@@ -136,11 +136,11 @@ export const elegantMultipage = [
   { href: "/contact", text: "Contact" },
 ];
 export const elegantMultipageDark = [
-  { href: "/elegant-multi-page-dark", text: "Home" },
-  { href: "/elegant-about-dark", text: "About" },
-  { href: "/podcasts-dark", text: "Podcasts" },
-  { href: "/newsletter-dark", text: "Newsletter" },
-  { href: "/elegant-contact-dark", text: "Contact" },
+  { href: "/", text: "Home" },
+  { href: "/about", text: "About" },
+  { href: "/podcasts", text: "Podcasts" },
+  { href: "/newsletter", text: "Newsletter" },
+  { href: "/contact", text: "Contact" },
 ];
 export const elegantOnepage = [
   { href: "#home", text: "Home", className: "active" },

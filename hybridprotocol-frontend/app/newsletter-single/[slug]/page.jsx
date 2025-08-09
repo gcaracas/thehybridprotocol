@@ -9,7 +9,7 @@ import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
 import CommentSection from "@/components/common/CommentSection";
-import { getLanguageDisplayText } from "@/utlis/languageUtils";
+import ContentMetadata from "@/components/common/ContentMetadata";
 
 export default function NewsletterSinglePage({ params }) {
   const resolvedParams = use(params);
@@ -108,7 +108,7 @@ export default function NewsletterSinglePage({ params }) {
                     </p>
                   </div>
                 </div>
-                {/* Author, Categories, Comments */}
+                {/* Author and Date */}
                 <div
                   className="blog-item-data mt-30 mt-sm-10 mb-0 wow fadeIn"
                   data-wow-delay="0.2s"
@@ -125,18 +125,8 @@ export default function NewsletterSinglePage({ params }) {
                       <span className="visually-hidden">Author:</span> The Hybrid Protocol
                     </a>
                   </div>
-                  <div className="d-inline-block me-3">
-                    <i className="mi-folder size-16" />
-                    <span className="visually-hidden">Category:</span>
-                    <a href="#">Newsletter</a>
-                  </div>
-                  <div className="d-inline-block me-3">
-                    <i className="mi-flag size-16" />
-                    <span className="visually-hidden">Language:</span>
-                    <a href="#">{getLanguageDisplayText(newsletter)}</a>
-                  </div>
                 </div>
-                {/* End Author, Categories, Comments */}
+                {/* End Author and Date */}
               </div>
             </section>
             <section className="page-section">
@@ -161,6 +151,9 @@ export default function NewsletterSinglePage({ params }) {
                         <div className="mb-40 mb-xs-30">
                           <p className="lead">{newsletter.excerpt}</p>
                         </div>
+
+                        {/* Content Metadata */}
+                        <ContentMetadata contentData={newsletter} contentType="newsletter" />
 
                         <div className="mb-40 mb-xs-30">
                           <div dangerouslySetInnerHTML={{ __html: newsletter.content }} />
@@ -191,6 +184,7 @@ export default function NewsletterSinglePage({ params }) {
                       contentType="newsletter"
                       onFilterChange={() => {}}
                       isSidebar={true}
+                      showFilters={false}
                     />
                   </div>
                   {/* End Sidebar */}
