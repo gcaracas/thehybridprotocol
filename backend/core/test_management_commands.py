@@ -87,7 +87,7 @@ class BackupDataCommandTest(TestCase):
             title="Test Episode",
             slug="test-episode",
             description="Test description",
-            audio_url="https://example.com/audio.mp3"
+            facebook_url="https://example.com/facebook.mp3"
         )
         self.signup = EmailSignup.objects.create(
             email="test@example.com",

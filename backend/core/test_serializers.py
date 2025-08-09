@@ -76,7 +76,7 @@ class PodcastEpisodeSerializerTest(TestCase):
             slug="test-episode",
             description="Test description",
             script="This is the episode script",
-            audio_url="https://example.com/audio.mp3",
+            facebook_url="https://example.com/facebook.mp3",
             youtube_url="https://youtube.com/watch?v=test",
             spotify_url="https://spotify.com/episode/test",
             episode_number=1,
@@ -90,7 +90,7 @@ class PodcastEpisodeSerializerTest(TestCase):
         expected_fields = {
             'id', 'title', 'slug', 'description', 'script', 
             'publish_date', 'episode_number', 'duration', 
-            'audio_url', 'youtube_url', 'spotify_url',
+            'facebook_url', 'youtube_url', 'spotify_url',
             'cover_image', 'cover_image_url', 'published', 'available_in_english', 
             'available_in_spanish', 'available_languages', 'is_multilingual',
             'created_at', 'updated_at', 'category', 'tags'
@@ -102,7 +102,7 @@ class PodcastEpisodeSerializerTest(TestCase):
         serializer = PodcastEpisodeListSerializer(self.episode)
         expected_fields = {
             'id', 'title', 'slug', 'description', 'publish_date',
-            'episode_number', 'duration', 'audio_url', 'youtube_url', 
+            'episode_number', 'duration', 'facebook_url', 'youtube_url', 
             'spotify_url', 'cover_image_url', 'script_snippet', 'available_in_english', 
             'available_in_spanish', 'available_languages', 'is_multilingual', 'category', 'tags'
         }
@@ -117,7 +117,7 @@ class PodcastEpisodeSerializerTest(TestCase):
         self.assertEqual(data['slug'], "test-episode")
         self.assertEqual(data['episode_number'], 1)
         self.assertEqual(data['duration'], "25:30")
-        self.assertEqual(data['audio_url'], "https://example.com/audio.mp3")
+        self.assertEqual(data['facebook_url'], "https://example.com/facebook.mp3")
     
     def test_script_snippet_generation(self):
         """Test script_snippet method in list serializer"""

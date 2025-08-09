@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib.auth.models import User
 from datetime import date, timedelta
-from .models import Newsletter, PodcastEpisode, EmailSignup
+from .models import Newsletter, PodcastEpisode, EmailSignup, Category, LocalizedElement
 
 
 class NewsletterModelTest(TestCase):
@@ -78,12 +78,23 @@ class PodcastEpisodeModelTest(TestCase):
     """Test cases for PodcastEpisode model"""
     
     def setUp(self):
+        """Set up test data."""
+        self.localized_name = LocalizedElement.objects.create(
+            english="Test Category",
+            spanish="Categoría de Prueba"
+        )
+        
+        self.category = Category.objects.create(
+            name=self.localized_name,
+            slug="test-category"
+        )
+        
         self.episode = PodcastEpisode.objects.create(
             title="Test Episode",
             slug="test-episode",
             description="Test description",
             script="This is the episode script",
-            audio_url="https://example.com/audio.mp3",
+            facebook_url="https://example.com/facebook.mp3",
             episode_number=1,
             duration="25:30"
         )
@@ -118,7 +129,7 @@ class PodcastEpisodeModelTest(TestCase):
             title="Future Episode",
             slug="future-episode",
             description="Future description",
-            audio_url="https://example.com/audio2.mp3",
+            facebook_url="https://example.com/facebook2.mp3",
             publish_date=future_date
         )
         
@@ -132,7 +143,7 @@ class PodcastEpisodeModelTest(TestCase):
                 title="Duplicate Episode Number",
                 slug="duplicate-episode",
                 description="Description",
-                audio_url="https://example.com/audio.mp3",
+                facebook_url="https://example.com/facebook.mp3",
                 episode_number=1  # Same as setUp
             )
     
@@ -143,7 +154,7 @@ class PodcastEpisodeModelTest(TestCase):
                 title="Duplicate Slug",
                 slug="test-episode",  # Same slug as setUp
                 description="Description",
-                audio_url="https://example.com/audio.mp3"
+                facebook_url="https://example.com/facebook.mp3"
             )
 
 

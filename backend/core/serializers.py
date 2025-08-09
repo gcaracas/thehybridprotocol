@@ -124,7 +124,7 @@ class PodcastEpisodeSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'slug', 'description', 'script', 
             'publish_date', 'episode_number', 'duration', 
-            'audio_url', 'youtube_url', 'spotify_url',
+            'facebook_url', 'youtube_url', 'spotify_url',
             'cover_image', 'cover_image_url', 'published', 'available_in_english', 
             'available_in_spanish', 'available_languages', 'is_multilingual',
             'created_at', 'updated_at', 'category', 'tags'
@@ -181,7 +181,7 @@ class PodcastEpisodeListSerializer(serializers.ModelSerializer):
         model = PodcastEpisode
         fields = [
             'id', 'title', 'slug', 'description', 'publish_date',
-            'episode_number', 'duration', 'audio_url', 'youtube_url', 
+            'episode_number', 'duration', 'facebook_url', 'youtube_url', 
             'spotify_url', 'cover_image_url', 'script_snippet', 'available_in_english', 
             'available_in_spanish', 'available_languages', 'is_multilingual', 'category', 'tags'
         ]

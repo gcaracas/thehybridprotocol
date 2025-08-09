@@ -93,7 +93,7 @@ class PodcastEpisodeAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
         ('Media', {
-            'fields': ('audio_url', 'youtube_url', 'spotify_url', 'cover_image')
+            'fields': ('facebook_url', 'youtube_url', 'spotify_url', 'cover_image')
         }),
         ('Metadata', {
             'fields': ('duration',),

@@ -79,7 +79,7 @@ class PodcastEpisodeAPITest(APITestCase):
             slug="published-episode",
             description="Published description",
             script="Published script content",
-            audio_url="https://example.com/audio1.mp3",
+            facebook_url="https://example.com/facebook1.mp3",
             episode_number=1,
             published=True
         )
@@ -87,7 +87,7 @@ class PodcastEpisodeAPITest(APITestCase):
             title="Unpublished Episode",
             slug="unpublished-episode",
             description="Unpublished description",
-            audio_url="https://example.com/audio2.mp3",
+            facebook_url="https://example.com/facebook2.mp3",
             episode_number=2,
             published=False
         )
@@ -166,7 +166,7 @@ class PodcastEpisodeAPITest(APITestCase):
             title="Future Episode",
             slug="future-episode",
             description="Future description",
-            audio_url="https://example.com/audio3.mp3",
+            facebook_url="https://example.com/facebook3.mp3",
             published=True,
             publish_date="2025-12-31"
         )
