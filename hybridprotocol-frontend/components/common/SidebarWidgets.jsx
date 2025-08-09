@@ -145,7 +145,7 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
               <div className="widget-body">
                 <ul className="clearlist widget-menu">
                   {categories.map((category) => (
-                    <li key={category.id}>
+                    <li key={category.id} style={{ marginBottom: '8px' }}>
                       <a 
                         href="#" 
                         title=""
@@ -155,8 +155,29 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                         }}
                         className={isCategorySelected(category) ? 'active' : ''}
                         style={{
-                          color: isCategorySelected(category) ? '#007bff' : 'inherit',
-                          fontWeight: isCategorySelected(category) ? 'bold' : 'normal'
+                          display: 'inline-block',
+                          padding: '6px 12px',
+                          borderRadius: '4px',
+                          textDecoration: 'none',
+                          fontSize: '14px',
+                          transition: 'all 0.2s ease',
+                          backgroundColor: 'white',
+                          color: isCategorySelected(category) ? '#2c3e50' : '#666',
+                          border: isCategorySelected(category) ? '2px solid #2c3e50' : '1px solid #ddd',
+                          fontWeight: isCategorySelected(category) ? '600' : 'normal',
+                          cursor: 'pointer'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isCategorySelected(category)) {
+                            e.target.style.color = '#2c3e50';
+                            e.target.style.fontWeight = '600';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isCategorySelected(category)) {
+                            e.target.style.color = '#666';
+                            e.target.style.fontWeight = 'normal';
+                          }
                         }}
                       >
                         {category.name_english}
@@ -184,9 +205,29 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                       }}
                       className={isTagSelected(tag) ? 'active' : ''}
                       style={{
-                        backgroundColor: isTagSelected(tag) ? '#007bff' : 'transparent',
-                        color: isTagSelected(tag) ? 'white' : 'inherit',
-                        border: isTagSelected(tag) ? '1px solid #007bff' : '1px solid #ddd'
+                        display: 'inline-block',
+                        padding: '6px 12px',
+                        borderRadius: '4px',
+                        textDecoration: 'none',
+                        fontSize: '14px',
+                        transition: 'all 0.2s ease',
+                        backgroundColor: 'white',
+                        color: isTagSelected(tag) ? '#2c3e50' : '#666',
+                        border: isTagSelected(tag) ? '2px solid #2c3e50' : '1px solid #ddd',
+                        fontWeight: isTagSelected(tag) ? '600' : 'normal',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isTagSelected(tag)) {
+                          e.target.style.color = '#2c3e50';
+                          e.target.style.fontWeight = '600';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isTagSelected(tag)) {
+                          e.target.style.color = '#666';
+                          e.target.style.fontWeight = 'normal';
+                        }
                       }}
                     >
                       {tag.name_english}
@@ -214,8 +255,29 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                         }}
                         className={isArchiveSelected(archive) ? 'active' : ''}
                         style={{
-                          color: isArchiveSelected(archive) ? '#007bff' : 'inherit',
-                          fontWeight: isArchiveSelected(archive) ? 'bold' : 'normal'
+                          display: 'inline-block',
+                          padding: '6px 12px',
+                          borderRadius: '4px',
+                          textDecoration: 'none',
+                          fontSize: '14px',
+                          transition: 'all 0.2s ease',
+                          backgroundColor: 'white',
+                          color: isArchiveSelected(archive) ? '#2c3e50' : '#666',
+                          border: isArchiveSelected(archive) ? '2px solid #2c3e50' : '1px solid #ddd',
+                          fontWeight: isArchiveSelected(archive) ? '600' : 'normal',
+                          cursor: 'pointer'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isArchiveSelected(archive)) {
+                            e.target.style.color = '#2c3e50';
+                            e.target.style.fontWeight = '600';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isArchiveSelected(archive)) {
+                            e.target.style.color = '#666';
+                            e.target.style.fontWeight = 'normal';
+                          }
                         }}
                       >
                         {archive.month_name} {archive.year}
@@ -234,7 +296,7 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
               <div className="widget-body">
                 <ul className="clearlist widget-menu">
                   {languageOptions.map((language) => (
-                    <li key={language.id}>
+                    <li key={language.id} style={{ marginBottom: '8px' }}>
                       <a 
                         href="#" 
                         title=""
@@ -243,10 +305,31 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                           handleLanguageClick(language);
                         }}
                         className={isLanguageSelected(language) ? 'active' : ''}
-                        style={{
-                          color: isLanguageSelected(language) ? '#007bff' : 'inherit',
-                          fontWeight: isLanguageSelected(language) ? 'bold' : 'normal'
-                        }}
+                                          style={{
+                    display: 'inline-block',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    textDecoration: 'none',
+                    fontSize: '14px',
+                    transition: 'all 0.2s ease',
+                    backgroundColor: 'white',
+                    color: isLanguageSelected(language) ? '#2c3e50' : '#666',
+                    border: isLanguageSelected(language) ? '2px solid #2c3e50' : '1px solid #ddd',
+                    fontWeight: isLanguageSelected(language) ? '600' : 'normal',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isLanguageSelected(language)) {
+                      e.target.style.color = '#2c3e50';
+                      e.target.style.fontWeight = '600';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isLanguageSelected(language)) {
+                      e.target.style.color = '#666';
+                      e.target.style.fontWeight = 'normal';
+                    }
+                  }}
                       >
                         {language.name}
                       </a>
