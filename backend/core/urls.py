@@ -29,6 +29,9 @@ urlpatterns = [
     path('tags/', views.TagListView.as_view(), name='tag_list'),
     path('archives/', views.ArchiveListView.as_view(), name='archive_list'),
     
+    # Text Widget endpoints
+    path('text-widgets/', views.TextWidgetListView.as_view(), name='text_widget_list'),
+    
     # Comment endpoints
     path('comments/', views.CommentListView.as_view(), name='comment_list'),
     path('comments/create/', views.CommentCreateView.as_view(), name='comment_create'),

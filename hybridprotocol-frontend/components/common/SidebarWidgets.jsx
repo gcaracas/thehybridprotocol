@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from "next/image";
 import apiService from '@/utlis/api';
 
-export default function SidebarWidgets({ contentType = 'podcast', onFilterChange }) {
+export default function SidebarWidgets({ contentType = 'podcast', onFilterChange, isSidebar = false }) {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [archives, setArchives] = useState([]);
@@ -29,16 +29,18 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
   const fetchWidgetData = async () => {
     try {
       setLoading(true);
-      const [categoriesData, tagsData, archivesData] = await Promise.all([
+      const [categoriesData, tagsData, archivesData, textWidgetsData] = await Promise.all([
         apiService.getCategories(),
         apiService.getTags(),
-        apiService.getArchives()
+        apiService.getArchives(),
+        apiService.getTextWidgets()
       ]);
       
       // Handle paginated responses
       setCategories(categoriesData.results || categoriesData);
       setTags(tagsData.results || tagsData);
       setArchives(archivesData.results || archivesData);
+      setTextWidgets(textWidgetsData.results || textWidgetsData);
     } catch (error) {
       console.error('Error fetching widget data:', error);
     } finally {
@@ -135,10 +137,10 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
   }
 
   return (
-    <section className="page-section">
-      <div className="container relative">
-        <div className="row mt-n60">
-          <div className="col-sm-6 col-lg-3 mt-60">
+    <section className={isSidebar ? "" : "page-section"}>
+      <div className={isSidebar ? "" : "container relative"}>
+        <div className={isSidebar ? "" : "row mt-n60"}>
+          <div className={isSidebar ? "" : "col-sm-6 col-lg-3 mt-60"}>
             {/* Categories Widget */}
             <div className="widget mb-0">
               <h3 className="widget-title">Categories</h3>
@@ -189,7 +191,7 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-3 mt-60">
+          <div className={isSidebar ? "" : "col-sm-6 col-lg-3 mt-60"}>
             {/* Tags Widget */}
             <div className="widget mb-0">
               <h3 className="widget-title">Tags</h3>
@@ -238,7 +240,7 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-3 mt-60">
+          <div className={isSidebar ? "" : "col-sm-6 col-lg-3 mt-60"}>
             {/* Archive Widget */}
             <div className="widget mb-0">
               <h3 className="widget-title">Archive</h3>
@@ -289,7 +291,7 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-3 mt-60">
+          <div className={isSidebar ? "" : "col-sm-6 col-lg-3 mt-60"}>
             {/* Language Widget */}
             <div className="widget mb-0">
               <h3 className="widget-title">Language</h3>
@@ -305,31 +307,31 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                           handleLanguageClick(language);
                         }}
                         className={isLanguageSelected(language) ? 'active' : ''}
-                                          style={{
-                    display: 'inline-block',
-                    padding: '6px 12px',
-                    borderRadius: '4px',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                    transition: 'all 0.2s ease',
-                    backgroundColor: 'white',
-                    color: isLanguageSelected(language) ? '#2c3e50' : '#666',
-                    border: isLanguageSelected(language) ? '2px solid #2c3e50' : '1px solid #ddd',
-                    fontWeight: isLanguageSelected(language) ? '600' : 'normal',
-                    cursor: 'pointer'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isLanguageSelected(language)) {
-                      e.target.style.color = '#2c3e50';
-                      e.target.style.fontWeight = '600';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isLanguageSelected(language)) {
-                      e.target.style.color = '#666';
-                      e.target.style.fontWeight = 'normal';
-                    }
-                  }}
+                        style={{
+                          display: 'inline-block',
+                          padding: '6px 12px',
+                          borderRadius: '4px',
+                          textDecoration: 'none',
+                          fontSize: '14px',
+                          transition: 'all 0.2s ease',
+                          backgroundColor: 'white',
+                          color: isLanguageSelected(language) ? '#2c3e50' : '#666',
+                          border: isLanguageSelected(language) ? '2px solid #2c3e50' : '1px solid #ddd',
+                          fontWeight: isLanguageSelected(language) ? '600' : 'normal',
+                          cursor: 'pointer'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isLanguageSelected(language)) {
+                            e.target.style.color = '#2c3e50';
+                            e.target.style.fontWeight = '600';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isLanguageSelected(language)) {
+                            e.target.style.color = '#666';
+                            e.target.style.fontWeight = 'normal';
+                          }
+                        }}
                       >
                         {language.name}
                       </a>
@@ -340,31 +342,40 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-3 mt-60">
-            {/* Text Widget */}
-            <div className="widget mb-0">
-              <h3 className="widget-title">Text widget</h3>
-              <div className="widget-body">
-                <div className="widget-text clearfix">
-                  <Image
-                    src="/assets/images/blog/previews/post-prev-6.jpg"
-                    alt="Image Description"
-                    height={140}
-                    width={100}
-                    style={{
-                      width: 'auto',
-                      height: 'auto'
-                    }}
-                    className="left img-left"
-                  />
-                  Consectetur adipiscing elit. Quisque magna ante
-                  eleifend eleifend. Purus ut dignissim consectetur,
-                  nulla erat ultrices purus, ut consequat sem elit non
-                  sem. Quisque magna ante eleifend eleifend.
+          {textWidgets.length > 0 && textWidgets.map((widget) => (
+            <div key={widget.id} className={isSidebar ? "" : "col-sm-6 col-lg-3 mt-60"}>
+              {/* Text Widget */}
+              <div className="widget mb-0">
+                <h3 className="widget-title">{widget.title_english}</h3>
+                <div className="widget-body">
+                  <div className={`widget-text ${isSidebar ? "" : "clearfix"}`}>
+                    {widget.image_url && (
+                      <Image
+                        src={widget.image_url}
+                        alt={widget.title_english}
+                        height={isSidebar ? 200 : 140}
+                        width={isSidebar ? 150 : 100}
+                        style={{
+                          width: isSidebar ? '100%' : 'auto',
+                          height: 'auto',
+                          marginBottom: isSidebar ? '15px' : '0',
+                          borderRadius: '4px'
+                        }}
+                        className={isSidebar ? "" : "left img-left"}
+                      />
+                    )}
+                    <div className="widget-content" style={{ 
+                      marginTop: isSidebar ? '0' : '10px', 
+                      lineHeight: '1.6',
+                      fontSize: isSidebar ? '14px' : 'inherit'
+                    }}>
+                      {widget.content_english}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

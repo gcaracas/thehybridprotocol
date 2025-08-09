@@ -4,12 +4,12 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from django.conf import settings
 import os
-from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive
+from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive, TextWidget
 from .serializers import (
     NewsletterSerializer, NewsletterListSerializer,
     PodcastEpisodeSerializer, PodcastEpisodeListSerializer,
     EmailSignupSerializer, EmailSignupCreateSerializer,
-    CategorySerializer, TagSerializer, ArchiveSerializer
+    CategorySerializer, TagSerializer, ArchiveSerializer, TextWidgetSerializer
 )
 from rest_framework.decorators import throttle_classes
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
@@ -217,6 +217,15 @@ class ArchiveListView(generics.ListAPIView):
     
     def get_queryset(self):
         return Archive.objects.filter(is_active=True)
+
+
+class TextWidgetListView(generics.ListAPIView):
+    """List all active text widgets"""
+    serializer_class = TextWidgetSerializer
+    pagination_class = None
+    
+    def get_queryset(self):
+        return TextWidget.objects.filter(is_active=True).order_by('order')
 
 
 class CommentListView(generics.ListAPIView):

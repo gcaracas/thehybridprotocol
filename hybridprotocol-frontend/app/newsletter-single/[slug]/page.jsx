@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { use } from 'react';
 import apiService from '@/utlis/api';
 import { elegantMultipage } from "@/data/menu";
-import Widget1 from "@/components/blog/widgets/Widget1";
+import SidebarWidgets from "@/components/common/SidebarWidgets";
 import CommentSection from "@/components/common/CommentSection";
 import { getLanguageDisplayText } from "@/utlis/languageUtils";
 
@@ -187,11 +187,10 @@ export default function NewsletterSinglePage({ params }) {
                   {/* End Content */}
                   {/* Sidebar */}
                   <div className="col-lg-4 col-xl-3">
-                    <Widget1 
-                      searchInputClass="form-control input-lg search-field round"
+                    <SidebarWidgets 
                       contentType="newsletter"
-                      contentId={newsletter.id}
-                      contentData={newsletter}
+                      onFilterChange={() => {}}
+                      isSidebar={true}
                     />
                   </div>
                   {/* End Sidebar */}

@@ -23,6 +23,9 @@ export const API_ENDPOINTS = {
   tags: `${API_BASE_URL}/tags/`,
   archives: `${API_BASE_URL}/archives/`,
   
+  // Text Widgets
+  textWidgets: `${API_BASE_URL}/text-widgets/`,
+  
   // Comments
   comments: `${API_BASE_URL}/comments/`,
   commentsCreate: `${API_BASE_URL}/comments/create/`,
@@ -118,6 +121,11 @@ export const apiService = {
     return apiRequest(API_ENDPOINTS.archives);
   },
   
+  // Text Widget functions
+  async getTextWidgets() {
+    return apiRequest(API_ENDPOINTS.textWidgets);
+  },
+
   // Comment functions
   async getComments(contentType, contentId) {
     const params = new URLSearchParams({

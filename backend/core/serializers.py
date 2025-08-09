@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
-from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive, Comment
+from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive, Comment, TextWidget
 
 
 class NewsletterSerializer(serializers.ModelSerializer):
@@ -419,3 +419,24 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         
         # Create comment (approval will be handled by admin)
         return super().create(validated_data) 
+
+
+class TextWidgetSerializer(serializers.ModelSerializer):
+    """Serializer for TextWidget model"""
+    title_english = serializers.CharField(source='title.english', read_only=True)
+    title_spanish = serializers.CharField(source='title.spanish', read_only=True)
+    content_english = serializers.CharField(source='content.english', read_only=True)
+    content_spanish = serializers.CharField(source='content.spanish', read_only=True)
+    image_url = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = TextWidget
+        fields = [
+            'id', 'title_english', 'title_spanish', 'content_english', 'content_spanish',
+            'image_url', 'is_active', 'order', 'created_at'
+        ]
+        read_only_fields = ['id', 'created_at']
+    
+    def get_image_url(self, obj):
+        """Return the image URL if available"""
+        return obj.image_url 
