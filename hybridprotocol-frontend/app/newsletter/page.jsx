@@ -24,7 +24,8 @@ export default function NewsletterPage() {
   const [activeFilters, setActiveFilters] = useState({
     category: null,
     tags: [],
-    archive: null
+    archive: null,
+    language: null
   });
 
   useEffect(() => {
@@ -61,6 +62,19 @@ export default function NewsletterPage() {
         return newsletterDate.getFullYear() === archiveDate.getFullYear() && 
                newsletterDate.getMonth() === archiveDate.getMonth();
       });
+    }
+
+    // Filter by language
+    if (activeFilters.language) {
+      if (activeFilters.language === 'english') {
+        filtered = filtered.filter(newsletter => newsletter.available_in_english);
+      } else if (activeFilters.language === 'spanish') {
+        filtered = filtered.filter(newsletter => newsletter.available_in_spanish);
+      } else if (activeFilters.language === 'both') {
+        filtered = filtered.filter(newsletter => 
+          newsletter.available_in_english && newsletter.available_in_spanish
+        );
+      }
     }
 
     setFilteredNewsletters(filtered);

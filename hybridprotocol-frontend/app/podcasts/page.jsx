@@ -23,7 +23,8 @@ export default function PodcastsPage() {
   const [activeFilters, setActiveFilters] = useState({
     category: null,
     tags: [],
-    archive: null
+    archive: null,
+    language: null
   });
 
   useEffect(() => {
@@ -60,6 +61,19 @@ export default function PodcastsPage() {
         return podcastDate.getFullYear() === archiveDate.getFullYear() && 
                podcastDate.getMonth() === archiveDate.getMonth();
       });
+    }
+
+    // Filter by language
+    if (activeFilters.language) {
+      if (activeFilters.language === 'english') {
+        filtered = filtered.filter(podcast => podcast.available_in_english);
+      } else if (activeFilters.language === 'spanish') {
+        filtered = filtered.filter(podcast => podcast.available_in_spanish);
+      } else if (activeFilters.language === 'both') {
+        filtered = filtered.filter(podcast => 
+          podcast.available_in_english && podcast.available_in_spanish
+        );
+      }
     }
 
     setFilteredPodcasts(filtered);

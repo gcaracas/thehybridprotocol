@@ -13,6 +13,15 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedArchive, setSelectedArchive] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  // Language options
+  const languageOptions = [
+    { id: 'all', name: 'All Languages', value: null },
+    { id: 'english', name: 'English', value: 'english' },
+    { id: 'spanish', name: 'Spanish', value: 'spanish' },
+    { id: 'both', name: 'English & Spanish', value: 'both' }
+  ];
 
   useEffect(() => {
     fetchWidgetData();
@@ -43,12 +52,14 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
     setSelectedCategory(newCategory);
     setSelectedTags([]);
     setSelectedArchive(null);
+    setSelectedLanguage(null);
     
     if (onFilterChange) {
       onFilterChange({
         category: newCategory,
         tags: [],
-        archive: null
+        archive: null,
+        language: null
       });
     }
   };
@@ -61,12 +72,14 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
     setSelectedTags(newTags);
     setSelectedCategory(null);
     setSelectedArchive(null);
+    setSelectedLanguage(null);
     
     if (onFilterChange) {
       onFilterChange({
         category: null,
         tags: newTags,
-        archive: null
+        archive: null,
+        language: null
       });
     }
   };
@@ -76,12 +89,31 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
     setSelectedArchive(newArchive);
     setSelectedCategory(null);
     setSelectedTags([]);
+    setSelectedLanguage(null);
     
     if (onFilterChange) {
       onFilterChange({
         category: null,
         tags: [],
-        archive: newArchive
+        archive: newArchive,
+        language: null
+      });
+    }
+  };
+
+  const handleLanguageClick = (language) => {
+    const newLanguage = selectedLanguage?.id === language.id ? null : language;
+    setSelectedLanguage(newLanguage);
+    setSelectedCategory(null);
+    setSelectedTags([]);
+    setSelectedArchive(null);
+    
+    if (onFilterChange) {
+      onFilterChange({
+        category: null,
+        tags: [],
+        archive: null,
+        language: newLanguage?.value || null
       });
     }
   };
@@ -89,6 +121,7 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
   const isCategorySelected = (category) => selectedCategory?.id === category.id;
   const isTagSelected = (tag) => selectedTags.some(t => t.id === tag.id);
   const isArchiveSelected = (archive) => selectedArchive?.id === archive.id;
+  const isLanguageSelected = (language) => selectedLanguage?.id === language.id;
 
   if (loading) {
     return (
@@ -129,7 +162,6 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                       >
                         {category.name_english}
                       </a>
-                      <small> - {category.count} </small>
                     </li>
                   ))}
                 </ul>
@@ -188,6 +220,36 @@ export default function SidebarWidgets({ contentType = 'podcast', onFilterChange
                         }}
                       >
                         {archive.month_name} {archive.year}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-sm-6 col-lg-3 mt-60">
+            {/* Language Widget */}
+            <div className="widget mb-0">
+              <h3 className="widget-title">Language</h3>
+              <div className="widget-body">
+                <ul className="clearlist widget-menu">
+                  {languageOptions.map((language) => (
+                    <li key={language.id}>
+                      <a 
+                        href="#" 
+                        title=""
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleLanguageClick(language);
+                        }}
+                        className={isLanguageSelected(language) ? 'active' : ''}
+                        style={{
+                          color: isLanguageSelected(language) ? '#007bff' : 'inherit',
+                          fontWeight: isLanguageSelected(language) ? 'bold' : 'normal'
+                        }}
+                      >
+                        {language.name}
                       </a>
                     </li>
                   ))}
