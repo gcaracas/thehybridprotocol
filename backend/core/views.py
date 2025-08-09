@@ -28,6 +28,11 @@ class NewsletterListView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Newsletter.objects.filter(published=True)
         
+        # Filter by category if specified
+        category_slug = self.request.query_params.get('category', '').strip()
+        if category_slug:
+            queryset = queryset.filter(category__slug=category_slug)
+        
         # Filter by language if specified
         language = self.request.query_params.get('language', '').lower()
         if language == 'english':
@@ -94,6 +99,11 @@ class PodcastEpisodeListView(generics.ListAPIView):
     
     def get_queryset(self):
         queryset = PodcastEpisode.objects.filter(published=True)
+        
+        # Filter by category if specified
+        category_slug = self.request.query_params.get('category', '').strip()
+        if category_slug:
+            queryset = queryset.filter(category__slug=category_slug)
         
         # Filter by language if specified
         language = self.request.query_params.get('language', '').lower()

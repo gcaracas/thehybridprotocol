@@ -46,6 +46,13 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name.english
+    
+    @property
+    def actual_count(self):
+        """Calculate the actual count of items in this category"""
+        newsletter_count = self.newsletters.filter(published=True).count()
+        podcast_count = self.podcast_episodes.filter(published=True).count()
+        return newsletter_count + podcast_count
 
 
 class Tag(models.Model):

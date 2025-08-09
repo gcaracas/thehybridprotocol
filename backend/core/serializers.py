@@ -42,7 +42,7 @@ class NewsletterSerializer(serializers.ModelSerializer):
                 'name_english': obj.category.name.english,
                 'name_spanish': obj.category.name.spanish,
                 'slug': obj.category.slug,
-                'count': obj.category.count,
+                'count': obj.category.actual_count,
                 'is_active': obj.category.is_active
             }
         return None
@@ -95,7 +95,7 @@ class NewsletterListSerializer(serializers.ModelSerializer):
                 'name_english': obj.category.name.english,
                 'name_spanish': obj.category.name.spanish,
                 'slug': obj.category.slug,
-                'count': obj.category.count,
+                'count': obj.category.actual_count,
                 'is_active': obj.category.is_active
             }
         return None
@@ -152,7 +152,7 @@ class PodcastEpisodeSerializer(serializers.ModelSerializer):
                 'name_english': obj.category.name.english,
                 'name_spanish': obj.category.name.spanish,
                 'slug': obj.category.slug,
-                'count': obj.category.count,
+                'count': obj.category.actual_count,
                 'is_active': obj.category.is_active
             }
         return None
@@ -213,7 +213,7 @@ class PodcastEpisodeListSerializer(serializers.ModelSerializer):
                 'name_english': obj.category.name.english,
                 'name_spanish': obj.category.name.spanish,
                 'slug': obj.category.slug,
-                'count': obj.category.count,
+                'count': obj.category.actual_count,
                 'is_active': obj.category.is_active
             }
         return None
@@ -298,6 +298,7 @@ class CategorySerializer(serializers.ModelSerializer):
     """Serializer for Category model"""
     name_english = serializers.CharField(source='name.english', read_only=True)
     name_spanish = serializers.CharField(source='name.spanish', read_only=True)
+    count = serializers.SerializerMethodField()
     
     class Meta:
         model = Category
@@ -306,6 +307,10 @@ class CategorySerializer(serializers.ModelSerializer):
             'count', 'is_active', 'created_at'
         ]
         read_only_fields = ['id', 'created_at']
+    
+    def get_count(self, obj):
+        """Return the actual calculated count of items in this category"""
+        return obj.actual_count
 
 
 class TagSerializer(serializers.ModelSerializer):
