@@ -65,7 +65,8 @@ def send_newsletter_task(self, send_key: str, batch_size: int = None):
                 "preheader": newsletter.preheader, 
                 "content_html": html_body, 
                 "UNSUB": "__UNSUB__", 
-                "VIEW_URL": view_url
+                "VIEW_URL": view_url,
+                "now": timezone.now().year
             },
         )
         
@@ -187,7 +188,8 @@ def send_test_newsletter_task(self, newsletter_id: int, test_email: str):
                 "preheader": newsletter.preheader, 
                 "content_html": html_body, 
                 "UNSUB": unsub, 
-                "VIEW_URL": view_url
+                "VIEW_URL": view_url,
+                "now": timezone.now().year
             },
         )
         

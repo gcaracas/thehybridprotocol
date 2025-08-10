@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ subject }}</title>
-    <!-- Preheader for better inbox previews -->
-    <div style="display:none;max-height:0;overflow:hidden;opacity:0;">{{ preheader }}</div>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,6 +49,8 @@
             margin-bottom: 15px;
             padding-left: 20px;
         }
+        /* Ensure images from the content scale on mobile */
+        .content img { max-width: 100%; height: auto; display: block; }
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -80,6 +80,12 @@
     </style>
 </head>
 <body>
+    <!-- Hidden preheader for inbox snippet -->
+    {% if preheader %}
+    <div style="display:none!important;max-height:0;overflow:hidden;opacity:0;color:transparent;height:0;width:0;">
+        {{ preheader }}
+    </div>
+    {% endif %}
     <div class="container">
         <div class="header">
             <h1 class="title">The Hybrid Protocol</h1>
@@ -93,7 +99,7 @@
         </div>
         
         <div class="footer">
-            <p>© 2024 The Hybrid Protocol. All rights reserved.</p>
+            <p>© {{ now|default:"2024" }} The Hybrid Protocol. All rights reserved.</p>
             <p>
                 <a href="{{ UNSUB }}" class="unsubscribe">Unsubscribe</a> | 
                 <a href="{{ VIEW_URL }}" class="unsubscribe">View in browser</a>
