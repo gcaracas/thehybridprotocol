@@ -25,8 +25,8 @@ class NewsletterSerializerTest(TestCase):
         """Test NewsletterSerializer includes all required fields"""
         serializer = NewsletterSerializer(self.newsletter)
         expected_fields = {
-            'id', 'title', 'slug', 'content', 'excerpt', 
-            'featured_image', 'featured_image_url', 'published', 'available_in_english', 
+            'id', 'title', 'slug', 'subject', 'preheader', 'content', 'excerpt', 
+            'featured_image', 'featured_image_url', 'status', 'published', 'sent_at', 'available_in_english', 
             'available_in_spanish', 'available_languages', 'is_multilingual', 'created_at', 
             'updated_at', 'published_at', 'category', 'tags'
         }
@@ -36,8 +36,8 @@ class NewsletterSerializerTest(TestCase):
         """Test NewsletterListSerializer includes minimal fields"""
         serializer = NewsletterListSerializer(self.newsletter)
         expected_fields = {
-            'id', 'title', 'slug', 'excerpt', 
-            'featured_image_url', 'published_at', 'available_in_english', 
+            'id', 'title', 'slug', 'subject', 'preheader', 'excerpt', 
+            'featured_image_url', 'status', 'published_at', 'sent_at', 'available_in_english', 
             'available_in_spanish', 'available_languages', 'is_multilingual', 'category', 'tags'
         }
         self.assertEqual(set(serializer.data.keys()), expected_fields)
