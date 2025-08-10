@@ -29,7 +29,12 @@ class NewsletterSerializer(serializers.ModelSerializer):
                 base_url = getattr(settings, 'BASE_URL', None)
                 if base_url:
                     return f"{base_url}{obj.featured_image.url}"
-                return obj.featured_image.url
+                # Fallback to Django's request-based URL if available
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(obj.featured_image.url)
+                # Final fallback for development
+                return f"http://localhost:8000{obj.featured_image.url}"
             except (ValueError, AttributeError):
                 return None
         return None
@@ -85,7 +90,12 @@ class NewsletterListSerializer(serializers.ModelSerializer):
                 base_url = getattr(settings, 'BASE_URL', None)
                 if base_url:
                     return f"{base_url}{obj.featured_image.url}"
-                return obj.featured_image.url
+                # Fallback to Django's request-based URL if available
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(obj.featured_image.url)
+                # Final fallback for development
+                return f"http://localhost:8000{obj.featured_image.url}"
             except (ValueError, AttributeError):
                 return None
         return None
@@ -143,7 +153,12 @@ class PodcastEpisodeSerializer(serializers.ModelSerializer):
                 base_url = getattr(settings, 'BASE_URL', None)
                 if base_url:
                     return f"{base_url}{obj.cover_image.url}"
-                return obj.cover_image.url
+                # Fallback to Django's request-based URL if available
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(obj.cover_image.url)
+                # Final fallback for development
+                return f"http://localhost:8000{obj.cover_image.url}"
             except (ValueError, AttributeError):
                 return None
         return None
@@ -198,7 +213,12 @@ class PodcastEpisodeListSerializer(serializers.ModelSerializer):
                 base_url = getattr(settings, 'BASE_URL', None)
                 if base_url:
                     return f"{base_url}{obj.cover_image.url}"
-                return obj.cover_image.url
+                # Fallback to Django's request-based URL if available
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(obj.cover_image.url)
+                # Final fallback for development
+                return f"http://localhost:8000{obj.cover_image.url}"
             except (ValueError, AttributeError):
                 return None
         return None

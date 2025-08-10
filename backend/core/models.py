@@ -147,7 +147,8 @@ class TextWidget(models.Model):
             try:
                 if hasattr(settings, 'BASE_URL') and settings.BASE_URL:
                     return f"{settings.BASE_URL}{self.image.url}"
-                return self.image.url
+                # Fallback for development
+                return f"http://localhost:8000{self.image.url}"
             except (ValueError, AttributeError):
                 return None
         return None
@@ -223,7 +224,8 @@ class Newsletter(models.Model):
                 # Use BASE_URL if available, otherwise use relative URL
                 if hasattr(settings, 'BASE_URL') and settings.BASE_URL:
                     return f"{settings.BASE_URL}{self.featured_image.url}"
-                return self.featured_image.url
+                # Fallback for development
+                return f"http://localhost:8000{self.featured_image.url}"
             except (ValueError, AttributeError):
                 return None
         return None
@@ -300,7 +302,8 @@ class PodcastEpisode(models.Model):
                 # Use BASE_URL if available, otherwise use relative URL
                 if hasattr(settings, 'BASE_URL') and settings.BASE_URL:
                     return f"{settings.BASE_URL}{self.cover_image.url}"
-                return self.cover_image.url
+                # Fallback for development
+                return f"http://localhost:8000{self.cover_image.url}"
             except (ValueError, AttributeError):
                 return None
         return None
