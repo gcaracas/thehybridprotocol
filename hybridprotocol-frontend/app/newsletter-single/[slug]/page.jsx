@@ -104,9 +104,12 @@ export default function NewsletterSinglePage({ params }) {
                 </h1>
                 <div className="row wow fadeIn" data-wow-delay="0.2s">
                   <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-                    <p className="hero-subtitle mb-0">
-                      Title: {newsletter.title}
-                    </p>
+                    <div className="hero-subtitle mb-0">
+                      <SafeHTMLRenderer 
+                        content={newsletter.title}
+                        className="newsletter-title"
+                      />
+                    </div>
                   </div>
                 </div>
                 {/* Author and Date */}

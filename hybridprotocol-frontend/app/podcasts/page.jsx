@@ -210,7 +210,7 @@ export default function PodcastsPage() {
                               )}
                               <h3 className="post-prev-title">
                                 <Link href={`/podcasts-single/${podcast.slug}`}>
-                                  {podcast.title}
+                                  {stripHTML(podcast.title)}
                                 </Link>
                               </h3>
                               <div className="post-prev-text">{stripHTML(podcast.description)}</div>

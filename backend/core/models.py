@@ -154,7 +154,7 @@ class TextWidget(models.Model):
 
 class Newsletter(models.Model):
     """Model for newsletter articles"""
-    title = models.CharField(max_length=200)
+    title = RichTextField(config_name='podcast', max_length=200, help_text="Newsletter title with basic formatting")
     slug = models.SlugField(unique=True, max_length=200)
     content = RichTextField(config_name='newsletter', help_text="Full newsletter content with rich text formatting")
     excerpt = RichTextField(config_name='podcast', max_length=500, help_text="Brief description for previews with basic formatting")
@@ -231,7 +231,7 @@ class Newsletter(models.Model):
 
 class PodcastEpisode(models.Model):
     """Model for podcast episodes"""
-    title = models.CharField(max_length=200)
+    title = RichTextField(config_name='podcast', max_length=200, help_text="Episode title with basic formatting")
     slug = models.SlugField(unique=True, max_length=200)
     description = RichTextField(config_name='podcast', help_text="Episode description with rich text formatting")
     script = RichTextField(config_name='newsletter', blank=True, help_text="Full episode script or transcript with rich text formatting")

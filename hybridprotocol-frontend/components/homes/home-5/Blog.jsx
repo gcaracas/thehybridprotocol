@@ -6,6 +6,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getLanguageDisplayText } from "@/utlis/languageUtils";
+import { stripHTML } from '@/utlis/htmlUtils';
 
 export default function Blog() {
   const [latestNewsletter, setLatestNewsletter] = useState(null);
@@ -131,10 +132,10 @@ export default function Blog() {
                 )}
                 <h3 className="post-prev-title">
                   <Link href={`/newsletter-single/${latestNewsletter.slug}`}>
-                    {latestNewsletter.title}
+                    {stripHTML(latestNewsletter.title)}
                   </Link>
                 </h3>
-                <div className="post-prev-text">{latestNewsletter.excerpt}</div>
+                <div className="post-prev-text">{stripHTML(latestNewsletter.excerpt)}</div>
                 <div className="post-prev-info clearfix">
                   <div className="float-start">
                     <a href="#" className="icon-author">
@@ -178,10 +179,10 @@ export default function Blog() {
                 )}
                 <h3 className="post-prev-title">
                   <Link href={`/podcasts-single/${latestPodcast.slug}`}>
-                    {latestPodcast.title}
+                    {stripHTML(latestPodcast.title)}
                   </Link>
                 </h3>
-                <div className="post-prev-text">{latestPodcast.description}</div>
+                <div className="post-prev-text">{stripHTML(latestPodcast.description)}</div>
                 <div className="post-prev-info clearfix">
                   <div className="float-start">
                     <a href="#" className="icon-author">

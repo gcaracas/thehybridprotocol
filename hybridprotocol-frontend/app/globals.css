@@ -6,6 +6,13 @@
   color: #333;
 }
 
+.newsletter-title,
+.podcast-title {
+  line-height: 1.4;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
 .newsletter-content h1,
 .newsletter-content h2,
 .newsletter-content h3,

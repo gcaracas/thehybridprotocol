@@ -83,7 +83,7 @@ export default function NewsletterSection() {
                 />
               )}
               <div className="card-body">
-                <h5 className="card-title">{newsletter.title}</h5>
+                <h5 className="card-title">{stripHTML(newsletter.title)}</h5>
                 <p className="card-text">{stripHTML(newsletter.excerpt)}</p>
                 <Link 
                   href={`/newsletter/${newsletter.slug}`}

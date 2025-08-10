@@ -211,7 +211,7 @@ export default function NewsletterPage() {
                               )}
                               <h3 className="post-prev-title">
                                 <Link href={`/newsletter-single/${newsletter.slug}`}>
-                                  {newsletter.title}
+                                  {stripHTML(newsletter.title)}
                                 </Link>
                               </h3>
                               <div className="post-prev-text">{stripHTML(newsletter.excerpt)}</div>
