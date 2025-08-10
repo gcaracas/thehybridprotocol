@@ -179,15 +179,16 @@ if not os.path.exists(MEDIA_ROOT):
             except Exception as fallback_e:
                 print(f"🔍 DEBUG: Failed to create fallback media directory: {fallback_e}")
 
-# Debug media directory
-print(f"🔍 DEBUG: MEDIA_ROOT = {MEDIA_ROOT}")
-print(f"🔍 DEBUG: Media directory exists: {os.path.exists(MEDIA_ROOT)}")
-if os.path.exists(MEDIA_ROOT):
-    print(f"🔍 DEBUG: Media directory writable: {os.access(MEDIA_ROOT, os.W_OK)}")
-    try:
-        print(f"🔍 DEBUG: Media directory contents: {os.listdir(MEDIA_ROOT)}")
-    except PermissionError:
-        print("🔍 DEBUG: Cannot list media directory contents (permission denied)")
+# Debug media directory (only in development)
+if DEBUG:
+    print(f"🔍 DEBUG: MEDIA_ROOT = {MEDIA_ROOT}")
+    print(f"🔍 DEBUG: Media directory exists: {os.path.exists(MEDIA_ROOT)}")
+    if os.path.exists(MEDIA_ROOT):
+        print(f"🔍 DEBUG: Media directory writable: {os.access(MEDIA_ROOT, os.W_OK)}")
+        try:
+            print(f"🔍 DEBUG: Media directory contents: {os.listdir(MEDIA_ROOT)}")
+        except PermissionError:
+            print("🔍 DEBUG: Cannot list media directory contents (permission denied)")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -220,9 +221,10 @@ CSRF_TRUSTED_ORIGINS = config(
     cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
 )
 
-# Debug CSRF settings
-print(f"🔍 DEBUG: CSRF_TRUSTED_ORIGINS = {CSRF_TRUSTED_ORIGINS}")
-print(f"🔍 DEBUG: DEBUG = {DEBUG}")
+# Debug CSRF settings (only in development)
+if DEBUG:
+    print(f"🔍 DEBUG: CSRF_TRUSTED_ORIGINS = {CSRF_TRUSTED_ORIGINS}")
+    print(f"🔍 DEBUG: DEBUG = {DEBUG}")
 
 # Additional CORS settings for production
 if not DEBUG:
@@ -333,5 +335,25 @@ else:
     # Development security settings
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
+
+# Celery Configuration
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default=config('REDIS_URL', default='redis://localhost:6379/0'))
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default=config('REDIS_URL', default='redis://localhost:6379/0'))
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ENABLE_UTC = True
+
+# Email Configuration
+EMAIL_PROVIDER = config('EMAIL_PROVIDER', default='postmark')
+EMAIL_API_KEY = config('EMAIL_API_KEY', default='')
+EMAIL_FROM = config('EMAIL_FROM', default='hello@thehybridprotocol.com')
+PUBLIC_FRONTEND_URL = config('PUBLIC_FRONTEND_URL', default='http://localhost:3000')
+BASE_URL = config('BASE_URL', default='')
+NEWSLETTER_VIEW_PATH = config('NEWSLETTER_VIEW_PATH', default='/newsletter-single')
+BATCH_SIZE = config('BATCH_SIZE', default=500, cast=int)
+RATE_SLEEP_SEC = config('RATE_SLEEP_SEC', default=0.5, cast=float)
+POSTMARK_WEBHOOK_TOKEN = config('POSTMARK_WEBHOOK_TOKEN', default='')
 
 

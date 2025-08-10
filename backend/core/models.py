@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
@@ -154,11 +155,22 @@ class TextWidget(models.Model):
 
 class Newsletter(models.Model):
     """Model for newsletter articles"""
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+    ]
+    
     title = RichTextField(config_name='podcast', max_length=200, help_text="Newsletter title with basic formatting")
     slug = models.SlugField(unique=True, max_length=200)
+    subject = models.CharField(max_length=200, default="", help_text="Email subject line")
+    preheader = models.CharField(max_length=200, blank=True, help_text="Preview text shown in email clients")
     content = RichTextField(config_name='newsletter', help_text="Full newsletter content with rich text formatting")
     excerpt = RichTextField(config_name='podcast', max_length=500, help_text="Brief description for previews with basic formatting")
     featured_image = models.ImageField(upload_to='newsletter_images/', blank=True, null=True, help_text="Featured image for newsletter")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft', help_text="Newsletter status")
+    published = models.BooleanField(default=False)
+    sent_at = models.DateTimeField(blank=True, null=True, help_text="When newsletter was sent to subscribers")
+    send_key = models.CharField(max_length=50, unique=True, default="", help_text="Unique key for sending operations")
     category = models.ForeignKey(
         Category, 
         on_delete=models.SET_NULL, 
@@ -173,7 +185,6 @@ class Newsletter(models.Model):
         related_name='newsletters',
         help_text="Tags for this newsletter"
     )
-    published = models.BooleanField(default=False)
     # Language availability - both can be True (non-mutually exclusive)
     available_in_english = models.BooleanField(
         default=True,
@@ -194,10 +205,14 @@ class Newsletter(models.Model):
         return self.title
     
     def save(self, *args, **kwargs):
+        if not self.send_key:
+            self.send_key = str(uuid.uuid4())
         if self.published and not self.published_at:
             self.published_at = timezone.now()
+            self.status = 'published'
         elif not self.published:
             self.published_at = None
+            self.status = 'draft'
         super().save(*args, **kwargs)
     
     @property
@@ -312,6 +327,8 @@ class EmailSignup(models.Model):
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     is_active = models.BooleanField(default=True)
+    is_subscribed = models.BooleanField(default=True, help_text="Whether user is subscribed to newsletters")
+    bounce = models.BooleanField(default=False, help_text="Whether email has bounced")
     source = models.CharField(
         max_length=50, 
         default='website',
@@ -411,3 +428,36 @@ class Comment(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()  # Run validation before saving
         super().save(*args, **kwargs)
+
+
+class EmailLog(models.Model):
+    """Model for tracking email delivery status"""
+    STATUS_CHOICES = [
+        ('queued', 'Queued'),
+        ('sent', 'Sent'),
+        ('failed', 'Failed'),
+    ]
+    
+    newsletter = models.ForeignKey(
+        Newsletter,
+        on_delete=models.CASCADE,
+        related_name='email_logs',
+        help_text="Newsletter that was sent"
+    )
+    recipient = models.ForeignKey(
+        EmailSignup,
+        on_delete=models.CASCADE,
+        related_name='email_logs',
+        help_text="Recipient of the email"
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='queued')
+    provider_message_id = models.CharField(max_length=255, blank=True, null=True, help_text="Provider's message ID")
+    error = models.TextField(blank=True, null=True, help_text="Error message if sending failed")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ['newsletter', 'recipient']
+    
+    def __str__(self):
+        return f"{self.newsletter.title} -> {self.recipient.email} ({self.status})"

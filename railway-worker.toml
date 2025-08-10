@@ -1,0 +1,12 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "celery -A thehybridprotocol worker -l info --concurrency=2"
+healthcheckPath = "/api/health/"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[env]
+PYTHON_VERSION = "3.9" 

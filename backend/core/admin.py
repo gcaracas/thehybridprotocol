@@ -1,34 +1,40 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.urls import reverse, path
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.shortcuts import render
 from .models import (
     Newsletter, PodcastEpisode, EmailSignup,
-    LocalizedElement, Category, Tag, Archive, TextWidget, Comment
+    LocalizedElement, Category, Tag, Archive, TextWidget, Comment, EmailLog
 )
+from .tasks import send_newsletter_task, send_test_newsletter_task
 import re
 
 
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'category', 'published', 'available_in_english', 'available_in_spanish', 'languages_display', 'published_at', 'featured_image_preview', 'created_at']
-    list_filter = ['published', 'category', 'tags', 'available_in_english', 'available_in_spanish', 'created_at', 'published_at']
-    search_fields = ['title', 'content', 'slug', 'category__name__english', 'tags__name__english']
+    list_display = ['title', 'subject', 'status', 'published', 'available_in_english', 'available_in_spanish', 'sent_at', 'published_at', 'featured_image_preview', 'preview_link', 'created_at']
+    list_filter = ['status', 'published', 'category', 'tags', 'available_in_english', 'available_in_spanish', 'created_at', 'published_at', 'sent_at']
+    search_fields = ['title', 'subject', 'content', 'slug', 'category__name__english', 'tags__name__english']
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ['published', 'available_in_english', 'available_in_spanish']
+    list_editable = ['status', 'published', 'available_in_english', 'available_in_spanish']
     date_hierarchy = 'published_at'
-    actions = ['delete_selected']
+    actions = ['delete_selected', 'send_newsletter', 'send_test_newsletter']
     list_per_page = 25
+    readonly_fields = ['send_key', 'sent_at', 'created_at', 'updated_at', 'published_at']
     
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'slug', 'excerpt', 'published')
-        }),
-        ('Language Availability', {
-            'fields': ('available_in_english', 'available_in_spanish'),
-            'description': 'Select which languages this content is available in. Both can be selected.'
+            'fields': ('title', 'slug', 'subject', 'preheader', 'excerpt', 'status', 'published')
         }),
         ('Content', {
             'fields': ('content',),
             'classes': ('wide',)
+        }),
+        ('Language Availability', {
+            'fields': ('available_in_english', 'available_in_spanish'),
+            'description': 'Select which languages this content is available in. Both can be selected.'
         }),
         ('Categorization', {
             'fields': ('category', 'tags'),
@@ -36,6 +42,10 @@ class NewsletterAdmin(admin.ModelAdmin):
         }),
         ('Media', {
             'fields': ('featured_image',)
+        }),
+        ('Sending Information', {
+            'fields': ('send_key', 'sent_at'),
+            'classes': ('collapse',)
         }),
     )
     
@@ -47,22 +57,125 @@ class NewsletterAdmin(admin.ModelAdmin):
                 obj.featured_image.url
             )
         return "No image"
-    featured_image_preview.short_description = "Featured Image"
+    featured_image_preview.short_description = "Image"
+
+    def preview_link(self, obj):
+        """Display preview link"""
+        if obj.pk:
+            preview_url = reverse('admin:core_newsletter_preview', args=[obj.pk])
+            return format_html('<a href="{}" target="_blank">Preview</a>', preview_url)
+        return "N/A"
+    preview_link.short_description = "Preview"
     
     def languages_display(self, obj):
-        """Display available languages in a readable format"""
+        """Display available languages"""
         languages = []
         if obj.available_in_english:
-            languages.append('🇺🇸 EN')
+            languages.append('EN')
         if obj.available_in_spanish:
-            languages.append('🇪🇸 ES')
-        return ' | '.join(languages) if languages else '—'
+            languages.append('ES')
+        return ', '.join(languages) if languages else 'None'
     languages_display.short_description = "Languages"
     
-    def get_actions(self, request):
-        """Enable delete action for maximum control"""
-        actions = super().get_actions(request)
-        return actions
+    def send_newsletter(self, request, queryset):
+        """Admin action to send newsletter"""
+        if queryset.count() != 1:
+            messages.error(request, "Please select exactly one newsletter to send.")
+            return
+        
+        newsletter = queryset.first()
+        
+        if newsletter.status != 'published':
+            messages.error(request, "Only published newsletters can be sent.")
+            return
+        
+        if newsletter.sent_at:
+            messages.warning(request, "This newsletter has already been sent.")
+            return
+        
+        # Queue the task
+        send_newsletter_task.delay(newsletter.send_key)
+        messages.success(request, f"Newsletter '{newsletter.title}' has been queued for sending.")
+    
+    send_newsletter.short_description = "Send newsletter to subscribers"
+    
+    def send_test_newsletter(self, request, queryset):
+        """Admin action to send test newsletter"""
+        if queryset.count() != 1:
+            messages.error(request, "Please select exactly one newsletter for testing.")
+            return
+        
+        newsletter = queryset.first()
+        
+        # Get admin user's email for test
+        admin_email = request.user.email
+        if not admin_email:
+            messages.error(request, "Please set your email address in your user profile to send test emails.")
+            return
+        
+        # Queue test email task
+        send_test_newsletter_task.delay(newsletter.id, admin_email)
+        messages.success(request, f"Test newsletter '{newsletter.title}' has been queued for sending to {admin_email}.")
+    
+    send_test_newsletter.short_description = "Send test newsletter to admin"
+
+    def get_urls(self):
+        """Add custom URLs for admin actions"""
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                '<int:newsletter_id>/preview/',
+                self.admin_site.admin_view(self.preview_newsletter),
+                name='core_newsletter_preview',
+            ),
+        ]
+        return custom_urls + urls
+
+    def preview_newsletter(self, request, newsletter_id):
+        """Preview newsletter in admin"""
+        newsletter = self.get_object(request, newsletter_id)
+        if newsletter is None:
+            messages.error(request, "Newsletter not found.")
+            return HttpResponseRedirect(reverse('admin:core_newsletter_changelist'))
+        
+        # Create dummy unsubscribe and view URLs for preview
+        dummy_unsub = "#preview-unsubscribe"
+        dummy_view = f"{settings.PUBLIC_FRONTEND_URL}{settings.NEWSLETTER_VIEW_PATH}/{newsletter.slug}"
+        
+        # Convert content to HTML if needed
+        if newsletter.content:
+            from .utils.email import convert_markdown_to_html
+            content_html = convert_markdown_to_html(newsletter.content)
+        else:
+            content_html = ""
+        
+        context = {
+            'newsletter': newsletter,
+            'subject': newsletter.subject,
+            'preheader': newsletter.preheader,
+            'content_html': content_html,
+            'UNSUB': dummy_unsub,
+            'VIEW_URL': dummy_view,
+            'PUBLIC_FRONTEND_URL': settings.PUBLIC_FRONTEND_URL,
+        }
+        
+        return render(request, 'email/newsletter.html', context)
+
+
+@admin.register(EmailLog)
+class EmailLogAdmin(admin.ModelAdmin):
+    list_display = ['newsletter', 'recipient', 'status', 'provider_message_id', 'created_at']
+    list_filter = ['status', 'created_at', 'newsletter']
+    search_fields = ['newsletter__title', 'recipient__email', 'provider_message_id']
+    readonly_fields = ['newsletter', 'recipient', 'status', 'provider_message_id', 'error', 'created_at']
+    date_hierarchy = 'created_at'
+    list_per_page = 50
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(PodcastEpisode)

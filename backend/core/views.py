@@ -1,9 +1,14 @@
 from rest_framework import generics, status, serializers
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.http import JsonResponse
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings
+from django.core.signing import SignatureExpired, BadSignature
+from django.views.decorators.csrf import csrf_exempt
 import os
+import json
 from .models import Newsletter, PodcastEpisode, EmailSignup, Category, Tag, Archive, TextWidget
 from .serializers import (
     NewsletterSerializer, NewsletterListSerializer,
@@ -18,6 +23,8 @@ from django.utils import timezone
 from datetime import timedelta
 from .serializers import CommentSerializer, CommentCreateSerializer
 from .models import Comment
+from .utils.email import verify_unsubscribe_token
+from .tasks import send_test_newsletter_task
 
 
 class NewsletterListView(generics.ListAPIView):
@@ -351,3 +358,103 @@ def media_debug(request):
         debug_info['error'] = str(e)
     
     return JsonResponse(debug_info)
+
+
+def unsubscribe(request):
+    """
+    Handle newsletter unsubscribe requests (no expiry for compliance)
+    """
+    token = request.GET.get('t')  # Changed from 'token' to 't' to match new URL format
+    
+    if not token:
+        return render(request, 'email/unsubscribe_error.html', {
+            'error': 'Invalid unsubscribe link'
+        }, status=400)
+    
+    try:
+        recipient_id = verify_unsubscribe_token(token)
+        recipient = get_object_or_404(EmailSignup, id=recipient_id)
+        
+        # Mark as unsubscribed
+        recipient.is_subscribed = False
+        recipient.save()
+        
+        return render(request, 'email/unsubscribe_success.html', {
+            'email': recipient.email,
+            'frontend_url': settings.PUBLIC_FRONTEND_URL
+        })
+        
+    except BadSignature:
+        return render(request, 'email/unsubscribe_error.html', {
+            'error': 'Invalid unsubscribe link'
+        }, status=400)
+
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def send_test_newsletter(request, newsletter_id):
+    """
+    Send test newsletter to specified email (Admin only)
+    """
+    try:
+        newsletter = get_object_or_404(Newsletter, id=newsletter_id)
+        email = request.data.get('email')
+        
+        if not email:
+            return Response(
+                {'error': 'Email address is required'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Queue test email task
+        send_test_newsletter_task.delay(newsletter_id, email)
+        
+        return Response({
+            'message': f'Test email queued for {email}'
+        }, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        return Response(
+            {'error': str(e)}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@csrf_exempt
+def postmark_webhook(request, token: str):
+    """
+    Handle Postmark webhook for bounces and other events
+    """
+    if token != os.environ.get("POSTMARK_WEBHOOK_TOKEN"):
+        return HttpResponseForbidden("Invalid token")
+    
+    if request.method != "POST":
+        return JsonResponse({"ok": True})
+
+    try:
+        payload = json.loads(request.body.decode("utf-8"))
+        
+        # Handle bounces
+        if payload.get("RecordType") == "Bounce":
+            email = payload.get("Email")
+            if email:
+                EmailSignup.objects.filter(email__iexact=email).update(
+                    bounce=True, 
+                    is_subscribed=False
+                )
+                print(f"Marked {email} as bounced and unsubscribed")
+        
+        # Handle spam complaints
+        elif payload.get("RecordType") == "SpamComplaint":
+            email = payload.get("Email")
+            if email:
+                EmailSignup.objects.filter(email__iexact=email).update(
+                    is_subscribed=False
+                )
+                print(f"Marked {email} as unsubscribed due to spam complaint")
+        
+        return JsonResponse({"ok": True})
+        
+    except Exception as e:
+        print(f"Webhook error: {e}")
+        return JsonResponse({"error": str(e)}, status=500)

@@ -83,12 +83,14 @@ export default function NewsLetter({ source = 'home' }) {
           
           {success && (
             <div className="alert alert-success mb-20" style={{
-              backgroundColor: 'rgba(40, 167, 69, 0.1)',
-              border: '1px solid rgba(40, 167, 69, 0.3)',
+              backgroundColor: 'rgba(40, 167, 69, 0.25)',
+              border: '1px solid rgba(40, 167, 69, 0.5)',
               color: '#ffffff',
               padding: '12px 16px',
               borderRadius: '8px',
-              marginBottom: '20px'
+              marginBottom: '20px',
+              backdropFilter: 'blur(5px)',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
             }}>
               {success}
             </div>

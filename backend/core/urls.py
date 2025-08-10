@@ -35,4 +35,9 @@ urlpatterns = [
     # Comment endpoints
     path('comments/', views.CommentListView.as_view(), name='comment_list'),
     path('comments/create/', views.CommentCreateView.as_view(), name='comment_create'),
+    
+    # Newsletter sending endpoints
+    path('unsubscribe/', views.unsubscribe, name='unsubscribe'),
+    path('newsletters/<int:newsletter_id>/send-test/', views.send_test_newsletter, name='send_test_newsletter'),
+    path('api/webhooks/postmark/<str:token>/', views.postmark_webhook, name='postmark_webhook'),
 ]

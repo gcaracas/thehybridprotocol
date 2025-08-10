@@ -14,12 +14,12 @@ class NewsletterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Newsletter
         fields = [
-            'id', 'title', 'slug', 'content', 'excerpt', 
-            'featured_image', 'featured_image_url', 'published', 'available_in_english', 
-            'available_in_spanish', 'available_languages', 'is_multilingual', 'created_at', 
-            'updated_at', 'published_at', 'category', 'tags'
+            'id', 'title', 'slug', 'subject', 'preheader', 'content', 'excerpt', 
+            'featured_image', 'featured_image_url', 'status', 'published', 'sent_at',
+            'available_in_english', 'available_in_spanish', 'available_languages', 
+            'is_multilingual', 'created_at', 'updated_at', 'published_at', 'category', 'tags'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'published_at', 'featured_image_url', 'available_languages', 'is_multilingual']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'published_at', 'sent_at', 'featured_image_url', 'available_languages', 'is_multilingual']
     
     def get_featured_image_url(self, obj):
         """Return full absolute URL for featured image"""
@@ -42,22 +42,23 @@ class NewsletterSerializer(serializers.ModelSerializer):
                 'name_english': obj.category.name.english,
                 'name_spanish': obj.category.name.spanish,
                 'slug': obj.category.slug,
-                'count': obj.category.actual_count,
+                'count': obj.category.count,
                 'is_active': obj.category.is_active
             }
         return None
     
     def get_tags(self, obj):
         """Return tags data"""
-        if obj.tags.exists():
-            return [{
+        return [
+            {
                 'id': tag.id,
                 'name_english': tag.name.english,
                 'name_spanish': tag.name.spanish,
                 'slug': tag.slug,
                 'is_active': tag.is_active
-            } for tag in obj.tags.all()]
-        return []
+            }
+            for tag in obj.tags.all()
+        ]
 
 
 class NewsletterListSerializer(serializers.ModelSerializer):
@@ -69,10 +70,12 @@ class NewsletterListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Newsletter
         fields = [
-            'id', 'title', 'slug', 'excerpt', 
-            'featured_image_url', 'published_at', 'available_in_english', 
-            'available_in_spanish', 'available_languages', 'is_multilingual', 'category', 'tags'
+            'id', 'title', 'slug', 'subject', 'preheader', 'excerpt', 
+            'featured_image_url', 'status', 'published_at', 'sent_at',
+            'available_in_english', 'available_in_spanish', 'available_languages', 
+            'is_multilingual', 'category', 'tags'
         ]
+        read_only_fields = ['id', 'published_at', 'sent_at', 'featured_image_url', 'available_languages', 'is_multilingual']
     
     def get_featured_image_url(self, obj):
         """Return full absolute URL for featured image"""
@@ -95,22 +98,23 @@ class NewsletterListSerializer(serializers.ModelSerializer):
                 'name_english': obj.category.name.english,
                 'name_spanish': obj.category.name.spanish,
                 'slug': obj.category.slug,
-                'count': obj.category.actual_count,
+                'count': obj.category.count,
                 'is_active': obj.category.is_active
             }
         return None
     
     def get_tags(self, obj):
         """Return tags data"""
-        if obj.tags.exists():
-            return [{
+        return [
+            {
                 'id': tag.id,
                 'name_english': tag.name.english,
                 'name_spanish': tag.name.spanish,
                 'slug': tag.slug,
                 'is_active': tag.is_active
-            } for tag in obj.tags.all()]
-        return []
+            }
+            for tag in obj.tags.all()
+        ]
 
 
 class PodcastEpisodeSerializer(serializers.ModelSerializer):
