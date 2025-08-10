@@ -13,7 +13,7 @@ import ContentMetadata from "@/components/common/ContentMetadata";
 import { SafeHTMLRenderer } from "@/utlis/htmlUtils";
 import Link from "next/link";
 
-export default function PodcastSinglePage({ params }) {
+export default function PodcastScriptPage({ params }) {
   const resolvedParams = use(params);
   const [podcast, setPodcast] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -80,6 +80,32 @@ export default function PodcastSinglePage({ params }) {
     );
   }
 
+  if (!podcast.script) {
+    return (
+      <div className="theme-elegant">
+        <div className="page" id="top">
+          <nav className="main-nav dark transparent stick-fixed wow-menubar">
+            <Header5 links={elegantMultipage} />
+          </nav>
+          <main id="main">
+            <section className="page-section light-content">
+              <div className="container position-relative pt-20 pt-sm-20 text-center">
+                <h1 className="hs-title-3a mb-0">Script Not Available</h1>
+                <p>This podcast episode doesn't have a script available.</p>
+                <Link href={`/podcasts-single/${podcast.slug}`} className="btn btn-primary mt-20">
+                  Back to Episode
+                </Link>
+              </div>
+            </section>
+          </main>
+          <footer className="bg-dark-1 light-content footer z-index-1 position-relative">
+            <Footer5 />
+          </footer>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="theme-elegant">
@@ -101,7 +127,7 @@ export default function PodcastSinglePage({ params }) {
                   className="hero-title mb-10 wow fadeInUpShort"
                   data-wow-duration="0.6s"
                 >
-                  Podcast Episode:
+                  Episode Script:
                 </h1>
                 <div className="row wow fadeIn" data-wow-delay="0.2s">
                   <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
@@ -172,40 +198,14 @@ export default function PodcastSinglePage({ params }) {
                           />
                         </div>
 
-                        {podcast.script && (
-                          <div className="mb-40 mb-xs-30">
-                            <h4>Episode Script</h4>
-                            <p className="mb-20">
-                              <strong>Script available:</strong> This episode has a detailed script with timestamps, key points, and full transcript.
-                            </p>
-                            <Link 
-                              href={`/podcasts-single/${podcast.slug}/script`}
-                              className="btn btn-primary"
-                              style={{
-                                display: 'inline-block',
-                                padding: '10px 20px',
-                                borderRadius: '6px',
-                                textDecoration: 'none',
-                                fontSize: '14px',
-                                transition: 'all 0.2s ease',
-                                backgroundColor: '#3498db',
-                                color: 'white',
-                                border: 'none',
-                                fontWeight: '500',
-                                cursor: 'pointer'
-                              }}
-                              onMouseEnter={(e) => {
-                                e.target.style.backgroundColor = '#2980b9';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.target.style.backgroundColor = '#3498db';
-                              }}
-                            >
-                              <i className="mi-description size-16 me-2" />
-                              View Full Script
-                            </Link>
-                          </div>
-                        )}
+                        {/* Script Content */}
+                        <div className="mb-40 mb-xs-30">
+                          <h2 className="mb-30">Episode Script</h2>
+                          <SafeHTMLRenderer 
+                            content={podcast.script}
+                            className="podcast-script"
+                          />
+                        </div>
 
                         {/* Audio Links */}
                         <div className="mb-40 mb-xs-30">
@@ -320,14 +320,18 @@ export default function PodcastSinglePage({ params }) {
                       contentTitle={podcast.title}
                     />
                     {/* End Comments Section */}
-                    {/* Prev/Next Post */}
+                    {/* Navigation */}
                     <div className="clearfix mt-40">
-                      <a href="/podcasts" className="blog-item-more left">
+                      <Link href={`/podcasts-single/${podcast.slug}`} className="blog-item-more left">
                         <i className="mi-chevron-left" />
-                        &nbsp;Back to Podcasts
-                      </a>
+                        &nbsp;Back to Episode
+                      </Link>
+                      <Link href="/podcasts" className="blog-item-more right">
+                        All Podcasts&nbsp;
+                        <i className="mi-chevron-right" />
+                      </Link>
                     </div>
-                    {/* End Prev/Next Post */}
+                    {/* End Navigation */}
                   </div>
                   {/* End Content */}
                   {/* Sidebar */}
@@ -352,4 +356,4 @@ export default function PodcastSinglePage({ params }) {
       </div>
     </>
   );
-}
+} 
