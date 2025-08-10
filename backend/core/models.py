@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from ckeditor.fields import RichTextField
 
 
 def get_current_date():
@@ -155,8 +156,8 @@ class Newsletter(models.Model):
     """Model for newsletter articles"""
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, max_length=200)
-    content = models.TextField()
-    excerpt = models.TextField(max_length=500, help_text="Brief description for previews")
+    content = RichTextField(config_name='newsletter', help_text="Full newsletter content with rich text formatting")
+    excerpt = RichTextField(config_name='podcast', max_length=500, help_text="Brief description for previews with basic formatting")
     featured_image = models.ImageField(upload_to='newsletter_images/', blank=True, null=True, help_text="Featured image for newsletter")
     category = models.ForeignKey(
         Category, 
@@ -232,8 +233,8 @@ class PodcastEpisode(models.Model):
     """Model for podcast episodes"""
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, max_length=200)
-    description = models.TextField()
-    script = models.TextField(blank=True, help_text="Full episode script or transcript")
+    description = RichTextField(config_name='podcast', help_text="Episode description with rich text formatting")
+    script = RichTextField(config_name='newsletter', blank=True, help_text="Full episode script or transcript with rich text formatting")
     publish_date = models.DateField(default=get_current_date)
     facebook_url = models.URLField(blank=True, null=True, help_text="Facebook URL")
     youtube_url = models.URLField(blank=True, null=True, help_text="YouTube video URL")

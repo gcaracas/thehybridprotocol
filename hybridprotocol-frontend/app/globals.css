@@ -1,0 +1,224 @@
+/* Rich Text Content Styles */
+.newsletter-content,
+.podcast-description,
+.podcast-script {
+  line-height: 1.6;
+  color: #333;
+}
+
+.newsletter-content h1,
+.newsletter-content h2,
+.newsletter-content h3,
+.newsletter-content h4,
+.newsletter-content h5,
+.newsletter-content h6,
+.podcast-description h1,
+.podcast-description h2,
+.podcast-description h3,
+.podcast-description h4,
+.podcast-description h5,
+.podcast-description h6,
+.podcast-script h1,
+.podcast-script h2,
+.podcast-script h3,
+.podcast-script h4,
+.podcast-script h5,
+.podcast-script h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.newsletter-content h1,
+.podcast-description h1,
+.podcast-script h1 {
+  font-size: 2em;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.3em;
+}
+
+.newsletter-content h2,
+.podcast-description h2,
+.podcast-script h2 {
+  font-size: 1.75em;
+  border-bottom: 1px solid #ecf0f1;
+  padding-bottom: 0.2em;
+}
+
+.newsletter-content h3,
+.podcast-description h3,
+.podcast-script h3 {
+  font-size: 1.5em;
+}
+
+.newsletter-content h4,
+.podcast-description h4,
+.podcast-script h4 {
+  font-size: 1.25em;
+}
+
+.newsletter-content p,
+.podcast-description p,
+.podcast-script p {
+  margin-bottom: 1em;
+}
+
+.newsletter-content ul,
+.newsletter-content ol,
+.podcast-description ul,
+.podcast-description ol,
+.podcast-script ul,
+.podcast-script ol {
+  margin-bottom: 1em;
+  padding-left: 2em;
+}
+
+.newsletter-content li,
+.podcast-description li,
+.podcast-script li {
+  margin-bottom: 0.5em;
+}
+
+.newsletter-content blockquote,
+.podcast-description blockquote,
+.podcast-script blockquote {
+  border-left: 4px solid #3498db;
+  padding-left: 1em;
+  margin: 1.5em 0;
+  font-style: italic;
+  background-color: #f8f9fa;
+  padding: 1em;
+  border-radius: 0 4px 4px 0;
+}
+
+.newsletter-content a,
+.podcast-description a,
+.podcast-script a {
+  color: #3498db;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.2s ease;
+}
+
+.newsletter-content a:hover,
+.podcast-description a:hover,
+.podcast-script a:hover {
+  border-bottom-color: #3498db;
+}
+
+.newsletter-content strong,
+.newsletter-content b,
+.podcast-description strong,
+.podcast-description b,
+.podcast-script strong,
+.podcast-script b {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.newsletter-content em,
+.newsletter-content i,
+.podcast-description em,
+.podcast-description i,
+.podcast-script em,
+.podcast-script i {
+  font-style: italic;
+}
+
+.newsletter-content table,
+.podcast-description table,
+.podcast-script table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.newsletter-content th,
+.newsletter-content td,
+.podcast-description th,
+.podcast-description td,
+.podcast-script th,
+.podcast-script td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.newsletter-content th,
+.podcast-description th,
+.podcast-script th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.newsletter-content code,
+.podcast-description code,
+.podcast-script code {
+  background-color: #f8f9fa;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #e74c3c;
+}
+
+.newsletter-content pre,
+.podcast-description pre,
+.podcast-script pre {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.newsletter-content pre code,
+.podcast-description pre code,
+.podcast-script pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .newsletter-content h1,
+  .podcast-description h1,
+  .podcast-script h1 {
+    font-size: 1.75em;
+  }
+  
+  .newsletter-content h2,
+  .podcast-description h2,
+  .podcast-script h2 {
+    font-size: 1.5em;
+  }
+  
+  .newsletter-content h3,
+  .podcast-description h3,
+  .podcast-script h3 {
+    font-size: 1.25em;
+  }
+  
+  .newsletter-content table,
+  .podcast-description table,
+  .podcast-script table {
+    font-size: 0.9em;
+  }
+  
+  .newsletter-content th,
+  .newsletter-content td,
+  .podcast-description th,
+  .podcast-description td,
+  .podcast-script th,
+  .podcast-script td {
+    padding: 8px;
+  }
+} 

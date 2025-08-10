@@ -10,6 +10,7 @@ import { elegantMultipage } from "@/data/menu";
 import Pagination from "@/components/common/Pagination";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
 import { getLanguageDisplayText } from "@/utlis/languageUtils";
+import { stripHTML } from "@/utlis/htmlUtils";
 
 export default function PodcastsPage() {
   const [podcasts, setPodcasts] = useState([]);
@@ -212,7 +213,7 @@ export default function PodcastsPage() {
                                   {podcast.title}
                                 </Link>
                               </h3>
-                              <div className="post-prev-text">{podcast.description}</div>
+                              <div className="post-prev-text">{stripHTML(podcast.description)}</div>
                               <div className="post-prev-info clearfix">
                                 <div className="float-start">
                                   <a href="#" className="icon-author">

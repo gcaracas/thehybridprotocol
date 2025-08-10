@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # Third party apps
     'rest_framework',
     'corsheaders',
+    'ckeditor',
     
     # Local apps
     'core',
@@ -239,6 +240,83 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 # For development, allow all origins (remove in production)
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
+
+# CKEditor Configuration
+# Note: CKEditor 4.22.1 has known security vulnerabilities
+# Consider upgrading to CKEditor 5 or CKEditor 4 LTS in production
+# For now, we're using the latest available django-ckeditor version
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source'],
+            ['Format', 'Font', 'FontSize'],
+            ['TextColor', 'BGColor'],
+            ['Table', 'HorizontalRule', 'SpecialChar'],
+            ['Maximize']
+        ],
+        'height': 300,
+        'width': '100%',
+        'removePlugins': 'stylesheetparser,flash,iframe,forms,div,showblocks,newpage,save,preview,print,templates,cut,copy,paste,pastetext,pastefromword,find,replace,selectall,scayt,spellchecker',
+        'allowedContent': True,
+        'extraAllowedContent': 'span(*)',
+        'extraPlugins': 'autogrow',
+        'autoGrow_minHeight': 300,
+        'autoGrow_maxHeight': 800,
+    },
+    'newsletter': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat'],
+            ['Format', 'FontSize'],
+            ['Table'],
+            ['Maximize']
+        ],
+        'height': 400,
+        'width': '100%',
+        'removePlugins': 'stylesheetparser,flash,iframe,forms,div,showblocks,newpage,save,preview,print,templates,cut,copy,paste,pastetext,pastefromword,find,replace,selectall,scayt,spellchecker',
+        'allowedContent': True,
+        'extraAllowedContent': 'span(*)',
+        'extraPlugins': 'autogrow',
+        'autoGrow_minHeight': 400,
+        'autoGrow_maxHeight': 1000,
+    },
+    'podcast': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic'],
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat'],
+            ['Format'],
+            ['Maximize']
+        ],
+        'height': 300,
+        'width': '100%',
+        'removePlugins': 'stylesheetparser,flash,iframe,forms,div,showblocks,newpage,save,preview,print,templates,cut,copy,paste,pastetext,pastefromword,find,replace,selectall,scayt,spellchecker',
+        'allowedContent': True,
+        'extraAllowedContent': 'span(*)',
+        'extraPlugins': 'autogrow',
+        'autoGrow_minHeight': 300,
+        'autoGrow_maxHeight': 800,
+    }
+}
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = None
+
+# Suppress CKEditor security warning in development
+if DEBUG:
+    import logging
+    logging.getLogger('ckeditor').setLevel(logging.ERROR)
 
 # Security settings for production
 if not DEBUG:

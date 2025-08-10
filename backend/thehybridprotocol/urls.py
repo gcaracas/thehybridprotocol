@@ -19,10 +19,12 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
+from django.views.decorators.cache import never_cache
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('core.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 # Serve static files during development only (WhiteNoise handles production)

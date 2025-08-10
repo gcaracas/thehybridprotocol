@@ -10,6 +10,7 @@ import { elegantMultipage } from "@/data/menu";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
 import CommentSection from "@/components/common/CommentSection";
 import ContentMetadata from "@/components/common/ContentMetadata";
+import { SafeHTMLRenderer } from "@/utlis/htmlUtils";
 
 export default function NewsletterSinglePage({ params }) {
   const resolvedParams = use(params);
@@ -149,11 +150,17 @@ export default function NewsletterSinglePage({ params }) {
                         )}
                         
                         <div className="mb-40 mb-xs-30">
-                          <p className="lead">{newsletter.excerpt}</p>
+                          <SafeHTMLRenderer 
+                            content={newsletter.excerpt} 
+                            className="lead"
+                          />
                         </div>
 
                         <div className="mb-40 mb-xs-30">
-                          <div dangerouslySetInnerHTML={{ __html: newsletter.content }} />
+                          <SafeHTMLRenderer 
+                            content={newsletter.content}
+                            className="newsletter-content"
+                          />
                         </div>
                       </div>
                     </div>

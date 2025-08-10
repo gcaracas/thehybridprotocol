@@ -10,6 +10,7 @@ import { elegantMultipage } from "@/data/menu";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
 import CommentSection from "@/components/common/CommentSection";
 import ContentMetadata from "@/components/common/ContentMetadata";
+import { SafeHTMLRenderer } from "@/utlis/htmlUtils";
 
 export default function PodcastSinglePage({ params }) {
   const resolvedParams = use(params);
@@ -161,13 +162,19 @@ export default function PodcastSinglePage({ params }) {
                         )}
                         
                         <div className="mb-40 mb-xs-30">
-                          <p>{podcast.description}</p>
+                          <SafeHTMLRenderer 
+                            content={podcast.description}
+                            className="podcast-description"
+                          />
                         </div>
 
-                        {podcast.script_snippet && (
+                        {podcast.script && (
                           <div className="mb-40 mb-xs-30">
-                            <h4>Episode Highlights</h4>
-                            <p>{podcast.script_snippet}</p>
+                            <h4>Episode Script</h4>
+                            <SafeHTMLRenderer 
+                              content={podcast.script}
+                              className="podcast-script"
+                            />
                           </div>
                         )}
 

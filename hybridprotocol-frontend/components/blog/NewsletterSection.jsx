@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import apiService from '@/utlis/api';
 import Link from 'next/link';
 import { getLanguageDisplayText } from "@/utlis/languageUtils";
+import { stripHTML } from '@/utlis/htmlUtils';
 
 export default function NewsletterSection() {
   const [newsletters, setNewsletters] = useState([]);
@@ -83,7 +84,7 @@ export default function NewsletterSection() {
               )}
               <div className="card-body">
                 <h5 className="card-title">{newsletter.title}</h5>
-                <p className="card-text">{newsletter.excerpt}</p>
+                <p className="card-text">{stripHTML(newsletter.excerpt)}</p>
                 <Link 
                   href={`/newsletter/${newsletter.slug}`}
                   className="btn btn-primary"

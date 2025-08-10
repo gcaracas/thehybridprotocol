@@ -11,6 +11,7 @@ import Pagination from "@/components/common/Pagination";
 import SidebarWidgets from "@/components/common/SidebarWidgets";
 import NewsLetter from "@/components/homes/home-5/NewsLetter";
 import { getLanguageDisplayText } from "@/utlis/languageUtils";
+import { stripHTML } from "@/utlis/htmlUtils";
 
 export default function NewsletterPage() {
   const [newsletters, setNewsletters] = useState([]);
@@ -213,7 +214,7 @@ export default function NewsletterPage() {
                                   {newsletter.title}
                                 </Link>
                               </h3>
-                              <div className="post-prev-text">{newsletter.excerpt}</div>
+                              <div className="post-prev-text">{stripHTML(newsletter.excerpt)}</div>
                               <div className="post-prev-info clearfix">
                                 <div className="float-start">
                                   <a href="#" className="icon-author">
