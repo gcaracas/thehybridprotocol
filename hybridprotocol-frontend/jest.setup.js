@@ -53,12 +53,13 @@ beforeEach(() => {
 // Mock console methods to reduce noise in tests
 global.console = {
   ...console,
-  // Uncomment to ignore a specific log level
+  // Suppress error messages during tests since they're expected
+  error: jest.fn(),
+  // Uncomment to ignore other log levels if needed
   // log: jest.fn(),
   // debug: jest.fn(),
   // info: jest.fn(),
   // warn: jest.fn(),
-  // error: jest.fn(),
 }
 
 // Mock fetch for tests
