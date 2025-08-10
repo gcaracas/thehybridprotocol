@@ -1,10 +1,7 @@
 [build]
 builder = "NIXPACKS"
-# Install backend deps from repo root
-buildCommand = "pip install -r backend/requirements.txt"
 
 [deploy]
-# Run Celery from inside backend so Django project is on the path
 startCommand = "bash -lc 'cd backend && celery -A thehybridprotocol worker -l info'"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
